@@ -36,12 +36,47 @@
 <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/jstree/themes/default/style.min.css') }}">
 <style>
+    :root {
+        --lazismu-primary: #fc8c04;
+        --lazismu-primary-dark: #de7900;
+        --bs-primary: #fc8c04;
+        --bs-primary-rgb: 252, 140, 4;
+        --bs-warning: #fc8c04;
+        --bs-warning-rgb: 252, 140, 4;
+        --bs-link-color: #de7900;
+        --bs-link-hover-color: #b86400;
+    }
+
+    .btn-primary,
+    .btn-warning {
+        background-color: var(--lazismu-primary);
+        border-color: var(--lazismu-primary);
+        color: #fff;
+    }
+
+    .btn-primary:hover,
+    .btn-warning:hover,
+    .btn-outline-warning:hover {
+        background-color: var(--lazismu-primary-dark);
+        border-color: var(--lazismu-primary-dark);
+        color: #fff;
+    }
+
+    .btn-outline-warning {
+        color: var(--lazismu-primary-dark);
+        border-color: var(--lazismu-primary);
+    }
+
+    .text-warning {
+        color: var(--lazismu-primary-dark) !important;
+    }
+
     .submenu {
         display: none;
     }
 
     .nav-item.menu-item .nav-link.active {
-        background-color: #0d6efd;
+        background-color: var(--lazismu-primary);
         color: #fff;
     }
     

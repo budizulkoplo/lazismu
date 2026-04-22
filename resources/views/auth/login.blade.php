@@ -31,7 +31,7 @@
       }
 
       .nama-pt {
-        color: #1f3236 !important;
+        color: #de7900 !important;
         font-weight: 900 !important;
       }
 
@@ -108,13 +108,23 @@
         align-items: center;
         justify-content: center;
       }
+
+      .btn-primary {
+        background: #fc8c04;
+        border-color: #fc8c04;
+      }
+
+      .btn-primary:hover {
+        background: #de7900;
+        border-color: #de7900;
+      }
     </style>
   </head>
 
   <body class="d-flex flex-column">
     <!-- Splash screen -->
     <div id="splashScreen">
-      <img src="{{ asset('animsolar.gif') }}" alt="Splash Animation">
+      <img src="{{ asset('logo.png') }}" alt="Splash Animation">
       <p>Memuat sistem...</p>
     </div>
 
@@ -205,7 +215,7 @@
 
     <!-- Overlay Loading -->
     <div id="loadingOverlay">
-      <img src="{{ asset('animsolar.gif') }}" alt="Loading...">
+      <img src="{{ asset('logo.png') }}" alt="Loading...">
       <p>Memproses login...</p>
     </div>
 

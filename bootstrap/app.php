@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\GlobalApp;
 use App\Http\Middleware\CheckActiveProject;
+use App\Http\Middleware\EnsureMuzakiAuthenticated;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'global.app'    => GlobalApp::class,
             'role'          => RoleMiddleware::class,
             'check.project' => CheckActiveProject::class,
+            'muzaki.auth'   => EnsureMuzakiAuthenticated::class,
         ]);
 
         // Kalau mau middleware ini otomatis ikut grup "web"

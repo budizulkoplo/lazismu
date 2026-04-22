@@ -43,6 +43,6 @@ class AuthenticatedSessionController extends Controller
 
     protected function redirectTo(): string
     {
-        return route('mobile.home');
+        return route('dashboard');
     }
 }

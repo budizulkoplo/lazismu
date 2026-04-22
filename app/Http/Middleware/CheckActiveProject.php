@@ -13,9 +13,11 @@ class CheckActiveProject
         if (!session()->has('active_project_id')
             && !$request->is('choose-project*')
             && !$request->is('logout')
-            && !$request->is('mobile*')) // <- ubah di sini
+            && !$request->is('mobile*')
+            && !$request->is('dashboard')
+            && !$request->is('lazismu*')) // <- ubah di sini
         {
-            return redirect()->route('mobile.home');
+            return redirect()->route('dashboard');
         }
 
         return $next($request);

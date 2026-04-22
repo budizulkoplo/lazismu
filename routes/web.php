@@ -20,6 +20,13 @@ use App\Http\Controllers\UnitDetailController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LazismuDashboardController;
+use App\Http\Controllers\MuzakiController;
+use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\KodeSetoranController;
+use App\Http\Controllers\SetoranController;
+use App\Http\Controllers\MuzakiAuthController;
+use App\Http\Controllers\MuzakiPortalController;
 use App\Http\Controllers\ProjectSelectionController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\CoaController;
@@ -63,7 +70,7 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
 Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
 
     // Dashboard
-    Route::get('/dashboard', [AdminDashboardController::class, 'dashboard'])
+    Route::get('/dashboard', [LazismuDashboardController::class, 'index'])
         ->middleware('global.app:admin')
         ->name('dashboard');
     Route::get('/admin/pesanan-hari-ini', [AdminDashboardController::class, 'pesananHariIni']);
@@ -71,7 +78,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
         ->name('dashboard.pesananHariIniData');
 
     // Profile
-    Route::prefix('profile')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('profile')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         
         Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
@@ -80,7 +87,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
     });
 
     // Users
-    Route::prefix('users')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('users')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/list', [UsersController::class, 'index'])->name('users.list');
         Route::get('/getdata', [UsersController::class, 'getdata'])->name('users.getdata');
         Route::post('/assignRole', [UsersController::class, 'kasihRole'])->name('users.assignRole');
@@ -96,7 +103,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
     });
 
     // Pegawai
-    Route::prefix('pegawai')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('pegawai')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/list', [PegawaiController::class, 'index'])->name('pegawai.list');
         Route::get('/getdata', [PegawaiController::class, 'getdata'])->name('pegawai.getdata');
         Route::post('/store', [PegawaiController::class, 'store'])->name('pegawai.store');
@@ -105,7 +112,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
         Route::delete('/{id}', [PegawaiController::class, 'destroy'])->name('pegawai.destroy'); // untuk hapus
     });
 
-    Route::prefix('master')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/unitkerja', [UnitKerjaController::class, 'index'])->name('master.unitkerja');
         Route::get('/unitkerja/data', [UnitKerjaController::class, 'getdata'])->name('master.unitkerja.data');
         Route::get('/unitkerja/{id}', [UnitKerjaController::class, 'show'])->name('master.unitkerja.show');
@@ -115,13 +122,13 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
         Route::post('/unitkerja/togglelock', [UnitKerjaController::class, 'toggleLock'])->name('master.unitkerja.togglelock');
     });
 
-    Route::prefix('master')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/plotting-unitkerja', [PlottingUnitKerjaController::class, 'index'])->name('plotting.unitkerja');
         Route::get('/plotting-unitkerja/data', [PlottingUnitKerjaController::class, 'getdata'])->name('plotting.unitkerja.data');
         Route::post('/plotting-unitkerja/update', [PlottingUnitKerjaController::class, 'updateUnit'])->name('plotting.unitkerja.update');
     });
 
-    Route::prefix('master')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('kelompokjam', [KelompokJamController::class, 'index'])->name('master.kelompokjam');
         Route::get('kelompokjam/data', [KelompokJamController::class, 'getdata'])->name('master.kelompokjam.data');
         Route::post('kelompokjam/store', [KelompokJamController::class, 'store'])->name('master.kelompokjam.store');
@@ -129,14 +136,14 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
         Route::delete('kelompokjam/{id}', [KelompokJamController::class, 'destroy']);
     });
 
-    Route::prefix('master')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('jadwal', [JadwalController::class, 'index'])->name('master.jadwal');
         Route::get('jadwal/pegawai', [JadwalController::class, 'getPegawai'])->name('master.jadwal.pegawai');
         Route::post('jadwal/update', [JadwalController::class, 'updateShift'])->name('master.jadwal.update');
         Route::post('jadwal/generate', [JadwalController::class, 'generateOtomatis'])->name('master.jadwal.generate');
     });
 
-    Route::prefix('master')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('gaji', [MasterGajiController::class, 'index'])->name('master.gaji');
         Route::get('gaji/pegawai', [MasterGajiController::class, 'getPegawai'])->name('master.gaji.pegawai');
         Route::get('gaji/riwayat/{nik}', [MasterGajiController::class, 'riwayat'])->name('master.gaji.riwayat');
@@ -145,7 +152,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
         Route::put('gaji/{id}', [MasterGajiController::class, 'update'])->name('master.gaji.update');
     });
 
-    Route::prefix('hris')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('hris')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/absensi', [AbsensiController::class, 'index'])->name('hris.absensi');
         Route::get('/absensi/getdata', [AbsensiController::class, 'getAbsensiData'])->name('hris.absensi.getdata');
         Route::get('pengajuan-izin', [PengajuanIzinController::class, 'index'])->name('hris.pengajuanizin');
@@ -168,7 +175,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
     });
 
     // Companies
-    Route::prefix('companies')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('companies')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/', [CompanyController::class, 'index'])->name('companies.index');
         Route::post('/store', [CompanyController::class, 'store'])->name('companies.store');
         Route::get('/{id}', [CompanyController::class, 'show'])->name('companies.show');
@@ -176,12 +183,11 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
 
         Route::post('/projects/store', [CompanyController::class, 'storeProject'])->name('companies.projects.store');
         Route::delete('/projects/{id}', [CompanyController::class, 'destroyProject'])->name('companies.projects.destroy');
-        Route::get('/{id}/edit', [CompanyController::class, 'edit']);
-        Route::get('/projects/{id}/edit', [CompanyController::class, 'editProject']);
-
+        Route::get('/{id}/edit', [CompanyController::class, 'edit'])->name('companies.edit');
+        Route::get('/projects/{id}/edit', [CompanyController::class, 'editProject'])->name('companies.projects.edit');
     });
 
-    Route::prefix('coas')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('coas')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/', [CoaController::class, 'index'])->name('coas.index');
         Route::get('/getdata', [CoaController::class, 'getData'])->name('coas.getdata');
         Route::post('/store', [CoaController::class, 'store'])->name('coas.store');
@@ -202,7 +208,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
     Route::get('/rekening/{id}/saldo', [RekeningController::class,'getSaldo']);
 
     // Rekening
-    Route::prefix('rekening')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('rekening')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/', [RekeningController::class, 'index'])->name('rekening.index');
         Route::post('/store', [RekeningController::class, 'store'])->name('rekening.store');
         Route::get('/{id}/edit', [RekeningController::class, 'edit'])->name('rekening.edit');
@@ -210,7 +216,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
     });
 
     // Vendors
-    Route::prefix('vendors')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('vendors')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/', [VendorController::class, 'index'])->name('vendors.index');
         Route::get('/getdata', [VendorController::class, 'getData'])->name('vendors.getdata');
         Route::post('/store', [VendorController::class, 'store'])->name('vendors.store');
@@ -219,14 +225,14 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
     });
 
     // User Projects
-    Route::prefix('user-projects')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('user-projects')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/', [UserProjectController::class, 'index'])->name('user-projects.index');
         Route::post('/toggle', [UserProjectController::class, 'toggle'])->name('user-projects.toggle');
         Route::get('/{userId}', [UserProjectController::class, 'getUserProjects']);
     });
 
     // Units
-    Route::prefix('units')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('units')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/', [UnitController::class, 'index'])->name('units.index');
         Route::get('/getdata', [UnitController::class, 'getData'])->name('units.getdata');
         Route::post('/store', [UnitController::class, 'store'])->name('units.store');
@@ -236,7 +242,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
     });
 
     // Setting
-    Route::prefix('setting')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('setting')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/', [SettingController::class, 'index'])->name('setting.index');
         Route::post('/', [SettingController::class, 'update'])->name('setting.update');
     });
@@ -259,11 +265,35 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
     });
 
     // Laporan
-    Route::prefix('laporan')->middleware(['role:superadmin|admin', 'global.app'])->group(function () {
+    Route::prefix('laporan')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
         Route::get('/transaksi-armada', [LaporanController::class, 'transaksiArmada'])->name('laporan.transaksi_armada');
         Route::get('/transaksi-armada/data', [LaporanController::class, 'transaksiArmadaData'])->name('laporan.transaksi_armada.data');
         Route::get('/project', [LaporanController::class, 'laporanProject'])->name('laporan.project');
         Route::get('/vendor', [LaporanController::class, 'laporanVendor'])->name('laporan.vendor');
+    });
+
+    Route::prefix('lazismu')->name('lazismu.')->middleware(['role:superadmin|admin|keuangan|direktur|manager', 'global.app'])->group(function () {
+        Route::get('/dashboard', [LazismuDashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/muzaki', [MuzakiController::class, 'index'])->name('muzaki.index');
+        Route::post('/muzaki', [MuzakiController::class, 'store'])->name('muzaki.store');
+        Route::put('/muzaki/{muzaki}', [MuzakiController::class, 'update'])->name('muzaki.update');
+        Route::delete('/muzaki/{muzaki}', [MuzakiController::class, 'destroy'])->name('muzaki.destroy');
+
+        Route::get('/program', [ProgramController::class, 'index'])->name('program.index');
+        Route::post('/program', [ProgramController::class, 'store'])->name('program.store');
+        Route::put('/program/{program}', [ProgramController::class, 'update'])->name('program.update');
+        Route::delete('/program/{program}', [ProgramController::class, 'destroy'])->name('program.destroy');
+
+        Route::get('/kode-setoran', [KodeSetoranController::class, 'index'])->name('kode-setoran.index');
+        Route::post('/kode-setoran', [KodeSetoranController::class, 'store'])->name('kode-setoran.store');
+        Route::put('/kode-setoran/{kodeSetoran}', [KodeSetoranController::class, 'update'])->name('kode-setoran.update');
+        Route::delete('/kode-setoran/{kodeSetoran}', [KodeSetoranController::class, 'destroy'])->name('kode-setoran.destroy');
+
+        Route::get('/setoran', [SetoranController::class, 'index'])->name('setoran.index');
+        Route::post('/setoran', [SetoranController::class, 'store'])->name('setoran.store');
+        Route::put('/setoran/{setoran}', [SetoranController::class, 'update'])->name('setoran.update');
+        Route::delete('/setoran/{setoran}', [SetoranController::class, 'destroy'])->name('setoran.destroy');
     });
 
     // Static file (private doc/img)
@@ -337,6 +367,20 @@ Route::middleware(['auth'])->prefix('mobile')->name('mobile.')->group(function (
         Route::get('/download/{id}', [App\Http\Controllers\Mobile\MobilePayrollController::class, 'slip'])->name('slip');
         
     });
+
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('slip/{payroll_id}', [PayrollController::class, 'downloadSlip'])->name('slip');
 });
 
 require __DIR__ . '/auth.php';
+
+Route::get('/muzaki', [MuzakiAuthController::class, 'create'])->name('muzaki.login');
+Route::post('/muzaki', [MuzakiAuthController::class, 'store'])->name('muzaki.login.store');
+Route::redirect('/muzaki/login', '/muzaki');
+Route::post('/muzaki/logout', [MuzakiAuthController::class, 'destroy'])->name('muzaki.logout');
+Route::middleware('muzaki.auth')->group(function () {
+    Route::get('/muzaki/mobile', [MuzakiPortalController::class, 'index'])->name('muzaki.mobile');
+    Route::redirect('/muzaki/portal', '/muzaki/mobile')->name('muzaki.portal');
+});

@@ -71,12 +71,18 @@ class GlobalApp
             'login',
             'logout',
             'dashboard',
+            'hris.payroll.slip',
+            'profile.edit',
             'dashboard.pesananHariIniData',
         ];
 
         $currentRoute = strtolower($request->route()->getName() ?? '');
 
         if (in_array($currentRoute, $alwaysAllowed)) {
+            return $next($request);
+        }
+
+        if (Str::startsWith($currentRoute, 'lazismu.')) {
             return $next($request);
         }
 

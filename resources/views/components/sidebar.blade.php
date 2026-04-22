@@ -50,19 +50,41 @@
 
         <div class="user-panel d-flex align-items-center p-3">
             <div class="image me-2">
-                @if (isset(Auth::user()->foto) && Storage::disk('private')->exists("img/foto/".Auth::user()->foto))
-                    <img src="{{ url('/doc/file/foto/'.Auth::user()->foto.'?t='. time()) }}"
-                    class="img-circle elevation-2"
-                    alt="User Image"
-                    style="width: 40px; height: 40px; object-fit: cover;">
+                @php
+                    $user = Auth::user();
+                @endphp
+            
+                @if ($user && $user->foto)
+                    <img 
+                        src="{{ asset('storage/uploads/karyawan/' . $user->foto) }}" 
+                        alt="User Image"
+                        class="elevation-2 shadow-sm"
+                        style="
+                            width: 40px; 
+                            height: 40px; 
+                            border-radius: 50%; 
+                            object-fit: cover;
+                            border: 2px solid #fff;
+                        "
+                        loading="lazy"
+                    >
                 @else
-                    <img src="{{ asset('user.png') }}"
-                    class="img-circle elevation-2"
-                    alt="User Image"
-                    style="width: 40px; height: 40px; object-fit: cover;">
+                    <img 
+                        src="{{ asset('assets/img/avatar1.jpg') }}" 
+                        alt="User Image"
+                        class="elevation-2 shadow-sm"
+                        style="
+                            width: 40px; 
+                            height: 40px; 
+                            border-radius: 50%; 
+                            object-fit: cover;
+                            border: 2px solid #fff;
+                        "
+                        loading="lazy"
+                    >
                 @endif
-                
             </div>
+
             <div class="info">
                 <a href="#" class="d-block text-white">{{ $displayName }}</a>
 
@@ -91,8 +113,55 @@
         </div>
 
         <nav class="mt-2">
+            <div class="px-3 pb-2">
+                <small class="text-uppercase text-white-50">Lazismu</small>
+            </div>
+            <ul class="nav sidebar-menu flex-column mb-3" data-lte-toggle="treeview" role="menu" data-accordion="false">
+                <li class="nav-item menu-item">
+                    <a href="{{ route('dashboard') }}" class="nav-link menu-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-grid-1x2"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a href="{{ route('lazismu.muzaki.index') }}" class="nav-link menu-link {{ request()->routeIs('lazismu.muzaki.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-people"></i>
+                        <p>Muzaki</p>
+                    </a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a href="{{ route('lazismu.program.index') }}" class="nav-link menu-link {{ request()->routeIs('lazismu.program.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-megaphone"></i>
+                        <p>Program</p>
+                    </a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a href="{{ route('lazismu.kode-setoran.index') }}" class="nav-link menu-link {{ request()->routeIs('lazismu.kode-setoran.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-tags"></i>
+                        <p>Kode Setoran</p>
+                    </a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a href="{{ route('lazismu.setoran.index') }}" class="nav-link menu-link {{ request()->routeIs('lazismu.setoran.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-wallet2"></i>
+                        <p>Setoran</p>
+                    </a>
+                </li>
+                <li class="nav-item menu-item">
+                    <a href="{{ route('muzaki.login') }}" class="nav-link menu-link">
+                        <i class="nav-icon bi bi-person-badge"></i>
+                        <p>Portal Muzaki</p>
+                    </a>
+                </li>
+            </ul>
+
+            @php
+                $sidebarMenus = request()->menu ?? collect();
+            @endphp
+
+            @if (!collect($sidebarMenus)->isEmpty())
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                @foreach (request()->menu as $item)
+                @foreach ($sidebarMenus as $item)
                     @php
                         $p1 = explode(';', $item->role);
                         $lanjut = 0;
@@ -197,6 +266,7 @@
                     @endif
                 @endforeach
             </ul>
+            @endif
         </nav>
     </div>
 </aside>
@@ -233,7 +303,7 @@
     }
 
     .nav-item.menu-item .nav-link.active {
-        background-color: #0d6efd;
+        background-color: #fc8c04;
         color: #fff;
     }
 
@@ -242,7 +312,7 @@
     }
 
     .nav-item.menu-item .nav-link.active {
-        background-color: #0d6efd;
+        background-color: #fc8c04;
         color: #fff;
     }
     
