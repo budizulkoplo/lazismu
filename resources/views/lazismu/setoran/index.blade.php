@@ -17,33 +17,8 @@
 
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <form class="row g-2 mb-3">
-                        <div class="col-md-4">
-                            <input type="text" name="search" class="form-control" placeholder="Cari muzaki / NIK" value="{{ request('search') }}">
-                        </div>
-                        <div class="col-md-3">
-                            <select name="jenis_setoran" class="form-select">
-                                <option value="">Semua Jenis</option>
-                                @foreach($kodeSetorans as $kode)
-                                    <option value="{{ $kode->jenis_setoran }}" @selected(request('jenis_setoran') === $kode->jenis_setoran)>{{ ucfirst($kode->jenis_setoran) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select name="program_id" class="form-select">
-                                <option value="">Semua Program</option>
-                                @foreach($programs as $program)
-                                    <option value="{{ $program->id }}" @selected((string) request('program_id') === (string) $program->id)>{{ $program->nama_program }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-outline-warning">Filter</button>
-                        </div>
-                    </form>
-
                     <div class="table-responsive">
-                        <table class="table table-sm align-middle">
+                        <table class="table table-sm table-striped align-middle js-lazismu-table w-100">
                             <thead class="table-light">
                                 <tr>
                                     <th>Tanggal</th>
@@ -55,7 +30,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($setorans as $setoran)
+                                @foreach($setorans as $setoran)
                                     <tr>
                                         <td>{{ optional($setoran->created_at)->format('d/m/Y') }}</td>
                                         <td>
@@ -74,27 +49,75 @@
                                             </form>
                                         </td>
                                     </tr>
-
-                                    @include('lazismu.setoran.partials.edit-modal', ['setoran' => $setoran, 'muzakis' => $muzakis, 'kodeSetorans' => $kodeSetorans, 'programs' => $programs])
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center text-muted py-4">Belum ada setoran.</td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
-
-                    {{ $setorans->links() }}
                 </div>
             </div>
         </div>
     </div>
 
     @include('lazismu.setoran.partials.create-modal', ['muzakis' => $muzakis, 'kodeSetorans' => $kodeSetorans, 'programs' => $programs])
+    @foreach($setorans as $setoran)
+        @include('lazismu.setoran.partials.edit-modal', ['setoran' => $setoran, 'muzakis' => $muzakis, 'kodeSetorans' => $kodeSetorans, 'programs' => $programs])
+    @endforeach
+
+    <div class="modal fade" id="muzakiPickerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title mb-1">Daftar Muzaki</h5>
+                        <small class="text-muted">Cari dan pilih muzaki berdasarkan detail identitasnya.</small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped align-middle js-lazismu-table js-muzaki-picker-table w-100">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>NIK</th>
+                                    <th>Nama</th>
+                                    <th>Alamat</th>
+                                    <th>No HP</th>
+                                    <th>Email</th>
+                                    <th width="110">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($muzakis as $muzakiOption)
+                                    <tr>
+                                        <td>{{ $muzakiOption->nik }}</td>
+                                        <td>{{ $muzakiOption->nama }}</td>
+                                        <td>{{ $muzakiOption->alamat ?: '-' }}</td>
+                                        <td>{{ $muzakiOption->no_hp ?: '-' }}</td>
+                                        <td>{{ $muzakiOption->email ?: '-' }}</td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                class="btn btn-sm btn-warning js-pilih-muzaki"
+                                                data-id="{{ $muzakiOption->id }}"
+                                            >
+                                                Pilih
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <x-slot name="jscustom">
+        @include('lazismu.partials.datatable-select2')
         <script>
+            let activeSetoranForm = null;
+
             function toggleProgramField(formId) {
                 const form = document.getElementById(formId);
                 if (!form) return;
@@ -111,15 +134,104 @@
 
                 if (!showProgram) {
                     programSelect.value = '';
+                    if (window.jQuery && $(programSelect).data('select2')) {
+                        $(programSelect).val('').trigger('change.select2');
+                    }
                 }
             }
 
-            document.querySelectorAll('.js-jenis-setoran').forEach(function(select) {
-                select.addEventListener('change', function() {
-                    toggleProgramField(this.form.id);
+            function renderSelectedMuzaki(form) {
+                const select = form.querySelector('.js-muzaki-select');
+                const summary = form.querySelector('.js-selected-muzaki');
+                const option = select?.selectedOptions?.[0];
+
+                if (!select || !summary || !option || !option.value) {
+                    if (summary) summary.innerHTML = 'Pilih muzaki untuk melihat detail identitas.';
+                    return;
+                }
+
+                const nama = option.dataset.nama || option.textContent.trim();
+                const nik = option.dataset.nik || '-';
+                const alamat = option.dataset.alamat || '-';
+                const hp = option.dataset.hp || '-';
+                const email = option.dataset.email || '-';
+                const escapeHtml = (value) => String(value || '-')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+
+                summary.innerHTML = `
+                    <div class="border rounded p-2 bg-light">
+                        <div class="fw-semibold text-dark">${escapeHtml(nama)}</div>
+                        <div>NIK: ${escapeHtml(nik)}</div>
+                        <div>Alamat: ${escapeHtml(alamat)}</div>
+                        <div>No HP: ${escapeHtml(hp)} &middot; Email: ${escapeHtml(email)}</div>
+                    </div>
+                `;
+            }
+
+            function bindSetoranForms(context) {
+                const scope = context || document;
+
+                scope.querySelectorAll('.js-jenis-setoran').forEach(function(select) {
+                    if (select.dataset.boundJenis === '1') return;
+                    select.dataset.boundJenis = '1';
+                    select.addEventListener('change', function() {
+                        toggleProgramField(this.form.id);
+                    });
+
+                    toggleProgramField(select.form.id);
                 });
 
-                toggleProgramField(select.form.id);
+                scope.querySelectorAll('.js-muzaki-select').forEach(function(select) {
+                    if (select.dataset.boundMuzaki === '1') return;
+                    select.dataset.boundMuzaki = '1';
+                    select.addEventListener('change', function() {
+                        renderSelectedMuzaki(this.form);
+                    });
+
+                    renderSelectedMuzaki(select.form);
+                });
+
+                scope.querySelectorAll('.js-open-muzaki-picker').forEach(function(button) {
+                    if (button.dataset.boundPicker === '1') return;
+                    button.dataset.boundPicker = '1';
+                    button.addEventListener('click', function() {
+                        activeSetoranForm = this.closest('form');
+                        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('muzakiPickerModal'));
+                        modal.show();
+                    });
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                bindSetoranForms(document);
+
+                document.querySelectorAll('.modal').forEach(function(modal) {
+                    modal.addEventListener('shown.bs.modal', function() {
+                        bindSetoranForms(modal);
+                    });
+                });
+
+                document.querySelectorAll('.js-pilih-muzaki').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        if (!activeSetoranForm) return;
+
+                        const select = activeSetoranForm.querySelector('.js-muzaki-select');
+                        select.value = this.dataset.id;
+
+                        if (window.jQuery && $(select).data('select2')) {
+                            $(select).val(this.dataset.id).trigger('change');
+                        } else {
+                            select.dispatchEvent(new Event('change'));
+                        }
+
+                        renderSelectedMuzaki(activeSetoranForm);
+                        bootstrap.Modal.getInstance(document.getElementById('muzakiPickerModal')).hide();
+                    });
+                });
             });
         </script>
     </x-slot>

@@ -20,7 +20,7 @@ class MuzakiController extends Controller
             });
         }
 
-        $muzakis = $query->latest()->paginate(10)->withQueryString();
+        $muzakis = $query->latest()->get();
 
         return view('lazismu.muzaki.index', compact('muzakis'));
     }

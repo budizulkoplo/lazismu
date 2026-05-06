@@ -66,9 +66,6 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
     Route::post('/choose-project', [ProjectSelectionController::class, 'store'])->name('choose.project.store');
 });
 
-// Semua route ini wajib: auth + verified + project sudah dipilih
-Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
-
     // Dashboard
     Route::get('/dashboard', [LazismuDashboardController::class, 'index'])
         ->middleware('global.app:admin')
@@ -241,12 +238,6 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
         Route::get('/details', [UnitDetailController::class, 'index'])->name('units.details.index');
     });
 
-    // Setting
-    Route::prefix('setting')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/', [SettingController::class, 'index'])->name('setting.index');
-        Route::post('/', [SettingController::class, 'update'])->name('setting.update');
-    });
-
     // Roles
     Route::prefix('roles')->middleware(['role:superadmin', 'global.app'])->group(function () {
         Route::get('/list', [UserRoleController::class, 'index'])->name('roles.list');
@@ -270,6 +261,11 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
         Route::get('/transaksi-armada/data', [LaporanController::class, 'transaksiArmadaData'])->name('laporan.transaksi_armada.data');
         Route::get('/project', [LaporanController::class, 'laporanProject'])->name('laporan.project');
         Route::get('/vendor', [LaporanController::class, 'laporanVendor'])->name('laporan.vendor');
+    });
+
+    Route::prefix('setting')->middleware(['role:superadmin|admin|keuangan|direktur|manager', 'global.app'])->group(function () {
+        Route::get('/', [SettingController::class, 'index'])->name('setting.index');
+        Route::post('/', [SettingController::class, 'update'])->name('setting.update');
     });
 
     Route::prefix('lazismu')->name('lazismu.')->middleware(['role:superadmin|admin|keuangan|direktur|manager', 'global.app'])->group(function () {
@@ -313,7 +309,7 @@ Route::middleware(['auth', 'verified', 'check.project'])->group(function () {
             return Response::make($file, 200)->header("Content-Type", $type);
         });
     });
-});
+
 
 // UI untuk mobile end users
 Route::middleware(['auth'])->prefix('mobile')->name('mobile.')->group(function () {

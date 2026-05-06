@@ -56,7 +56,7 @@
             
                 @if ($user && $user->foto)
                     <img 
-                        src="{{ asset('storage/uploads/karyawan/' . $user->foto) }}" 
+                        src="{{ asset('doc/file/foto/' . $user->foto) }}" 
                         alt="User Image"
                         class="elevation-2 shadow-sm"
                         style="
@@ -87,22 +87,6 @@
 
             <div class="info">
                 <a href="#" class="d-block text-white">{{ $displayName }}</a>
-
-                @if(session('active_project_id'))
-                    <a href="{{ route('choose.project') }}" 
-                    class="d-flex align-items-center gap-1 text-warning text-decoration-none" 
-                    style="font-size: 0.75rem; line-height: 1rem;">
-                        <i class="fas fa-folder-open fa-sm"></i>
-                        <span>{{ session('active_project_name') }}</span>
-                    </a>
-                @else
-                    <a href="{{ route('choose.project') }}" 
-                    class="d-flex align-items-center gap-1 text-muted text-decoration-none" 
-                    style="font-size: 0.75rem; line-height: 1rem;">
-                        <i class="fas fa-folder-plus fa-sm"></i>
-                        <span>Pilih Project</span>
-                    </a>
-                @endif
         </div>
 
         </div>
@@ -113,50 +97,23 @@
         </div>
 
         <nav class="mt-2">
-            <div class="px-3 pb-2">
-                <small class="text-uppercase text-white-50">Lazismu</small>
-            </div>
-            <ul class="nav sidebar-menu flex-column mb-3" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item menu-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link menu-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-grid-1x2"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a href="{{ route('lazismu.muzaki.index') }}" class="nav-link menu-link {{ request()->routeIs('lazismu.muzaki.*') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-people"></i>
-                        <p>Muzaki</p>
-                    </a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a href="{{ route('lazismu.program.index') }}" class="nav-link menu-link {{ request()->routeIs('lazismu.program.*') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-megaphone"></i>
-                        <p>Program</p>
-                    </a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a href="{{ route('lazismu.kode-setoran.index') }}" class="nav-link menu-link {{ request()->routeIs('lazismu.kode-setoran.*') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-tags"></i>
-                        <p>Kode Setoran</p>
-                    </a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a href="{{ route('lazismu.setoran.index') }}" class="nav-link menu-link {{ request()->routeIs('lazismu.setoran.*') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-wallet2"></i>
-                        <p>Setoran</p>
-                    </a>
-                </li>
-                <li class="nav-item menu-item">
-                    <a href="{{ route('muzaki.login') }}" class="nav-link menu-link">
-                        <i class="nav-icon bi bi-person-badge"></i>
-                        <p>Portal Muzaki</p>
-                    </a>
-                </li>
-            </ul>
-
             @php
                 $sidebarMenus = request()->menu ?? collect();
+                $isMenuRouteActive = function ($link) {
+                    $link = trim((string) $link);
+
+                    if ($link === '' || !Route::has($link)) {
+                        return false;
+                    }
+
+                    if (request()->routeIs($link)) {
+                        return true;
+                    }
+
+                    $routeBase = str($link)->beforeLast('.')->toString();
+
+                    return $routeBase !== $link && request()->routeIs($routeBase . '.*');
+                };
             @endphp
 
             @if (!collect($sidebarMenus)->isEmpty())
@@ -173,13 +130,13 @@
                                 $inarray = array_intersect(auth()->user()->getRoleNames()->toArray(), $p2);
                                 if ($inarray) $lanjut++;
 
-                                if (Route::is($chl->link)) $isActiveParent = true;
+                                if ($isMenuRouteActive($chl->link)) $isActiveParent = true;
 
                                 if (!empty($chl->children)) {
                                     foreach ($chl->children as $chl2) {
                                         $p4 = explode(';', $chl2->role);
                                         $inarray2 = array_intersect(auth()->user()->getRoleNames()->toArray(), $p4);
-                                        if ($inarray2 && Route::is($chl2->link)) $isActiveParent = true;
+                                        if ($inarray2 && $isMenuRouteActive($chl2->link)) $isActiveParent = true;
                                     }
                                 }
                             }
@@ -189,7 +146,7 @@
                             $lanjut++;
                         }
 
-                        $itemActive = request()->routeIs($item->link);
+                        $itemActive = $isMenuRouteActive($item->link);
                     @endphp
 
                     @if ($lanjut > 0)
@@ -211,12 +168,12 @@
                                         @php
                                             $p3 = explode(';', $chl->role);
                                             $inarray1 = array_intersect(auth()->user()->getRoleNames()->toArray(), $p3);
-                                            $isActiveSub = Route::is($chl->link);
+                                            $isActiveSub = $isMenuRouteActive($chl->link);
                                             $isActiveSubChild = false;
 
                                             if (!empty($chl->children)) {
                                                 foreach ($chl->children as $chl2) {
-                                                    if (Route::is($chl2->link)) {
+                                                    if ($isMenuRouteActive($chl2->link)) {
                                                         $isActiveSubChild = true;
                                                     }
                                                 }

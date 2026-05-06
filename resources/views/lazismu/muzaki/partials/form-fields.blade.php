@@ -13,7 +13,7 @@
     </div>
     <div class="col-md-6">
         <label class="form-label">Jenis Kelamin</label>
-        <select name="jenis_kelamin" class="form-select" required>
+        <select name="jenis_kelamin" class="form-select js-select2" required>
             <option value="L" @selected(old('jenis_kelamin', optional($muzaki)->jenis_kelamin) === 'L')>Laki-laki</option>
             <option value="P" @selected(old('jenis_kelamin', optional($muzaki)->jenis_kelamin) === 'P')>Perempuan</option>
         </select>

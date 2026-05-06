@@ -17,17 +17,8 @@
 
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <form class="row g-2 mb-3">
-                        <div class="col-md-4">
-                            <input type="text" name="search" class="form-control" placeholder="Cari jenis setoran" value="{{ request('search') }}">
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-outline-warning">Filter</button>
-                        </div>
-                    </form>
-
                     <div class="table-responsive">
-                        <table class="table table-sm align-middle">
+                        <table class="table table-sm table-striped align-middle js-lazismu-table w-100">
                             <thead class="table-light">
                                 <tr>
                                     <th>Jenis Setoran</th>
@@ -35,7 +26,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($kodeSetorans as $item)
+                                @foreach($kodeSetorans as $item)
                                     <tr>
                                         <td>{{ ucfirst($item->jenis_setoran) }}</td>
                                         <td>
@@ -47,22 +38,21 @@
                                             </form>
                                         </td>
                                     </tr>
-
-                                    @include('lazismu.kode_setoran.partials.edit-modal', ['item' => $item])
-                                @empty
-                                    <tr>
-                                        <td colspan="2" class="text-center text-muted py-4">Belum ada kode setoran.</td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
-
-                    {{ $kodeSetorans->links() }}
                 </div>
             </div>
         </div>
     </div>
 
     @include('lazismu.kode_setoran.partials.create-modal')
+    @foreach($kodeSetorans as $item)
+        @include('lazismu.kode_setoran.partials.edit-modal', ['item' => $item])
+    @endforeach
+
+    <x-slot name="jscustom">
+        @include('lazismu.partials.datatable-select2')
+    </x-slot>
 </x-app-layout>

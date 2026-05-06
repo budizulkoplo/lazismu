@@ -1,18 +1,34 @@
 <div class="row g-3">
-    <div class="col-md-6">
+    <div class="col-12">
         <label class="form-label">Muzaki</label>
-        <select name="idmuzaki" class="form-select" required>
+        <div class="input-group">
+            <select name="idmuzaki" class="form-select js-select2 js-muzaki-select" required>
             <option value="">Pilih Muzaki</option>
             @foreach($muzakis as $muzakiOption)
-                <option value="{{ $muzakiOption->id }}" @selected((string) old('idmuzaki', optional($setoran)->idmuzaki) === (string) $muzakiOption->id)>
+                <option
+                    value="{{ $muzakiOption->id }}"
+                    data-nama="{{ $muzakiOption->nama }}"
+                    data-nik="{{ $muzakiOption->nik }}"
+                    data-alamat="{{ $muzakiOption->alamat }}"
+                    data-hp="{{ $muzakiOption->no_hp }}"
+                    data-email="{{ $muzakiOption->email }}"
+                    @selected((string) old('idmuzaki', optional($setoran)->idmuzaki) === (string) $muzakiOption->id)
+                >
                     {{ $muzakiOption->nama }} - {{ $muzakiOption->nik }}
                 </option>
             @endforeach
-        </select>
+            </select>
+            <button type="button" class="btn btn-outline-warning js-open-muzaki-picker">
+                <i class="bi bi-search"></i> Tampilkan Daftar Muzaki
+            </button>
+        </div>
+        <div class="js-selected-muzaki mt-2 small text-muted">
+            Pilih muzaki untuk melihat detail identitas.
+        </div>
     </div>
     <div class="col-md-6">
         <label class="form-label">Jenis Setoran</label>
-        <select name="idkode_setoran" class="form-select js-jenis-setoran" required>
+        <select name="idkode_setoran" class="form-select js-select2 js-jenis-setoran" required>
             <option value="">Pilih Jenis</option>
             @foreach($kodeSetorans as $kode)
                 <option value="{{ $kode->id }}" data-jenis="{{ strtolower($kode->jenis_setoran) }}" @selected((string) old('idkode_setoran', optional($setoran)->idkode_setoran) === (string) $kode->id)>
@@ -23,7 +39,7 @@
     </div>
     <div class="col-md-6 js-program-wrapper d-none">
         <label class="form-label">Program Aktif</label>
-        <select name="idprogram" class="form-select js-program-select">
+        <select name="idprogram" class="form-select js-select2 js-program-select">
             <option value="">Pilih Program</option>
             @foreach($programs as $programOption)
                 <option value="{{ $programOption->id }}" @selected((string) old('idprogram', optional($setoran)->idprogram) === (string) $programOption->id)>

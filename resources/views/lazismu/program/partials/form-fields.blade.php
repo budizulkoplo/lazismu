@@ -17,7 +17,7 @@
     </div>
     <div class="col-md-6">
         <label class="form-label">Status</label>
-        <select name="status" class="form-select" required>
+        <select name="status" class="form-select js-select2" required>
             <option value="active" @selected(old('status', optional($program)->status ?? 'active') === 'active')>Active</option>
             <option value="nonactive" @selected(old('status', optional($program)->status) === 'nonactive')>Non Active</option>
             <option value="selesai" @selected(old('status', optional($program)->status) === 'selesai')>Selesai</option>

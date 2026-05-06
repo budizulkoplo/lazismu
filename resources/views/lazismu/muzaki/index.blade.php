@@ -17,17 +17,8 @@
 
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <form class="row g-2 mb-3">
-                        <div class="col-md-4">
-                            <input type="text" name="search" class="form-control" placeholder="Cari nama, NIK, atau no HP" value="{{ request('search') }}">
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-outline-warning">Filter</button>
-                        </div>
-                    </form>
-
                     <div class="table-responsive">
-                        <table class="table table-sm align-middle">
+                        <table class="table table-sm table-striped align-middle js-lazismu-table w-100">
                             <thead class="table-light">
                                 <tr>
                                     <th>NIK</th>
@@ -40,7 +31,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($muzakis as $muzaki)
+                                @foreach($muzakis as $muzaki)
                                     <tr>
                                         <td>{{ $muzaki->nik }}</td>
                                         <td>
@@ -60,22 +51,21 @@
                                             </form>
                                         </td>
                                     </tr>
-
-                                    @include('lazismu.muzaki.partials.edit-modal', ['muzaki' => $muzaki])
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center text-muted py-4">Belum ada data muzaki.</td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
-
-                    {{ $muzakis->links() }}
                 </div>
             </div>
         </div>
     </div>
 
     @include('lazismu.muzaki.partials.create-modal')
+    @foreach($muzakis as $muzaki)
+        @include('lazismu.muzaki.partials.edit-modal', ['muzaki' => $muzaki])
+    @endforeach
+
+    <x-slot name="jscustom">
+        @include('lazismu.partials.datatable-select2')
+    </x-slot>
 </x-app-layout>

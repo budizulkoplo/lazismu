@@ -16,7 +16,7 @@ class KodeSetoranController extends Controller
             $query->where('jenis_setoran', 'like', '%' . $request->search . '%');
         }
 
-        $kodeSetorans = $query->orderBy('jenis_setoran')->paginate(10)->withQueryString();
+        $kodeSetorans = $query->orderBy('jenis_setoran')->get();
 
         return view('lazismu.kode_setoran.index', compact('kodeSetorans'));
     }

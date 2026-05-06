@@ -135,7 +135,7 @@
             <li class="nav-item dropdown user-menu"> 
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                     <img 
-                        src="{{ Auth::user()->foto ? asset('storage/uploads/karyawan/' . Auth::user()->foto) : asset('assets/img/avatar1.jpg') }}" 
+                        src="{{ Auth::user()->foto ? asset('doc/file/foto/' . Auth::user()->foto) : asset('assets/img/avatar1.jpg') }}" 
                         class="user-image rounded-circle shadow" 
                         alt="User Image" 
                         loading="lazy"
@@ -149,20 +149,6 @@
                             {{ Auth::user()->name }} 
                             <small>{{ Auth::user()->email }} - {{ strtoupper(auth()->user()->getRoleNames()[0]) }}</small>
                         </p>
-                    </li>
-
-                    <!-- Project Aktif -->
-                    <li class="px-3 py-2 border-bottom">
-                        <span class="small d-block mb-1"><i class="fas fa-folder-open me-1"></i>  Project Aktif: <b>{{ session('active_project_name') }}</b></span>
-                        @if(session('active_project_id'))
-                            <a href="{{ route('choose.project') }}" class="btn btn-warning btn-sm w-100 fw-bold">
-                                <i class="fas fa-exchange-alt fa-sm me-1"></i> Ganti Project
-                            </a>
-                        @else
-                            <a href="{{ route('choose.project') }}" class="btn btn-outline-warning btn-sm w-100 fw-bold">
-                                <i class="fas fa-folder-plus me-1"></i> Pilih Project
-                            </a>
-                        @endif
                     </li>
 
                     <!-- Footer -->

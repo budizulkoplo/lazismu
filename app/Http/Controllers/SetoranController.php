@@ -34,7 +34,7 @@ class SetoranController extends Controller
             $query->where('idprogram', $request->program_id);
         }
 
-        $setorans = $query->latest('created_at')->paginate(10)->withQueryString();
+        $setorans = $query->latest('created_at')->get();
         $muzakis = Muzaki::orderBy('nama')->get();
         $kodeSetorans = KodeSetoran::orderBy('jenis_setoran')->get();
         $programs = Program::active()->orderBy('nama_program')->get();

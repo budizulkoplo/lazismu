@@ -73,6 +73,11 @@ class GlobalApp
             'dashboard',
             'hris.payroll.slip',
             'profile.edit',
+            'profile.update',
+            'profile.upload',
+            'profile.destroy',
+            'setting.index',
+            'setting.update',
             'dashboard.pesananHariIniData',
         ];
 

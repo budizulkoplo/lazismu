@@ -17,25 +17,8 @@
 
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <form class="row g-2 mb-3">
-                        <div class="col-md-4">
-                            <input type="text" name="search" class="form-control" placeholder="Cari nama program atau lokasi" value="{{ request('search') }}">
-                        </div>
-                        <div class="col-md-3">
-                            <select name="status" class="form-select">
-                                <option value="">Semua Status</option>
-                                <option value="active" @selected(request('status') === 'active')>Active</option>
-                                <option value="nonactive" @selected(request('status') === 'nonactive')>Non Active</option>
-                                <option value="selesai" @selected(request('status') === 'selesai')>Selesai</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-outline-warning">Filter</button>
-                        </div>
-                    </form>
-
                     <div class="table-responsive">
-                        <table class="table table-sm align-middle">
+                        <table class="table table-sm table-striped align-middle js-lazismu-table w-100">
                             <thead class="table-light">
                                 <tr>
                                     <th>Nama Program</th>
@@ -47,7 +30,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($programs as $program)
+                                @foreach($programs as $program)
                                     <tr>
                                         <td>{{ $program->nama_program }}</td>
                                         <td>{{ $program->lokasi ?: '-' }}</td>
@@ -63,22 +46,21 @@
                                             </form>
                                         </td>
                                     </tr>
-
-                                    @include('lazismu.program.partials.edit-modal', ['program' => $program])
-                                @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center text-muted py-4">Belum ada data program.</td>
-                                    </tr>
-                                @endforelse
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
-
-                    {{ $programs->links() }}
                 </div>
             </div>
         </div>
     </div>
 
     @include('lazismu.program.partials.create-modal')
+    @foreach($programs as $program)
+        @include('lazismu.program.partials.edit-modal', ['program' => $program])
+    @endforeach
+
+    <x-slot name="jscustom">
+        @include('lazismu.partials.datatable-select2')
+    </x-slot>
 </x-app-layout>

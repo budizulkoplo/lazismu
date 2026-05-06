@@ -23,7 +23,7 @@ class ProgramController extends Controller
             $query->where('status', $request->status);
         }
 
-        $programs = $query->latest()->paginate(10)->withQueryString();
+        $programs = $query->latest()->get();
 
         return view('lazismu.program.index', compact('programs'));
     }
