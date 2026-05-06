@@ -53,8 +53,8 @@ use App\Http\Controllers\Mobile\KalenderController;
 |--------------------------------------------------------------------------
 */
 
-// Default redirect ke login
-Route::get('/', fn () => redirect()->route('login'));
+// Halaman utama aplikasi untuk muzaki
+Route::get('/', [MuzakiAuthController::class, 'create'])->name('home');
 
 // Login
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -268,13 +268,15 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
         Route::post('/', [SettingController::class, 'update'])->name('setting.update');
     });
 
-    Route::prefix('lazismu')->name('lazismu.')->middleware(['role:superadmin|admin|keuangan|direktur|manager', 'global.app'])->group(function () {
+    Route::prefix('lazismu')->name('lazismu.')->middleware(['role:superadmin|admin|operator|laporan|keuangan|direktur|manager', 'global.app'])->group(function () {
         Route::get('/dashboard', [LazismuDashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/muzaki', [MuzakiController::class, 'index'])->name('muzaki.index');
         Route::post('/muzaki', [MuzakiController::class, 'store'])->name('muzaki.store');
         Route::put('/muzaki/{muzaki}', [MuzakiController::class, 'update'])->name('muzaki.update');
         Route::delete('/muzaki/{muzaki}', [MuzakiController::class, 'destroy'])->name('muzaki.destroy');
+        Route::get('/muzaki/{muzaki}/barcode', [MuzakiController::class, 'barcode'])->name('muzaki.barcode');
+        Route::get('/muzaki/{muzaki}/kartu', [MuzakiController::class, 'card'])->name('muzaki.card');
 
         Route::get('/program', [ProgramController::class, 'index'])->name('program.index');
         Route::post('/program', [ProgramController::class, 'store'])->name('program.store');
@@ -288,6 +290,7 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
 
         Route::get('/setoran', [SetoranController::class, 'index'])->name('setoran.index');
         Route::post('/setoran', [SetoranController::class, 'store'])->name('setoran.store');
+        Route::get('/setoran/{setoran}/print', [SetoranController::class, 'print'])->name('setoran.print');
         Route::put('/setoran/{setoran}', [SetoranController::class, 'update'])->name('setoran.update');
         Route::delete('/setoran/{setoran}', [SetoranController::class, 'destroy'])->name('setoran.destroy');
     });
@@ -374,6 +377,8 @@ require __DIR__ . '/auth.php';
 
 Route::get('/muzaki', [MuzakiAuthController::class, 'create'])->name('muzaki.login');
 Route::post('/muzaki', [MuzakiAuthController::class, 'store'])->name('muzaki.login.store');
+Route::get('/muzaki/register', [MuzakiAuthController::class, 'register'])->name('muzaki.register');
+Route::post('/muzaki/register', [MuzakiAuthController::class, 'storeRegistration'])->name('muzaki.register.store');
 Route::redirect('/muzaki/login', '/muzaki');
 Route::post('/muzaki/logout', [MuzakiAuthController::class, 'destroy'])->name('muzaki.logout');
 Route::middleware('muzaki.auth')->group(function () {

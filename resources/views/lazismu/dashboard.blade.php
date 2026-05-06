@@ -49,6 +49,27 @@
             </div>
 
             <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100 bg-success-subtle">
+                        <div class="card-body">
+                            <small class="text-muted">Nominal Bisa Digunakan</small>
+                            <h2 class="mb-0">Rp {{ number_format($totalDigunakan, 0, ',', '.') }}</h2>
+                            <p class="mb-0 text-muted">Zakat 70%, infaq 80%, program 100% masuk program.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-sm h-100 bg-info-subtle">
+                        <div class="card-body">
+                            <small class="text-muted">Bagian PDM</small>
+                            <h2 class="mb-0">Rp {{ number_format($totalPdm, 0, ',', '.') }}</h2>
+                            <p class="mb-0 text-muted">Zakat 30% dan infaq 20%.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
                 <div class="col-md-4">
                     <a href="{{ route('lazismu.muzaki.index') }}" class="card border-0 shadow-sm text-decoration-none h-100">
                         <div class="card-body">
@@ -112,6 +133,8 @@
                                         <th>Jenis</th>
                                         <th>Program</th>
                                         <th class="text-end">Nominal</th>
+                                        <th class="text-end">Bisa Digunakan</th>
+                                        <th class="text-end">PDM</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -122,10 +145,12 @@
                                             <td>{{ ucfirst($item->kodeSetoran->jenis_setoran ?? '-') }}</td>
                                             <td>{{ $item->program->nama_program ?? '-' }}</td>
                                             <td class="text-end">Rp {{ number_format($item->nominal, 0, ',', '.') }}</td>
+                                            <td class="text-end">Rp {{ number_format($item->nominal_digunakan_calculated, 0, ',', '.') }}</td>
+                                            <td class="text-end">Rp {{ number_format($item->nominal_pdm_calculated, 0, ',', '.') }}</td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">Belum ada setoran.</td>
+                                            <td colspan="7" class="text-center text-muted py-4">Belum ada setoran.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

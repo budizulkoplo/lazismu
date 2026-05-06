@@ -26,6 +26,8 @@
                                     <th>Jenis</th>
                                     <th>Program</th>
                                     <th class="text-end">Nominal</th>
+                                    <th class="text-end">Bisa Digunakan</th>
+                                    <th class="text-end">PDM</th>
                                     <th width="160">Aksi</th>
                                 </tr>
                             </thead>
@@ -40,6 +42,8 @@
                                         <td>{{ ucfirst($setoran->kodeSetoran->jenis_setoran ?? '-') }}</td>
                                         <td>{{ $setoran->program->nama_program ?? '-' }}</td>
                                         <td class="text-end">Rp {{ number_format($setoran->nominal, 0, ',', '.') }}</td>
+                                        <td class="text-end">Rp {{ number_format($setoran->nominal_digunakan_calculated, 0, ',', '.') }}</td>
+                                        <td class="text-end">Rp {{ number_format($setoran->nominal_pdm_calculated, 0, ',', '.') }}</td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editSetoranModal{{ $setoran->id }}">Edit</button>
                                             <form action="{{ route('lazismu.setoran.destroy', $setoran) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus transaksi setoran ini?')">
@@ -78,7 +82,7 @@
                         <table class="table table-sm table-striped align-middle js-lazismu-table js-muzaki-picker-table w-100">
                             <thead class="table-light">
                                 <tr>
-                                    <th>NIK</th>
+                                        <th>ID/NIK</th>
                                     <th>Nama</th>
                                     <th>Alamat</th>
                                     <th>No HP</th>
@@ -89,7 +93,10 @@
                             <tbody>
                                 @foreach($muzakis as $muzakiOption)
                                     <tr>
-                                        <td>{{ $muzakiOption->nik }}</td>
+                                        <td>
+                                            <div>{{ $muzakiOption->login_code }}</div>
+                                            <small class="text-muted">{{ $muzakiOption->nik ?: '-' }}</small>
+                                        </td>
                                         <td>{{ $muzakiOption->nama }}</td>
                                         <td>{{ $muzakiOption->alamat ?: '-' }}</td>
                                         <td>{{ $muzakiOption->no_hp ?: '-' }}</td>
@@ -152,6 +159,7 @@
 
                 const nama = option.dataset.nama || option.textContent.trim();
                 const nik = option.dataset.nik || '-';
+                const code = option.dataset.code || nik;
                 const alamat = option.dataset.alamat || '-';
                 const hp = option.dataset.hp || '-';
                 const email = option.dataset.email || '-';
@@ -165,7 +173,7 @@
                 summary.innerHTML = `
                     <div class="border rounded p-2 bg-light">
                         <div class="fw-semibold text-dark">${escapeHtml(nama)}</div>
-                        <div>NIK: ${escapeHtml(nik)}</div>
+                        <div>ID: ${escapeHtml(code)} &middot; NIK: ${escapeHtml(nik)}</div>
                         <div>Alamat: ${escapeHtml(alamat)}</div>
                         <div>No HP: ${escapeHtml(hp)} &middot; Email: ${escapeHtml(email)}</div>
                     </div>
@@ -204,6 +212,75 @@
                         modal.show();
                     });
                 });
+
+                scope.querySelectorAll('.js-scan-code').forEach(function(input) {
+                    if (input.dataset.boundScanCode === '1') return;
+                    input.dataset.boundScanCode = '1';
+                    input.addEventListener('change', function() {
+                        selectMuzakiByCode(this.closest('form'), this.value);
+                    });
+                });
+
+                scope.querySelectorAll('.js-scan-muzaki').forEach(function(button) {
+                    if (button.dataset.boundScanButton === '1') return;
+                    button.dataset.boundScanButton = '1';
+                    button.addEventListener('click', function() {
+                        startAdminScan(this.closest('form'));
+                    });
+                });
+            }
+
+            function selectMuzakiByCode(form, code) {
+                const cleaned = String(code || '').trim();
+                if (!cleaned) return;
+
+                const select = form.querySelector('.js-muzaki-select');
+                const option = Array.from(select.options).find(function(item) {
+                    return item.dataset.code === cleaned || item.dataset.nik === cleaned;
+                });
+
+                if (!option) {
+                    alert('Muzaki dengan ID/NIK tersebut tidak ditemukan di daftar.');
+                    return;
+                }
+
+                select.value = option.value;
+                if (window.jQuery && $(select).data('select2')) {
+                    $(select).val(option.value).trigger('change');
+                } else {
+                    select.dispatchEvent(new Event('change'));
+                }
+                renderSelectedMuzaki(form);
+            }
+
+            async function startAdminScan(form) {
+                if (!('BarcodeDetector' in window)) {
+                    alert('Browser belum mendukung scan langsung. Ketik hasil barcode pada kolom scan.');
+                    return;
+                }
+
+                const input = form.querySelector('.js-scan-code');
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                const video = document.createElement('video');
+                video.setAttribute('playsinline', 'true');
+                video.srcObject = stream;
+                video.style.width = '100%';
+                input.insertAdjacentElement('afterend', video);
+                await video.play();
+
+                const detector = new BarcodeDetector({ formats: ['qr_code', 'code_128', 'ean_13'] });
+                const scan = async () => {
+                    const codes = await detector.detect(video);
+                    if (codes.length) {
+                        input.value = codes[0].rawValue;
+                        selectMuzakiByCode(form, input.value);
+                        stream.getTracks().forEach(track => track.stop());
+                        video.remove();
+                        return;
+                    }
+                    requestAnimationFrame(scan);
+                };
+                scan();
             }
 
             document.addEventListener('DOMContentLoaded', function() {

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\KodeSetoran;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class KodeSetoranController extends Controller
 {
@@ -28,7 +27,6 @@ class KodeSetoranController extends Controller
                 'required',
                 'string',
                 'max:100',
-                Rule::in(['zakat', 'infaq', 'program']),
                 'unique:kode_setoran,jenis_setoran',
             ],
         ]);
@@ -47,7 +45,6 @@ class KodeSetoranController extends Controller
                 'required',
                 'string',
                 'max:100',
-                Rule::in(['zakat', 'infaq', 'program']),
                 'unique:kode_setoran,jenis_setoran,' . $kodeSetoran->id,
             ],
         ]);

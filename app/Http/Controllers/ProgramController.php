@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProgramController extends Controller
 {
@@ -35,9 +36,17 @@ class ProgramController extends Controller
             'lokasi' => 'nullable|string|max:100',
             'tgl_mulai' => 'nullable|date',
             'tgl_selesai' => 'nullable|date|after_or_equal:tgl_mulai',
+            'target' => 'nullable|numeric|min:0',
+            'banner' => 'nullable|image|max:2048',
             'status' => 'required|in:active,nonactive,selesai',
         ]);
 
+        if ($request->hasFile('banner')) {
+            $validated['banner_path'] = $request->file('banner')->store('lazismu/program', 'public');
+        }
+
+        unset($validated['banner']);
+        $validated['target'] = $validated['target'] ?? 0;
         $validated['terkumpul'] = 0;
 
         Program::create($validated);
@@ -52,9 +61,21 @@ class ProgramController extends Controller
             'lokasi' => 'nullable|string|max:100',
             'tgl_mulai' => 'nullable|date',
             'tgl_selesai' => 'nullable|date|after_or_equal:tgl_mulai',
+            'target' => 'nullable|numeric|min:0',
+            'banner' => 'nullable|image|max:2048',
             'status' => 'required|in:active,nonactive,selesai',
         ]);
 
+        if ($request->hasFile('banner')) {
+            if ($program->banner_path) {
+                Storage::disk('public')->delete($program->banner_path);
+            }
+
+            $validated['banner_path'] = $request->file('banner')->store('lazismu/program', 'public');
+        }
+
+        unset($validated['banner']);
+        $validated['target'] = $validated['target'] ?? 0;
         $program->update($validated);
 
         return redirect()->route('lazismu.program.index')->with('success', 'Program berhasil diperbarui.');

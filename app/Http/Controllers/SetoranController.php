@@ -46,12 +46,14 @@ class SetoranController extends Controller
     {
         $validated = $this->validateSetoran($request);
 
-        DB::transaction(function () use ($validated) {
+        $setoran = DB::transaction(function () use ($validated) {
             $setoran = Setoran::create($validated);
             $this->syncProgramTerkumpul($setoran->idprogram);
+
+            return $setoran;
         });
 
-        return redirect()->route('lazismu.setoran.index')->with('success', 'Setoran berhasil ditambahkan.');
+        return redirect()->route('lazismu.setoran.print', $setoran)->with('success', 'Setoran berhasil ditambahkan.');
     }
 
     public function update(Request $request, Setoran $setoran)
@@ -78,6 +80,13 @@ class SetoranController extends Controller
         });
 
         return redirect()->route('lazismu.setoran.index')->with('success', 'Setoran berhasil dihapus.');
+    }
+
+    public function print(Setoran $setoran)
+    {
+        $setoran->load(['muzaki', 'kodeSetoran', 'program']);
+
+        return view('lazismu.setoran.print-nota', compact('setoran'));
     }
 
     private function validateSetoran(Request $request): array
@@ -110,7 +119,22 @@ class SetoranController extends Controller
             }
         }
 
+        [$validated['nominal_digunakan'], $validated['nominal_pdm']] = $this->splitNominal(
+            $jenisSetoran,
+            (float) $validated['nominal']
+        );
+
         return $validated;
+    }
+
+    private function splitNominal(string $jenisSetoran, float $nominal): array
+    {
+        return match ($jenisSetoran) {
+            'zakat' => [$nominal * 0.70, $nominal * 0.30],
+            'infaq' => [$nominal * 0.80, $nominal * 0.20],
+            'program' => [$nominal, 0],
+            default => [$nominal, 0],
+        };
     }
 
     private function syncProgramTerkumpul($programId): void
@@ -128,4 +152,5 @@ class SetoranController extends Controller
         $total = Setoran::where('idprogram', $programId)->sum('nominal');
         $program->update(['terkumpul' => $total]);
     }
+
 }

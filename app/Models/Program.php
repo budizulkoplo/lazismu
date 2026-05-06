@@ -16,13 +16,16 @@ class Program extends Model
         'lokasi',
         'tgl_mulai',
         'tgl_selesai',
+        'target',
         'terkumpul',
+        'banner_path',
         'status',
     ];
 
     protected $casts = [
         'tgl_mulai' => 'date',
         'tgl_selesai' => 'date',
+        'target' => 'decimal:2',
         'terkumpul' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

@@ -12,16 +12,21 @@
                     data-alamat="{{ $muzakiOption->alamat }}"
                     data-hp="{{ $muzakiOption->no_hp }}"
                     data-email="{{ $muzakiOption->email }}"
+                    data-code="{{ $muzakiOption->login_code }}"
                     @selected((string) old('idmuzaki', optional($setoran)->idmuzaki) === (string) $muzakiOption->id)
                 >
-                    {{ $muzakiOption->nama }} - {{ $muzakiOption->nik }}
+                    {{ $muzakiOption->nama }} - {{ $muzakiOption->login_code }}
                 </option>
             @endforeach
             </select>
             <button type="button" class="btn btn-outline-warning js-open-muzaki-picker">
                 <i class="bi bi-search"></i> Tampilkan Daftar Muzaki
             </button>
+            <button type="button" class="btn btn-outline-success js-scan-muzaki">
+                <i class="bi bi-qr-code-scan"></i> Scan
+            </button>
         </div>
+        <input type="text" class="form-control mt-2 js-scan-code" placeholder="Hasil scan / ID muzaki" autocomplete="off">
         <div class="js-selected-muzaki mt-2 small text-muted">
             Pilih muzaki untuk melihat detail identitas.
         </div>

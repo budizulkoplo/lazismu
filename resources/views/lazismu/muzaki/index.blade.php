@@ -21,29 +21,36 @@
                         <table class="table table-sm table-striped align-middle js-lazismu-table w-100">
                             <thead class="table-light">
                                 <tr>
-                                    <th>NIK</th>
+                                    <th>ID/NIK</th>
                                     <th>Nama</th>
+                                    <th>Jenis</th>
                                     <th>Tgl Lahir</th>
                                     <th>Jenis Kelamin</th>
                                     <th>No HP</th>
                                     <th>Email</th>
-                                    <th width="160">Aksi</th>
+                                    <th width="280">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($muzakis as $muzaki)
                                     <tr>
-                                        <td>{{ $muzaki->nik }}</td>
+                                        <td>
+                                            <div class="fw-semibold">{{ $muzaki->nomor_induk_muzaki ?: '-' }}</div>
+                                            <small class="text-muted">NIK: {{ $muzaki->nik ?: '-' }}</small>
+                                        </td>
                                         <td>
                                             <div>{{ $muzaki->nama }}</div>
                                             <small class="text-muted">{{ $muzaki->alamat }}</small>
                                         </td>
+                                        <td>{{ ucfirst($muzaki->jenis_muzaki ?? 'pribadi') }}</td>
                                         <td>{{ optional($muzaki->tgl_lahir)->format('d/m/Y') ?? '-' }}</td>
                                         <td>{{ $muzaki->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                         <td>{{ $muzaki->no_hp ?: '-' }}</td>
                                         <td>{{ $muzaki->email ?: '-' }}</td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editMuzakiModal{{ $muzaki->id }}">Edit</button>
+                                            <a class="btn btn-sm btn-outline-success" href="{{ route('lazismu.muzaki.barcode', $muzaki) }}" target="_blank">Barcode</a>
+                                            <a class="btn btn-sm btn-outline-warning" href="{{ route('lazismu.muzaki.card', $muzaki) }}" target="_blank">Kartu</a>
                                             <form action="{{ route('lazismu.muzaki.destroy', $muzaki) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus data muzaki ini?')">
                                                 @csrf
                                                 @method('DELETE')
@@ -67,5 +74,24 @@
 
     <x-slot name="jscustom">
         @include('lazismu.partials.datatable-select2')
+        <script>
+            function syncMuzakiNik(form) {
+                const jenis = form.querySelector('.js-jenis-muzaki');
+                const nik = form.querySelector('.js-nik-input');
+                if (!jenis || !nik) return;
+                nik.required = jenis.value === 'pribadi';
+                nik.placeholder = jenis.value === 'pribadi' ? 'Wajib 16 digit untuk pribadi' : 'Boleh kosong untuk kelompok';
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('form').forEach(function (form) {
+                    if (!form.querySelector('.js-jenis-muzaki')) return;
+                    syncMuzakiNik(form);
+                    form.querySelector('.js-jenis-muzaki').addEventListener('change', function () {
+                        syncMuzakiNik(form);
+                    });
+                });
+            });
+        </script>
     </x-slot>
 </x-app-layout>

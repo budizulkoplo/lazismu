@@ -13,16 +13,20 @@ class Muzaki extends Model
 
     protected $fillable = [
         'nik',
+        'nomor_induk_muzaki',
+        'jenis_muzaki',
         'nama',
         'tgl_lahir',
         'alamat',
         'jenis_kelamin',
         'no_hp',
         'email',
+        'target_setoran',
     ];
 
     protected $casts = [
         'tgl_lahir' => 'date',
+        'target_setoran' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -31,5 +35,10 @@ class Muzaki extends Model
     public function setorans()
     {
         return $this->hasMany(Setoran::class, 'idmuzaki');
+    }
+
+    public function getLoginCodeAttribute(): string
+    {
+        return $this->nomor_induk_muzaki ?: $this->nik;
     }
 }

@@ -1,6 +1,6 @@
 <div class="modal fade" id="editProgramModal{{ $program->id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <form action="{{ route('lazismu.program.update', $program) }}" method="POST" class="modal-content">
+        <form action="{{ route('lazismu.program.update', $program) }}" method="POST" enctype="multipart/form-data" class="modal-content">
             @csrf
             @method('PUT')
             <div class="modal-header">
