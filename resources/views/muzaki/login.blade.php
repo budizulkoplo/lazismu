@@ -66,8 +66,8 @@
                     </div>
 
                     <div class="d-grid gap-2 mt-3">
-                        <a href="{{ route('muzaki.register') }}" class="btn btn-light btn-lg">Registrasi Muzaki Mandiri</a>
-                        <a href="{{ route('login') }}" class="text-center text-decoration-none small-muted">Login Admin</a>
+                        <a href="{{ route('muzaki.register') }}" class="btn btn-light btn-lg">Registrasi</a>
+                        <!-- <a href="{{ route('login') }}" class="text-center text-decoration-none small-muted">Login Admin</a> -->
                     </div>
                 </div>
             </div>

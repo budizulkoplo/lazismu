@@ -12,11 +12,21 @@
 </head>
 <body>
     <button onclick="window.print()">Cetak</button>
+    <a href="{{ route('lazismu.muzaki.index') }}">Kembali</a>
     <div class="sheet">
         <h2>Barcode Muzaki</h2>
         <div>{!! QrCode::size(190)->generate($muzaki->login_code) !!}</div>
         <div class="code">{{ $muzaki->login_code }}</div>
         <div>{{ $muzaki->nama }}</div>
     </div>
+    <script>
+        window.addEventListener('load', function() {
+            window.print();
+        });
+
+        window.addEventListener('afterprint', function() {
+            window.location.href = @json(route('lazismu.muzaki.index'));
+        });
+    </script>
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Muzaki;
 use App\Models\Program;
+use App\Models\Ranting;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -53,8 +54,11 @@ class MuzakiAuthController extends Controller
         }
 
         $setting = Setting::first();
+        $rantings = Ranting::query()
+            ->orderBy('nama_ranting')
+            ->pluck('nama_ranting');
 
-        return view('muzaki.register', compact('setting'));
+        return view('muzaki.register', compact('setting', 'rantings'));
     }
 
     public function storeRegistration(Request $request)
@@ -70,6 +74,7 @@ class MuzakiAuthController extends Controller
             ],
             'nama' => 'required|string|max:100',
             'tgl_lahir' => 'nullable|date',
+            'ranting' => ['required', 'string', 'max:255', Rule::exists('ranting', 'nama_ranting')],
             'alamat' => 'nullable|string|max:255',
             'jenis_kelamin' => 'nullable|in:L,P',
             'no_hp' => 'nullable|string|max:20',
@@ -78,7 +83,7 @@ class MuzakiAuthController extends Controller
 
         $validated['nomor_induk_muzaki'] = $this->generateNomorInduk();
         $validated['jenis_kelamin'] = $validated['jenis_kelamin'] ?? 'L';
-        $validated['target_setoran'] = 0;
+        $validated['aum'] = null;
 
         $muzaki = Muzaki::create($validated);
 

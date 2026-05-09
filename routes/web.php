@@ -383,5 +383,9 @@ Route::redirect('/muzaki/login', '/muzaki');
 Route::post('/muzaki/logout', [MuzakiAuthController::class, 'destroy'])->name('muzaki.logout');
 Route::middleware('muzaki.auth')->group(function () {
     Route::get('/muzaki/mobile', [MuzakiPortalController::class, 'index'])->name('muzaki.mobile');
+    Route::get('/muzaki/setoran', [MuzakiPortalController::class, 'setoranInfo'])->name('muzaki.setoran.info');
+    Route::get('/muzaki/riwayat', [MuzakiPortalController::class, 'riwayat'])->name('muzaki.riwayat');
+    Route::get('/muzaki/program/{program}', [MuzakiPortalController::class, 'programDetail'])->name('muzaki.program.detail');
+    Route::get('/muzaki/riwayat/{jenis}', [MuzakiPortalController::class, 'riwayatDetail'])->name('muzaki.riwayat.detail');
     Route::redirect('/muzaki/portal', '/muzaki/mobile')->name('muzaki.portal');
 });

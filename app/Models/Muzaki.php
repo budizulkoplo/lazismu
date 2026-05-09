@@ -17,16 +17,16 @@ class Muzaki extends Model
         'jenis_muzaki',
         'nama',
         'tgl_lahir',
+        'ranting',
+        'aum',
         'alamat',
         'jenis_kelamin',
         'no_hp',
         'email',
-        'target_setoran',
     ];
 
     protected $casts = [
         'tgl_lahir' => 'date',
-        'target_setoran' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -35,6 +35,11 @@ class Muzaki extends Model
     public function setorans()
     {
         return $this->hasMany(Setoran::class, 'idmuzaki');
+    }
+
+    public function targetSetoranPrograms()
+    {
+        return $this->hasMany(TargetSetoranProgram::class, 'idmuzaki');
     }
 
     public function getLoginCodeAttribute(): string

@@ -37,6 +37,11 @@ class Program extends Model
         return $this->hasMany(Setoran::class, 'idprogram');
     }
 
+    public function targetSetoranPrograms()
+    {
+        return $this->hasMany(TargetSetoranProgram::class, 'idprogram');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', 'active');

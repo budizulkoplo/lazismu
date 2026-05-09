@@ -2,33 +2,112 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>Nota Setoran</title>
+    @php
+        $jenisNota = strtolower(trim($setoran->kodeSetoran->jenis_setoran ?? 'setoran'));
+        $judulNota = $jenisNota === 'program' && $setoran->program
+            ? 'Nota ' . $setoran->program->nama_program
+            : 'Nota ' . ucfirst($jenisNota);
+    @endphp
+    <title>{{ $judulNota }}</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 24px; color: #111827; }
-        .nota { width: 360px; border: 1px solid #d1d5db; padding: 18px; border-radius: 8px; }
-        .row { display: flex; justify-content: space-between; gap: 16px; margin: 8px 0; }
-        .total { font-size: 20px; font-weight: 800; border-top: 1px dashed #9ca3af; padding-top: 12px; margin-top: 12px; }
+        @page { size: 58mm auto; margin: 0; }
+        * { box-sizing: border-box; }
+        body {
+            width: 58mm;
+            margin: 0;
+            color: #111827;
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            line-height: 1.35;
+        }
+        .nota {
+            width: 58mm;
+            padding: 4mm 3mm;
+        }
         .center { text-align: center; }
-        @media print { button, a { display: none; } body { margin: 0; } }
+        .logo {
+            max-width: 24mm;
+            max-height: 16mm;
+            object-fit: contain;
+            margin: 0 auto 2mm;
+        }
+        h1 {
+            font-size: 13px;
+            margin: 0 0 1mm;
+        }
+        .muted { color: #4b5563; }
+        .line {
+            border-top: 1px dashed #111827;
+            margin: 2.5mm 0;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 3mm;
+            margin: 1mm 0;
+        }
+        .label { color: #4b5563; }
+        .value {
+            text-align: right;
+            font-weight: 700;
+            word-break: break-word;
+        }
+        .total {
+            font-size: 14px;
+            font-weight: 800;
+        }
+        .actions {
+            padding: 4mm;
+        }
+        @media print {
+            .actions { display: none; }
+        }
     </style>
 </head>
 <body>
-    <button onclick="window.print()">Cetak Nota</button>
-    <a href="{{ route('lazismu.setoran.index') }}">Kembali</a>
+    <div class="actions">
+        <button onclick="window.print()">Cetak Nota</button>
+        <a href="{{ route('lazismu.setoran.index') }}">Kembali</a>
+    </div>
+
     <div class="nota">
         <div class="center">
-            <h2>Nota Setoran</h2>
+            <img src="{{ asset('logopt/1776842680_lazismu.png') }}" class="logo" alt="Lazismu">
+            <h1>{{ $judulNota }}</h1>
             <div>{{ optional($setoran->created_at)->format('d/m/Y') }}</div>
         </div>
-        <div class="row"><span>Muzaki</span><strong>{{ $setoran->muzaki->nama ?? '-' }}</strong></div>
-        <div class="row"><span>ID</span><strong>{{ $setoran->muzaki->login_code ?? '-' }}</strong></div>
-        <div class="row"><span>Jenis</span><strong>{{ ucfirst($setoran->kodeSetoran->jenis_setoran ?? '-') }}</strong></div>
-        <div class="row"><span>Program</span><strong>{{ $setoran->program->nama_program ?? '-' }}</strong></div>
-        <div class="row total"><span>Total</span><strong>Rp {{ number_format($setoran->nominal, 0, ',', '.') }}</strong></div>
-        <div class="row"><span>Bisa digunakan</span><strong>Rp {{ number_format($setoran->nominal_digunakan_calculated, 0, ',', '.') }}</strong></div>
-        <div class="row"><span>PDM</span><strong>Rp {{ number_format($setoran->nominal_pdm_calculated, 0, ',', '.') }}</strong></div>
-        <p class="center">Terima kasih.</p>
+
+        <div class="line"></div>
+
+        <div class="row">
+            <span class="label">Muzaki</span>
+            <span class="value">{{ $setoran->muzaki->nama ?? '-' }}</span>
+        </div>
+        <div class="row">
+            <span class="label">ID</span>
+            <span class="value">{{ $setoran->muzaki->login_code ?? '-' }}</span>
+        </div>
+        <div class="row total">
+            <span>Total</span>
+            <span>Rp {{ number_format($setoran->nominal, 0, ',', '.') }}</span>
+        </div>
+
+        <div class="line"></div>
+
+        <div class="center">
+            <div>Terima kasih.</div>
+            <div class="muted">Semoga Allah membalas kebaikan Anda.</div>
+        </div>
     </div>
-    <script>window.addEventListener('load', () => window.print());</script>
+
+    <script>
+        window.addEventListener('load', function() {
+            window.print();
+        });
+
+        window.addEventListener('afterprint', function() {
+            window.location.href = @json(route('lazismu.setoran.index'));
+        });
+    </script>
 </body>
 </html>

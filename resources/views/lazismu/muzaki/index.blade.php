@@ -36,13 +36,20 @@
                                     <tr>
                                         <td>
                                             <div class="fw-semibold">{{ $muzaki->nomor_induk_muzaki ?: '-' }}</div>
-                                            <small class="text-muted">NIK: {{ $muzaki->nik ?: '-' }}</small>
+                                            @if(($muzaki->jenis_muzaki ?? 'pribadi') === 'pribadi')
+                                                <small class="text-muted">NIK: {{ $muzaki->nik ?: '-' }}</small>
+                                            @endif
                                         </td>
                                         <td>
                                             <div>{{ $muzaki->nama }}</div>
-                                            <small class="text-muted">{{ $muzaki->alamat }}</small>
+                                            <small class="text-muted">
+                                                {{ $muzaki->jenis_muzaki === 'aum' ? 'AUM' : ($muzaki->ranting ?: '-') }}
+                                                @if($muzaki->alamat)
+                                                    | {{ $muzaki->alamat }}
+                                                @endif
+                                            </small>
                                         </td>
-                                        <td>{{ ucfirst($muzaki->jenis_muzaki ?? 'pribadi') }}</td>
+                                        <td>{{ ($muzaki->jenis_muzaki ?? 'pribadi') === 'aum' ? 'AUM' : ucfirst($muzaki->jenis_muzaki ?? 'pribadi') }}</td>
                                         <td>{{ optional($muzaki->tgl_lahir)->format('d/m/Y') ?? '-' }}</td>
                                         <td>{{ $muzaki->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                         <td>{{ $muzaki->no_hp ?: '-' }}</td>
@@ -77,19 +84,77 @@
         <script>
             function syncMuzakiNik(form) {
                 const jenis = form.querySelector('.js-jenis-muzaki');
+                const nikField = form.querySelector('.js-nik-field');
                 const nik = form.querySelector('.js-nik-input');
+                const rantingField = form.querySelector('.js-ranting-field');
+                const ranting = form.querySelector('.js-ranting-input');
+                const tglLahirField = form.querySelector('.js-tgl-lahir-field');
+                const tglLahir = form.querySelector('.js-tgl-lahir-input');
                 if (!jenis || !nik) return;
-                nik.required = jenis.value === 'pribadi';
-                nik.placeholder = jenis.value === 'pribadi' ? 'Wajib 16 digit untuk pribadi' : 'Boleh kosong untuk kelompok';
+
+                const isPribadi = jenis.value === 'pribadi';
+                const isAum = jenis.value === 'aum';
+                if (nikField) {
+                    nikField.classList.toggle('d-none', !isPribadi);
+                }
+                nik.required = isPribadi;
+                nik.disabled = !isPribadi;
+                nik.placeholder = isPribadi ? 'Wajib 16 digit untuk pribadi' : 'Boleh kosong untuk kelompok/AUM';
+                if (!isPribadi) {
+                    nik.value = '';
+                }
+
+                if (rantingField && ranting) {
+                    rantingField.classList.toggle('d-none', isAum);
+                    ranting.required = !isAum;
+                    ranting.disabled = isAum;
+                    if (isAum && window.jQuery) {
+                        $(ranting).val(null).trigger('change.select2');
+                    }
+                }
+
+                if (tglLahirField && tglLahir) {
+                    tglLahirField.classList.toggle('d-none', isAum);
+                    tglLahir.disabled = isAum;
+                    if (isAum) {
+                        tglLahir.value = '';
+                    }
+                }
             }
 
             document.addEventListener('DOMContentLoaded', function () {
+                function bindMuzakiForms(context) {
+                    (context || document).querySelectorAll('form').forEach(function (form) {
+                        const jenis = form.querySelector('.js-jenis-muzaki');
+                        if (!jenis || jenis.dataset.boundMuzakiType === '1') return;
+                        jenis.dataset.boundMuzakiType = '1';
+
+                        jenis.addEventListener('change', function () {
+                            syncMuzakiNik(form);
+                        });
+
+                        if (window.jQuery) {
+                            $(jenis).on('select2:select change.select2', function () {
+                                syncMuzakiNik(form);
+                            });
+                        }
+
+                        syncMuzakiNik(form);
+                    });
+                }
+
+                bindMuzakiForms(document);
+
+                document.querySelectorAll('.modal').forEach(function (modal) {
+                    modal.addEventListener('shown.bs.modal', function () {
+                        bindMuzakiForms(modal);
+                        modal.querySelectorAll('form').forEach(syncMuzakiNik);
+                    });
+                });
+
                 document.querySelectorAll('form').forEach(function (form) {
                     if (!form.querySelector('.js-jenis-muzaki')) return;
                     syncMuzakiNik(form);
-                    form.querySelector('.js-jenis-muzaki').addEventListener('change', function () {
-                        syncMuzakiNik(form);
-                    });
                 });
             });
         </script>

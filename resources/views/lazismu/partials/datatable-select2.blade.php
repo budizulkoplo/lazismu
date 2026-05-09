@@ -174,7 +174,9 @@
             $(this).select2({
                 theme: 'bootstrap-5',
                 width: '100%',
-                dropdownParent: $modal.length ? $modal : $(document.body)
+                dropdownParent: $modal.length ? $modal : $(document.body),
+                tags: $(this).data('tags') === true || $(this).data('tags') === 'true',
+                placeholder: $(this).data('placeholder') || undefined
             });
         });
     }
