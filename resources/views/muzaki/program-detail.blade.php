@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Detail Program {{ $program->nama_program }}</title>
+    @include('muzaki.partials.pwa-head')
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <style>
         :root { --brand: #fc8c04; --brand-dark: #d97706; --ink: #172033; --muted: #64748b; }
@@ -157,5 +158,6 @@
             {{ $setorans->links() }}
         </div>
     </div>
+    @include('muzaki.partials.pwa-install')
 </body>
 </html>

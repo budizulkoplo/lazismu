@@ -3,6 +3,7 @@
 use App\Http\Middleware\GlobalApp;
 use App\Http\Middleware\CheckActiveProject;
 use App\Http\Middleware\EnsureMuzakiAuthenticated;
+use App\Http\Middleware\PreventSearchIndexing;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -23,10 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'muzaki.auth'   => EnsureMuzakiAuthenticated::class,
         ]);
 
-        // Kalau mau middleware ini otomatis ikut grup "web"
-        // $middleware->appendToGroup('web', [
-        //     CheckActiveProject::class,
-        // ]);
+        $middleware->appendToGroup('web', [
+            PreventSearchIndexing::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

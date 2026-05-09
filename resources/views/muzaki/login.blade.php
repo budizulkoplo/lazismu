@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lazismu Muzaki</title>
+    @include('muzaki.partials.pwa-head')
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <style>
         :root {
@@ -137,5 +138,6 @@
             scan();
         });
     </script>
+    @include('muzaki.partials.pwa-install')
 </body>
 </html>

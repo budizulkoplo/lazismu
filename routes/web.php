@@ -24,6 +24,8 @@ use App\Http\Controllers\LazismuDashboardController;
 use App\Http\Controllers\MuzakiController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\KodeSetoranController;
+use App\Http\Controllers\KodetransaksiController;
+use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\SetoranController;
 use App\Http\Controllers\MuzakiAuthController;
 use App\Http\Controllers\MuzakiPortalController;
@@ -70,9 +72,6 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
     Route::get('/dashboard', [LazismuDashboardController::class, 'index'])
         ->middleware('global.app:admin')
         ->name('dashboard');
-    Route::get('/admin/pesanan-hari-ini', [AdminDashboardController::class, 'pesananHariIni']);
-    Route::get('/admin/data-pesanan-hari-ini', [AdminDashboardController::class, 'pesananHariIniData'])
-        ->name('dashboard.pesananHariIniData');
 
     // Profile
     Route::prefix('profile')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
@@ -99,145 +98,6 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
         Route::delete('/delp', [UserRoleController::class, 'deletePermission']);
     });
 
-    // Pegawai
-    Route::prefix('pegawai')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/list', [PegawaiController::class, 'index'])->name('pegawai.list');
-        Route::get('/getdata', [PegawaiController::class, 'getdata'])->name('pegawai.getdata');
-        Route::post('/store', [PegawaiController::class, 'store'])->name('pegawai.store');
-        Route::get('/getcode', [PegawaiController::class, 'getcode'])->name('pegawai.getcode');
-        Route::get('/{id}', [PegawaiController::class, 'show'])->name('pegawai.show');   // untuk edit (ambil data 1 pegawai)
-        Route::delete('/{id}', [PegawaiController::class, 'destroy'])->name('pegawai.destroy'); // untuk hapus
-    });
-
-    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/unitkerja', [UnitKerjaController::class, 'index'])->name('master.unitkerja');
-        Route::get('/unitkerja/data', [UnitKerjaController::class, 'getdata'])->name('master.unitkerja.data');
-        Route::get('/unitkerja/{id}', [UnitKerjaController::class, 'show'])->name('master.unitkerja.show');
-        Route::post('/unitkerja', [UnitKerjaController::class, 'store'])->name('master.unitkerja.store');
-        Route::delete('/unitkerja/{id}', [UnitKerjaController::class, 'destroy'])->name('master.unitkerja.destroy');
-
-        Route::post('/unitkerja/togglelock', [UnitKerjaController::class, 'toggleLock'])->name('master.unitkerja.togglelock');
-    });
-
-    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/plotting-unitkerja', [PlottingUnitKerjaController::class, 'index'])->name('plotting.unitkerja');
-        Route::get('/plotting-unitkerja/data', [PlottingUnitKerjaController::class, 'getdata'])->name('plotting.unitkerja.data');
-        Route::post('/plotting-unitkerja/update', [PlottingUnitKerjaController::class, 'updateUnit'])->name('plotting.unitkerja.update');
-    });
-
-    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('kelompokjam', [KelompokJamController::class, 'index'])->name('master.kelompokjam');
-        Route::get('kelompokjam/data', [KelompokJamController::class, 'getdata'])->name('master.kelompokjam.data');
-        Route::post('kelompokjam/store', [KelompokJamController::class, 'store'])->name('master.kelompokjam.store');
-        Route::get('kelompokjam/{id}', [KelompokJamController::class, 'show']);
-        Route::delete('kelompokjam/{id}', [KelompokJamController::class, 'destroy']);
-    });
-
-    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('jadwal', [JadwalController::class, 'index'])->name('master.jadwal');
-        Route::get('jadwal/pegawai', [JadwalController::class, 'getPegawai'])->name('master.jadwal.pegawai');
-        Route::post('jadwal/update', [JadwalController::class, 'updateShift'])->name('master.jadwal.update');
-        Route::post('jadwal/generate', [JadwalController::class, 'generateOtomatis'])->name('master.jadwal.generate');
-    });
-
-    Route::prefix('master')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('gaji', [MasterGajiController::class, 'index'])->name('master.gaji');
-        Route::get('gaji/pegawai', [MasterGajiController::class, 'getPegawai'])->name('master.gaji.pegawai');
-        Route::get('gaji/riwayat/{nik}', [MasterGajiController::class, 'riwayat'])->name('master.gaji.riwayat');
-        Route::post('gaji/store', [MasterGajiController::class, 'store'])->name('master.gaji.store');
-        Route::delete('gaji/{id}', [MasterGajiController::class, 'destroy'])->name('master.gaji.destroy');
-        Route::put('gaji/{id}', [MasterGajiController::class, 'update'])->name('master.gaji.update');
-    });
-
-    Route::prefix('hris')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/absensi', [AbsensiController::class, 'index'])->name('hris.absensi');
-        Route::get('/absensi/getdata', [AbsensiController::class, 'getAbsensiData'])->name('hris.absensi.getdata');
-        Route::get('pengajuan-izin', [PengajuanIzinController::class, 'index'])->name('hris.pengajuanizin');
-        Route::get('pengajuan-izin/data', [PengajuanIzinController::class, 'getdata'])->name('hris.pengajuanizin.data');
-        Route::get('pengajuan-izin/show/{id}', [PengajuanIzinController::class, 'show'])->name('hris.pengajuanizin.show');
-        Route::post('pengajuan-izin/store', [PengajuanIzinController::class, 'store'])->name('hris.pengajuanizin.store');
-        Route::delete('pengajuan-izin/{id}', [PengajuanIzinController::class, 'destroy'])->name('hris.pengajuanizin.destroy');
-        Route::get('pengajuan-izin/select2/pegawai', [PengajuanIzinController::class, 'getPegawaiSelect2'])->name('hris.pengajuanizin.select2pegawai');
-        
-        // Laporan Rekap Absensi
-        Route::get('laporan/rekap-absensi', [LaporanController::class, 'rekapAbsensi'])->name('hris.laporan.rekap_absensi');
-        Route::get('laporan/rekap-absensi/data', [LaporanController::class, 'rekapAbsensiData'])->name('hris.laporan.rekap_absensi.data');
-        Route::post('laporan/rekap-absensi/export-payroll', [LaporanController::class, 'exportPayroll'])->name('hris.laporan.rekap_absensi.export_payroll');
-
-        // === Payroll (Tabel Gaji) ===
-        Route::get('payroll', [PayrollController::class, 'index'])->name('hris.payroll.index');
-        Route::get('payroll/data', [PayrollController::class, 'getData'])->name('hris.payroll.data');
-        Route::post('payroll/update', [PayrollController::class, 'updateManual'])->name('hris.payroll.update_manual');
-        Route::get('payroll/slip/{payroll_id}', [PayrollController::class, 'downloadSlip'])->name('hris.payroll.slip');
-    });
-
-    // Companies
-    Route::prefix('companies')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/', [CompanyController::class, 'index'])->name('companies.index');
-        Route::post('/store', [CompanyController::class, 'store'])->name('companies.store');
-        Route::get('/{id}', [CompanyController::class, 'show'])->name('companies.show');
-        Route::delete('/{id}', [CompanyController::class, 'destroy'])->name('companies.destroy');
-
-        Route::post('/projects/store', [CompanyController::class, 'storeProject'])->name('companies.projects.store');
-        Route::delete('/projects/{id}', [CompanyController::class, 'destroyProject'])->name('companies.projects.destroy');
-        Route::get('/{id}/edit', [CompanyController::class, 'edit'])->name('companies.edit');
-        Route::get('/projects/{id}/edit', [CompanyController::class, 'editProject'])->name('companies.projects.edit');
-    });
-
-    Route::prefix('coas')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/', [CoaController::class, 'index'])->name('coas.index');
-        Route::get('/getdata', [CoaController::class, 'getData'])->name('coas.getdata');
-        Route::post('/store', [CoaController::class, 'store'])->name('coas.store');
-        Route::get('/{coa}', [CoaController::class, 'show'])->name('coas.show');
-        Route::put('/{coa}', [CoaController::class, 'update'])->name('coas.update');
-        Route::delete('/{coa}', [CoaController::class, 'destroy'])->name('coas.destroy');
-    });
-
-    Route::prefix('transaksi')->middleware(['role:superadmin|admin','global.app'])->group(function(){
-        Route::get('notas', [NotaController::class,'index'])->name('transaksi.notas.index');
-        Route::get('notas/getdata', [NotaController::class,'getData'])->name('transaksi.notas.getdata');
-        Route::post('notas/store', [NotaController::class,'store'])->name('transaksi.notas.store');
-        Route::get('notas/{nota}', [NotaController::class,'show'])->name('transaksi.notas.show');
-        Route::put('notas/{nota}', [NotaController::class,'update'])->name('transaksi.notas.update');
-        Route::delete('notas/{nota}', [NotaController::class,'destroy'])->name('transaksi.notas.destroy');
-    });
-
-    Route::get('/rekening/{id}/saldo', [RekeningController::class,'getSaldo']);
-
-    // Rekening
-    Route::prefix('rekening')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/', [RekeningController::class, 'index'])->name('rekening.index');
-        Route::post('/store', [RekeningController::class, 'store'])->name('rekening.store');
-        Route::get('/{id}/edit', [RekeningController::class, 'edit'])->name('rekening.edit');
-        Route::delete('/{id}', [RekeningController::class, 'destroy'])->name('rekening.destroy');
-    });
-
-    // Vendors
-    Route::prefix('vendors')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/', [VendorController::class, 'index'])->name('vendors.index');
-        Route::get('/getdata', [VendorController::class, 'getData'])->name('vendors.getdata');
-        Route::post('/store', [VendorController::class, 'store'])->name('vendors.store');
-        Route::delete('/{id}', [VendorController::class, 'destroy'])->name('vendors.destroy');
-        Route::post('{id}/update-jenis', [VendorController::class, 'updateJenis'])->name('vendors.updateJenis');
-    });
-
-    // User Projects
-    Route::prefix('user-projects')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/', [UserProjectController::class, 'index'])->name('user-projects.index');
-        Route::post('/toggle', [UserProjectController::class, 'toggle'])->name('user-projects.toggle');
-        Route::get('/{userId}', [UserProjectController::class, 'getUserProjects']);
-    });
-
-    // Units
-    Route::prefix('units')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/', [UnitController::class, 'index'])->name('units.index');
-        Route::get('/getdata', [UnitController::class, 'getData'])->name('units.getdata');
-        Route::post('/store', [UnitController::class, 'store'])->name('units.store');
-        Route::get('/{id}/edit', [UnitController::class, 'edit'])->name('units.edit');
-        Route::delete('/{id}', [UnitController::class, 'destroy'])->name('units.destroy');
-        Route::get('/details', [UnitDetailController::class, 'index'])->name('units.details.index');
-    });
-
     // Roles
     Route::prefix('roles')->middleware(['role:superadmin', 'global.app'])->group(function () {
         Route::get('/list', [UserRoleController::class, 'index'])->name('roles.list');
@@ -253,14 +113,6 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
         Route::get('/list', [MenuController::class, 'index'])->name('menu.list');
         Route::get('/data/{role}', [MenuController::class, 'datamenu'])->name('menu.data');
         Route::put('/update', [MenuController::class, 'update'])->name('menu.update');
-    });
-
-    // Laporan
-    Route::prefix('laporan')->middleware(['role:superadmin|admin|hrd|pengurus|keuangan|direktur|manager|adminpt', 'global.app'])->group(function () {
-        Route::get('/transaksi-armada', [LaporanController::class, 'transaksiArmada'])->name('laporan.transaksi_armada');
-        Route::get('/transaksi-armada/data', [LaporanController::class, 'transaksiArmadaData'])->name('laporan.transaksi_armada.data');
-        Route::get('/project', [LaporanController::class, 'laporanProject'])->name('laporan.project');
-        Route::get('/vendor', [LaporanController::class, 'laporanVendor'])->name('laporan.vendor');
     });
 
     Route::prefix('setting')->middleware(['role:superadmin|admin|keuangan|direktur|manager', 'global.app'])->group(function () {
@@ -288,6 +140,20 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
         Route::put('/kode-setoran/{kodeSetoran}', [KodeSetoranController::class, 'update'])->name('kode-setoran.update');
         Route::delete('/kode-setoran/{kodeSetoran}', [KodeSetoranController::class, 'destroy'])->name('kode-setoran.destroy');
 
+        Route::get('/kodetransaksi', [KodetransaksiController::class, 'index'])->name('kodetransaksi.index');
+        Route::post('/kodetransaksi', [KodetransaksiController::class, 'store'])->name('kodetransaksi.store');
+        Route::put('/kodetransaksi/{kodetransaksi}', [KodetransaksiController::class, 'update'])->name('kodetransaksi.update');
+        Route::delete('/kodetransaksi/{kodetransaksi}', [KodetransaksiController::class, 'destroy'])->name('kodetransaksi.destroy');
+        Route::post('/kodetransaksi/header', [KodetransaksiController::class, 'storeHeader'])->name('kodetransaksi.header.store');
+        Route::put('/kodetransaksi/header/{header}', [KodetransaksiController::class, 'updateHeader'])->name('kodetransaksi.header.update');
+        Route::delete('/kodetransaksi/header/{header}', [KodetransaksiController::class, 'destroyHeader'])->name('kodetransaksi.header.destroy');
+
+        Route::get('/pengeluaran', [PengeluaranController::class, 'index'])->name('pengeluaran.index');
+        Route::post('/pengeluaran', [PengeluaranController::class, 'store'])->name('pengeluaran.store');
+        Route::put('/pengeluaran/{pengeluaran}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
+        Route::delete('/pengeluaran/{pengeluaran}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.destroy');
+        Route::post('/pengeluaran/editor-image', [PengeluaranController::class, 'uploadEditorImage'])->name('pengeluaran.editor-image');
+
         Route::get('/setoran', [SetoranController::class, 'index'])->name('setoran.index');
         Route::post('/setoran', [SetoranController::class, 'store'])->name('setoran.store');
         Route::get('/setoran/{setoran}/print', [SetoranController::class, 'print'])->name('setoran.print');
@@ -312,62 +178,6 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
             return Response::make($file, 200)->header("Content-Type", $type);
         });
     });
-
-
-// UI untuk mobile end users
-Route::middleware(['auth'])->prefix('mobile')->name('mobile.')->group(function () {
-    Route::get('/home', [DashboardController::class, 'index'])->name('home');
-});
-
-Route::middleware(['auth'])->prefix('mobile/presensi')->name('mobile.presensi.')->group(function () {
-    Route::get('/create', [PresensiController::class, 'create'])->name('create');
-    Route::post('/store', [PresensiController::class, 'store'])->name('store');
-    Route::get('/lembur', [PresensiController::class, 'lembur'])->name('lembur');
-    Route::post('/cek-radius', [PresensiController::class, 'cekRadius'])->name('mobile.presensi.cekRadius');
-    Route::get('/get-unitkerja-location', [PresensiController::class, 'getUnitKerjaLocation'])
-            ->name('getUnitKerjaLocation');
-
-    //Izin
-    Route::get('/izin', [PresensiController::class, 'izin']);
-    Route::get('/buatizin', [PresensiController::class, 'buatizin']);
-    Route::post('/storeizin', [PresensiController::class, 'storeizin']);
-    Route::post('/cekpengajuanizin', [PresensiController::class, 'cekpengajuanizin']);
-
-    // Approval Izin/Sakit/Cuti
-    Route::get('/approvalizin', [PresensiController::class, 'approvalizin']);
-    Route::post('/approvedizin', [PresensiController::class, 'approvedizin']);
-    Route::post('/batalkanizin/{id}', [PresensiController::class, 'batalkanizin']);
-    Route::delete('/hapusizin/{id}', [PresensiController::class, 'hapusizin']);
-
-    //Edit Profile
-    Route::get('/editprofile', [PresensiController::class, 'editprofile']);
-    Route::post('{nik}/updateprofile', [PresensiController::class, 'updateprofile']);
-
-    //Histori
-    Route::get('/histori', [PresensiController::class, 'histori']);
-    Route::post('/gethistori', [PresensiController::class, 'gethistori']);
-});
-
-Route::middleware(['auth'])->prefix('mobile')->name('mobile.')->group(function () {
-    // Dashboard
-    Route::get('/home', [DashboardController::class, 'index'])->name('home');
-    
-    // Modul Kalender
-    Route::prefix('kalender')->name('kalender.')->group(function () {
-        Route::get('/', [KalenderController::class, 'index'])->name('index'); // Tampilan utama kalender
-        Route::post('/', [KalenderController::class, 'index']);
-        Route::get('/lembur', [KalenderController::class, 'lembur'])->name('lembur'); // Halaman lembur
-        Route::get('/statistik', [KalenderController::class, 'statistik'])->name('statistik'); // Statistik per bulan
-    });
-
-    Route::prefix('payroll')->name('payroll.')->group(function () {
-        Route::get('/', [App\Http\Controllers\Mobile\MobilePayrollController::class, 'index'])->name('index');
-        Route::get('/{tahun}/{bulan}', [App\Http\Controllers\Mobile\MobilePayrollController::class, 'detail'])->name('detail');
-        Route::get('/download/{id}', [App\Http\Controllers\Mobile\MobilePayrollController::class, 'slip'])->name('slip');
-        
-    });
-
-});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('slip/{payroll_id}', [PayrollController::class, 'downloadSlip'])->name('slip');

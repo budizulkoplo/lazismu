@@ -2,31 +2,82 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Nota extends Model
 {
-    use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'notas';
 
     protected $fillable = [
-        'nota_no','idproject','idcompany','idretail','tanggal','jenis','total','status'
+        'nota_no',
+        'namatransaksi',
+        'tanggal',
+        'is_zakat',
+        'id_infaq',
+        'idprogram',
+        'idkodetransaksi',
+        'total',
+        'status',
+        'deskripsi',
+        'bukti_nota',
+        'userid',
+        'namauser',
     ];
 
-    public function transactions()
+    protected $casts = [
+        'tanggal' => 'date',
+        'total' => 'decimal:2',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
+
+    public function program()
     {
-        return $this->hasMany(Transaction::class, 'nota_id');
+        return $this->belongsTo(Program::class, 'idprogram');
     }
 
-    public function project()
+    public function kodeTransaksi()
     {
-        return $this->belongsTo(Project::class, 'idproject');
+        return $this->belongsTo(Kodetransaksi::class, 'idkodetransaksi');
     }
 
-    public function company()
+    public function getKelompokAttribute(): string
     {
-        return $this->belongsTo(Company::class, 'idcompany');
+        if ($this->is_zakat === '1') {
+            return 'zakat';
+        }
+
+        if ($this->id_infaq === '1') {
+            return 'infaq';
+        }
+
+        if (!empty($this->idprogram)) {
+            return 'program';
+        }
+
+        return '-';
+    }
+
+    public function getKelompokLabelAttribute(): string
+    {
+        return match ($this->kelompok) {
+            'zakat' => 'Zakat',
+            'infaq' => 'Infaq',
+            'program' => 'Program',
+            default => '-',
+        };
+    }
+
+    public function getBuktiUrlAttribute(): ?string
+    {
+        if (!$this->bukti_nota) {
+            return null;
+        }
+
+        return '/storage/' . ltrim($this->bukti_nota, '/');
     }
 }
