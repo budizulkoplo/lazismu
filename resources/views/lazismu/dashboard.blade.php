@@ -74,7 +74,7 @@
                     <a href="{{ route('lazismu.muzaki.index') }}" class="card border-0 shadow-sm text-decoration-none h-100">
                         <div class="card-body">
                             <h5 class="mb-1">Muzaki</h5>
-                            <p class="text-muted mb-0">CRUD data donatur/muzaki dan identitas dasar.</p>
+                            <p class="text-muted mb-0">Master data Muzaki.</p>
                         </div>
                     </a>
                 </div>

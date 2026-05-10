@@ -99,7 +99,7 @@
         <nav class="mt-2">
             @php
                 $sidebarMenus = request()->menu ?? collect();
-                $isMenuRouteActive = function ($link) {
+                $isMenuRouteActive = function ($link, bool $includeChildren = false) {
                     $link = trim((string) $link);
 
                     if ($link === '' || !Route::has($link)) {
@@ -110,9 +110,17 @@
                         return true;
                     }
 
+                    if (!$includeChildren) {
+                        return false;
+                    }
+
+                    if (!str($link)->endsWith('.index')) {
+                        return false;
+                    }
+
                     $routeBase = str($link)->beforeLast('.')->toString();
 
-                    return $routeBase !== $link && request()->routeIs($routeBase . '.*');
+                    return request()->routeIs($routeBase . '.*');
                 };
             @endphp
 
@@ -130,13 +138,13 @@
                                 $inarray = array_intersect(auth()->user()->getRoleNames()->toArray(), $p2);
                                 if ($inarray) $lanjut++;
 
-                                if ($isMenuRouteActive($chl->link)) $isActiveParent = true;
+                                if ($isMenuRouteActive($chl->link, true)) $isActiveParent = true;
 
                                 if (!empty($chl->children)) {
                                     foreach ($chl->children as $chl2) {
                                         $p4 = explode(';', $chl2->role);
                                         $inarray2 = array_intersect(auth()->user()->getRoleNames()->toArray(), $p4);
-                                        if ($inarray2 && $isMenuRouteActive($chl2->link)) $isActiveParent = true;
+                                        if ($inarray2 && $isMenuRouteActive($chl2->link, true)) $isActiveParent = true;
                                     }
                                 }
                             }
@@ -146,7 +154,7 @@
                             $lanjut++;
                         }
 
-                        $itemActive = $isMenuRouteActive($item->link);
+                        $itemActive = $isMenuRouteActive($item->link, empty($item->children));
                     @endphp
 
                     @if ($lanjut > 0)
@@ -168,12 +176,12 @@
                                         @php
                                             $p3 = explode(';', $chl->role);
                                             $inarray1 = array_intersect(auth()->user()->getRoleNames()->toArray(), $p3);
-                                            $isActiveSub = $isMenuRouteActive($chl->link);
+                                            $isActiveSub = $isMenuRouteActive($chl->link, true);
                                             $isActiveSubChild = false;
 
                                             if (!empty($chl->children)) {
                                                 foreach ($chl->children as $chl2) {
-                                                    if ($isMenuRouteActive($chl2->link)) {
+                                                    if ($isMenuRouteActive($chl2->link, true)) {
                                                         $isActiveSubChild = true;
                                                     }
                                                 }

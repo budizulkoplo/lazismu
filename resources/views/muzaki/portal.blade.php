@@ -6,6 +6,7 @@
     <title>Dashboard Muzaki</title>
     @include('muzaki.partials.pwa-head')
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/bootstrap-icons-1.13.1/bootstrap-icons.min.css') }}">
     <style>
         :root { --brand: #fc8c04; --brand-dark: #d97706; --ink: #172033; --muted: #64748b; }
         body { background: linear-gradient(180deg, #fff7ed 0%, #ffffff 46%, #f7f9fb 100%); color: var(--ink); }
@@ -23,6 +24,10 @@
     </style>
 </head>
 <body>
+    @include('muzaki.partials.nav')
+    @php
+        $photoUrl = $muzaki->foto ? asset('storage/' . $muzaki->foto) : asset('assets/img/avatar1.jpg');
+    @endphp
     <div class="container page-shell py-3 py-sm-4">
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -30,15 +35,14 @@
 
         <div class="top-card p-3 mb-3">
             <div class="d-flex align-items-center justify-content-between gap-2">
-                <div class="min-w-0">
-                    <div class="small opacity-75">Muzaki</div>
-                    <h1 class="h5 fw-bold mb-1 text-truncate">{{ $muzaki->nama }}</h1>
-                    <div class="small opacity-75 text-truncate">{{ ucfirst($muzaki->jenis_muzaki ?? 'pribadi') }} | {{ $muzaki->login_code }}</div>
+                <div class="d-flex align-items-center gap-3 min-w-0">
+                    <img src="{{ $photoUrl }}" class="muzaki-avatar" alt="{{ $muzaki->nama }}">
+                    <div class="min-w-0">
+                        <div class="small opacity-75">Muzaki</div>
+                        <h1 class="h5 fw-bold mb-1 text-truncate">{{ $muzaki->nama }}</h1>
+                        <div class="small opacity-75 text-truncate">{{ ucfirst($muzaki->jenis_muzaki ?? 'pribadi') }} | {{ $muzaki->login_code }}</div>
+                    </div>
                 </div>
-                <form action="{{ route('muzaki.logout') }}" method="POST">
-                    @csrf
-                    <button class="btn btn-light logout-btn">Logout</button>
-                </form>
             </div>
         </div>
 

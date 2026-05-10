@@ -6,6 +6,9 @@ use App\Models\Setoran;
 use App\Models\Program;
 use App\Models\TargetSetoranProgram;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class MuzakiPortalController extends Controller
 {
@@ -23,6 +26,49 @@ class MuzakiPortalController extends Controller
         $programs = Program::active()->latest()->get();
 
         return view('muzaki.setoran-info', compact('muzaki', 'programs'));
+    }
+
+    public function profile(Request $request)
+    {
+        $muzaki = $request->attributes->get('muzaki_auth');
+
+        return view('muzaki.profile', compact('muzaki'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $muzaki = $request->attributes->get('muzaki_auth');
+
+        $validated = $request->validate([
+            'nama' => ['required', 'string', 'max:100'],
+            'tgl_lahir' => [
+                Rule::requiredIf(fn () => ($muzaki->jenis_muzaki ?? 'pribadi') !== 'aum'),
+                'nullable',
+                'date',
+            ],
+            'jenis_kelamin' => ['nullable', 'string', 'max:50'],
+            'no_hp' => ['nullable', 'string', 'max:15'],
+            'email' => ['nullable', 'email', 'max:100'],
+            'alamat' => ['nullable', 'string', 'max:255'],
+            'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+        ]);
+
+        if (($muzaki->jenis_muzaki ?? 'pribadi') === 'aum') {
+            $validated['tgl_lahir'] = null;
+        }
+
+        if ($request->hasFile('foto')) {
+            if ($muzaki->foto) {
+                Storage::disk('public')->delete($muzaki->foto);
+            }
+
+            $validated['foto'] = $this->storeProfilePhoto($request->file('foto'));
+        }
+
+        $muzaki->update($validated);
+        $request->session()->put('muzaki_nama', $muzaki->nama);
+
+        return redirect()->route('muzaki.profile')->with('success', 'Profil berhasil diperbarui.');
     }
 
     public function riwayat(Request $request)
@@ -150,5 +196,15 @@ class MuzakiPortalController extends Controller
                 ];
             })
             ->all();
+    }
+
+    private function storeProfilePhoto($file): string
+    {
+        $directory = 'lazismu/muzaki/foto';
+        Storage::disk('public')->makeDirectory($directory);
+
+        $filename = now()->format('YmdHis') . '-' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+
+        return $file->storeAs($directory, $filename, 'public');
     }
 }

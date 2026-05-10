@@ -23,6 +23,7 @@ class Muzaki extends Model
         'jenis_kelamin',
         'no_hp',
         'email',
+        'foto',
     ];
 
     protected $casts = [

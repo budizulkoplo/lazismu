@@ -67,7 +67,9 @@
                 <div class="col-12">
                     <label class="form-label">Ranting</label>
                     <select name="ranting" id="rantingInput" class="form-select form-select-lg" required>
-                        @php($selectedRanting = old('ranting'))
+                        @php
+                            $selectedRanting = old('ranting');
+                        @endphp
                         <option value=""></option>
                         @if($selectedRanting && !$rantings->contains($selectedRanting))
                             <option value="{{ $selectedRanting }}" selected>{{ $selectedRanting }}</option>

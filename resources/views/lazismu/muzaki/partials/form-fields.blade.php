@@ -17,7 +17,9 @@
     </div>
     <div class="col-md-6 js-ranting-field">
         <label class="form-label">Ranting</label>
-        @php($selectedRanting = old('ranting', optional($muzaki)->ranting))
+        @php
+            $selectedRanting = old('ranting', optional($muzaki)->ranting);
+        @endphp
         <select name="ranting" class="form-select js-select2 js-ranting-input" data-placeholder="Pilih ranting">
             <option value=""></option>
             @if($selectedRanting && isset($rantings) && !$rantings->contains($selectedRanting))

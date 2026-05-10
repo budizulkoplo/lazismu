@@ -7,7 +7,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                @php($program = null)
+                @php
+                    $program = null;
+                @endphp
                 @include('lazismu.program.partials.form-fields')
             </div>
             <div class="modal-footer">

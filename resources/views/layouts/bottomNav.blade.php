@@ -258,7 +258,7 @@
             <div class="item">
                 <div class="col">
                     <img src="{{ asset('logo.png') }}" alt="Logo" style="width: 32px; height: 32px;">
-                    <strong>SOLAR</strong>
+                    <strong>Lazismu</strong>
                 </div>
             </div>
         </a>

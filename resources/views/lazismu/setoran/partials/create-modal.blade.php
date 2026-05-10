@@ -10,7 +10,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                @php($setoran = null)
+                @php
+                    $setoran = null;
+                @endphp
                 @include('lazismu.setoran.partials.form-fields')
             </div>
             <div class="modal-footer">

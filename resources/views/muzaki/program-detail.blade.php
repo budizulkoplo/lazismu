@@ -6,6 +6,7 @@
     <title>Detail Program {{ $program->nama_program }}</title>
     @include('muzaki.partials.pwa-head')
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/bootstrap-icons-1.13.1/bootstrap-icons.min.css') }}">
     <style>
         :root { --brand: #fc8c04; --brand-dark: #d97706; --ink: #172033; --muted: #64748b; }
         body { background: linear-gradient(180deg, #fff7ed 0%, #ffffff 50%, #f7f9fb 100%); color: var(--ink); }
@@ -22,6 +23,7 @@
     </style>
 </head>
 <body>
+    @include('muzaki.partials.nav')
     <div class="container page-shell py-3 py-sm-4">
         <div class="top-card mb-3">
             @if($program->banner_path)

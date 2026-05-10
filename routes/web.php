@@ -20,6 +20,7 @@ use App\Http\Controllers\UnitDetailController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LazismuReportController;
 use App\Http\Controllers\LazismuDashboardController;
 use App\Http\Controllers\MuzakiController;
 use App\Http\Controllers\ProgramController;
@@ -159,6 +160,13 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
         Route::get('/setoran/{setoran}/print', [SetoranController::class, 'print'])->name('setoran.print');
         Route::put('/setoran/{setoran}', [SetoranController::class, 'update'])->name('setoran.update');
         Route::delete('/setoran/{setoran}', [SetoranController::class, 'destroy'])->name('setoran.destroy');
+
+        Route::prefix('laporan')->name('laporan.')->group(function () {
+            Route::get('/cashflow', [LazismuReportController::class, 'cashflow'])->name('cashflow');
+            Route::get('/program', [LazismuReportController::class, 'program'])->name('program');
+            Route::get('/infaq', [LazismuReportController::class, 'infaq'])->name('infaq');
+            Route::get('/zakat', [LazismuReportController::class, 'zakat'])->name('zakat');
+        });
     });
 
     // Static file (private doc/img)
@@ -193,6 +201,8 @@ Route::redirect('/muzaki/login', '/muzaki');
 Route::post('/muzaki/logout', [MuzakiAuthController::class, 'destroy'])->name('muzaki.logout');
 Route::middleware('muzaki.auth')->group(function () {
     Route::get('/muzaki/mobile', [MuzakiPortalController::class, 'index'])->name('muzaki.mobile');
+    Route::get('/muzaki/profil', [MuzakiPortalController::class, 'profile'])->name('muzaki.profile');
+    Route::put('/muzaki/profil', [MuzakiPortalController::class, 'updateProfile'])->name('muzaki.profile.update');
     Route::get('/muzaki/setoran', [MuzakiPortalController::class, 'setoranInfo'])->name('muzaki.setoran.info');
     Route::get('/muzaki/riwayat', [MuzakiPortalController::class, 'riwayat'])->name('muzaki.riwayat');
     Route::get('/muzaki/program/{program}', [MuzakiPortalController::class, 'programDetail'])->name('muzaki.program.detail');

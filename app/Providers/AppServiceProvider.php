@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
+use Throwable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,8 +30,14 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        // Pastikan tabel mobilemenu ada
-        if (Schema::hasTable('mobilemenu')) {
+        // Pastikan tabel mobilemenu ada. Saat DB lokal mati, command artisan tetap boleh boot.
+        try {
+            $hasMobileMenu = Schema::hasTable('mobilemenu');
+        } catch (Throwable) {
+            $hasMobileMenu = false;
+        }
+
+        if ($hasMobileMenu) {
             View::composer('mobile.*', function ($view) {
                 $userId = auth()->check() ? auth()->user()->id : null;
 
