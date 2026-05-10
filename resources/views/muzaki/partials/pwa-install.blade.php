@@ -2,7 +2,7 @@
     .pwa-install-btn {
         position: fixed;
         right: 16px;
-        bottom: 16px;
+        bottom: calc(92px + env(safe-area-inset-bottom));
         z-index: 1050;
         display: none;
         border: 0;
@@ -11,7 +11,10 @@
         color: #fff;
         font-weight: 800;
         box-shadow: 0 12px 30px rgba(252, 140, 4, .35);
-        padding: .78rem 1rem;
+        padding: .62rem .9rem;
+        min-height: 42px;
+        align-items: center;
+        justify-content: center;
     }
     .pwa-install-btn:hover,
     .pwa-install-btn:focus {
@@ -23,7 +26,7 @@
     }
 </style>
 
-<button type="button" class="pwa-install-btn" id="pwaInstallButton">Install Aplikasi</button>
+<button type="button" class="pwa-install-btn" id="pwaInstallButton">Unduh</button>
 
 <script>
     let muzakiInstallPrompt = null;
