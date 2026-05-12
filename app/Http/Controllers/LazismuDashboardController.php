@@ -45,6 +45,16 @@ class LazismuDashboardController extends Controller
             ->latest('created_at')
             ->take(8)
             ->get();
+        $muzakiScanOptions = Muzaki::query()
+            ->select('id', 'nama', 'nik', 'nomor_induk_muzaki')
+            ->orderBy('nama')
+            ->get()
+            ->map(fn (Muzaki $muzaki) => [
+                'id' => $muzaki->id,
+                'nama' => $muzaki->nama,
+                'nik' => $muzaki->nik,
+                'code' => $muzaki->login_code,
+            ]);
 
         return view('lazismu.dashboard', compact(
             'totalMuzaki',
@@ -54,7 +64,8 @@ class LazismuDashboardController extends Controller
             'totalDigunakan',
             'totalPdm',
             'ringkasanJenis',
-            'setoranTerbaru'
+            'setoranTerbaru',
+            'muzakiScanOptions'
         ));
     }
 }

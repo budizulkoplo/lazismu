@@ -8,9 +8,14 @@
                     <h3 class="mb-1">Dashboard Lazismu</h3>
                     <p class="text-muted mb-0">Kelola data muzaki, program, kode setoran, dan transaksi dana zakat, infaq, serta program.</p>
                 </div>
-                <a href="{{ route('muzaki.login') }}" class="btn btn-outline-warning">
-                    <i class="bi bi-person-badge"></i> Portal Muzaki
-                </a>
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#scanMuzakiModal">
+                        <i class="bi bi-qr-code-scan"></i> Scan QR Muzaki
+                    </button>
+                    <a href="{{ route('muzaki.login') }}" class="btn btn-outline-warning">
+                        <i class="bi bi-person-badge"></i> Portal Muzaki
+                    </a>
+                </div>
             </div>
 
             <div class="row g-3 mb-4">
@@ -161,4 +166,138 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="scanMuzakiModal" tabindex="-1" aria-labelledby="scanMuzakiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="scanMuzakiModalLabel">Scan QR Muzaki</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">ID / NIK Muzaki</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control js-dashboard-scan-code" placeholder="Scan QR atau ketik ID/NIK">
+                            <button type="button" class="btn btn-warning js-dashboard-start-scan">
+                                <i class="bi bi-camera"></i> Scan
+                            </button>
+                        </div>
+                    </div>
+                    <video class="w-100 rounded border d-none js-dashboard-scan-video" playsinline></video>
+                    <div class="small text-muted mt-2 js-dashboard-scan-status">
+                        Scan QR muzaki untuk membuka halaman input setoran.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-warning js-dashboard-open-setoran">Buka Setoran</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const muzakis = @json($muzakiScanOptions);
+            const setoranIndexUrl = @json(route('lazismu.setoran.index'));
+            const modalEl = document.getElementById('scanMuzakiModal');
+            const codeInput = modalEl?.querySelector('.js-dashboard-scan-code');
+            const scanButton = modalEl?.querySelector('.js-dashboard-start-scan');
+            const openButton = modalEl?.querySelector('.js-dashboard-open-setoran');
+            const video = modalEl?.querySelector('.js-dashboard-scan-video');
+            const status = modalEl?.querySelector('.js-dashboard-scan-status');
+            let scanStream = null;
+            let scanning = false;
+
+            function setStatus(message, isError = false) {
+                if (!status) return;
+                status.textContent = message;
+                status.classList.toggle('text-danger', isError);
+                status.classList.toggle('text-muted', !isError);
+            }
+
+            function stopScan() {
+                scanning = false;
+                if (scanStream) {
+                    scanStream.getTracks().forEach(track => track.stop());
+                    scanStream = null;
+                }
+                if (video) {
+                    video.pause();
+                    video.srcObject = null;
+                    video.classList.add('d-none');
+                }
+            }
+
+            function findMuzaki(code) {
+                const cleaned = String(code || '').trim();
+                if (!cleaned) return null;
+
+                return muzakis.find(item => item.code === cleaned || item.nik === cleaned) || null;
+            }
+
+            function openSetoranByCode(code) {
+                const muzaki = findMuzaki(code);
+                if (!muzaki) {
+                    setStatus('Muzaki dengan ID/NIK tersebut tidak ditemukan.', true);
+                    return;
+                }
+
+                window.location.href = `${setoranIndexUrl}?muzaki_id=${encodeURIComponent(muzaki.id)}`;
+            }
+
+            async function startScan() {
+                if (!('BarcodeDetector' in window)) {
+                    setStatus('Browser belum mendukung scan langsung. Ketik ID/NIK pada kolom.', true);
+                    codeInput?.focus();
+                    return;
+                }
+
+                try {
+                    stopScan();
+                    scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                    video.srcObject = scanStream;
+                    video.classList.remove('d-none');
+                    await video.play();
+
+                    scanning = true;
+                    setStatus('Arahkan kamera ke QR muzaki.');
+
+                    const detector = new BarcodeDetector({ formats: ['qr_code', 'code_128', 'ean_13'] });
+                    const scan = async () => {
+                        if (!scanning) return;
+
+                        const codes = await detector.detect(video);
+                        if (codes.length) {
+                            codeInput.value = codes[0].rawValue;
+                            stopScan();
+                            openSetoranByCode(codeInput.value);
+                            return;
+                        }
+
+                        requestAnimationFrame(scan);
+                    };
+
+                    scan();
+                } catch (error) {
+                    stopScan();
+                    setStatus('Kamera tidak bisa dibuka. Pastikan izin kamera aktif atau ketik ID/NIK.', true);
+                }
+            }
+
+            scanButton?.addEventListener('click', startScan);
+            openButton?.addEventListener('click', function () {
+                openSetoranByCode(codeInput?.value);
+            });
+            codeInput?.addEventListener('change', function () {
+                openSetoranByCode(this.value);
+            });
+            modalEl?.addEventListener('hidden.bs.modal', function () {
+                stopScan();
+                if (codeInput) codeInput.value = '';
+                setStatus('Scan QR muzaki untuk membuka halaman input setoran.');
+            });
+        });
+    </script>
 </x-app-layout>
