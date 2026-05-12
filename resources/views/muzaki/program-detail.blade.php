@@ -45,6 +45,8 @@
             $target = (float) ($program->target ?? 0);
             $terkumpul = (float) ($program->terkumpul ?? 0);
             $progress = $target > 0 ? min(100, ($terkumpul / $target) * 100) : 0;
+            $targetPribadi = (float) ($targetMuzaki ?? 0);
+            $progressPribadi = $targetPribadi > 0 ? min(100, ($totalMuzaki / $targetPribadi) * 100) : 0;
         @endphp
 
         <div class="row g-2 mb-3">
@@ -81,59 +83,20 @@
                 <div class="card stat-card">
                     <div class="card-body p-3">
                         <div class="small muted">Setoran Anda di Program Ini</div>
-                        <div class="h4 fw-bold mb-0">Rp {{ number_format($totalMuzaki, 0, ',', '.') }}</div>
+                        <div class="h4 fw-bold mb-3">Rp {{ number_format($totalMuzaki, 0, ',', '.') }}</div>
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span class="muted">Target Pribadi</span>
+                            <strong>Rp {{ number_format($targetPribadi, 0, ',', '.') }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span class="muted">Progress Target Pribadi</span>
+                            <strong>{{ number_format($progressPribadi, 1, ',', '.') }}%</strong>
+                        </div>
+                        <div class="progress" style="height: 10px; background: #ffe4c7;">
+                            <div class="progress-bar" style="width: {{ $progressPribadi }}%; background: #fc8c04;"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="card chart-card mb-3">
-            <div class="card-body p-3">
-                <h2 class="h6 fw-bold mb-3">Grafik Setoran per Ranting</h2>
-                @forelse($rantingChart as $item)
-                    <div class="chart-row">
-                        <div class="d-flex justify-content-between gap-2 mb-1">
-                            <div class="chart-label">
-                                <strong>{{ $item['label'] }}</strong>
-                                <div class="small muted">
-                                    Setor Rp {{ number_format($item['total'], 0, ',', '.') }}
-                                    / Target Rp {{ number_format($item['target'], 0, ',', '.') }}
-                                </div>
-                            </div>
-                            <div class="fw-bold small">{{ number_format($item['percent'], 1, ',', '.') }}%</div>
-                        </div>
-                        <div class="chart-track">
-                            <div class="chart-fill" style="width: {{ $item['percent'] }}%;"></div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="alert alert-info mb-0">Belum ada data target atau setoran per ranting.</div>
-                @endforelse
-            </div>
-        </div>
-
-        <div class="card chart-card mb-3">
-            <div class="card-body p-3">
-                <h2 class="h6 fw-bold mb-3">Grafik Setoran per AUM</h2>
-                @forelse($aumChart as $item)
-                    <div class="chart-row">
-                        <div class="d-flex justify-content-between gap-2 mb-1">
-                            <div class="chart-label">
-                                <strong>{{ $item['label'] }}</strong>
-                                <div class="small muted">
-                                    Setor Rp {{ number_format($item['total'], 0, ',', '.') }}
-                                    / Target Rp {{ number_format($item['target'], 0, ',', '.') }}
-                                </div>
-                            </div>
-                            <div class="fw-bold small">{{ number_format($item['percent'], 1, ',', '.') }}%</div>
-                        </div>
-                        <div class="chart-track">
-                            <div class="chart-fill" style="width: {{ $item['percent'] }}%;"></div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="alert alert-info mb-0">Belum ada data target atau setoran per AUM.</div>
-                @endforelse
             </div>
         </div>
 

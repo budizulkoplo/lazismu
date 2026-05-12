@@ -67,23 +67,45 @@ class MuzakiAuthController extends Controller
             'jenis_muzaki' => ['required', Rule::in(['pribadi', 'kelompok'])],
             'nik' => [
                 Rule::requiredIf(fn () => $request->jenis_muzaki === 'pribadi'),
+                Rule::excludeIf(fn () => $request->jenis_muzaki === 'kelompok'),
                 'nullable',
                 'string',
                 'size:16',
                 'unique:muzaki,nik',
             ],
             'nama' => 'required|string|max:100',
-            'tgl_lahir' => 'nullable|date',
-            'ranting' => ['required', 'string', 'max:255', Rule::exists('ranting', 'nama_ranting')],
+            'tgl_lahir' => [
+                Rule::excludeIf(fn () => $request->jenis_muzaki === 'kelompok'),
+                'nullable',
+                'date',
+            ],
+            'ranting' => [
+                Rule::requiredIf(fn () => $request->jenis_muzaki === 'pribadi'),
+                Rule::excludeIf(fn () => $request->jenis_muzaki === 'kelompok'),
+                'nullable',
+                'string',
+                'max:255',
+                Rule::exists('ranting', 'nama_ranting'),
+            ],
             'alamat' => 'nullable|string|max:255',
-            'jenis_kelamin' => 'nullable|in:L,P',
+            'jenis_kelamin' => [
+                Rule::requiredIf(fn () => $request->jenis_muzaki === 'pribadi'),
+                Rule::excludeIf(fn () => $request->jenis_muzaki === 'kelompok'),
+                'nullable',
+                'in:L,P',
+            ],
             'no_hp' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:100',
         ]);
 
         $validated['nomor_induk_muzaki'] = $this->generateNomorInduk();
-        $validated['jenis_kelamin'] = $validated['jenis_kelamin'] ?? 'L';
         $validated['aum'] = null;
+
+        if ($validated['jenis_muzaki'] === 'kelompok') {
+            $validated['nik'] = null;
+            $validated['tgl_lahir'] = null;
+            $validated['ranting'] = null;
+            $validated['jenis_kelamin'] = null;
+        }
 
         $muzaki = Muzaki::create($validated);
 

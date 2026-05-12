@@ -18,6 +18,7 @@
         .btn-orange:hover { background: var(--brand-dark); border-color: var(--brand-dark); color: #fff; }
         .muted { color: var(--muted); }
         .program-banner { aspect-ratio: 16 / 7; object-fit: cover; background: #ffedd5; }
+        .qr-box svg { width: 190px; height: 190px; }
     </style>
 </head>
 <body>
@@ -35,6 +36,19 @@
         </div>
 
         <div class="card info-card mb-4">
+            <div class="card-body p-3 text-center">
+                <h2 class="h5 fw-bold mb-2">QR Code Muzaki</h2>
+                <div class="qr-box bg-white d-inline-flex p-3 border rounded-3 mb-2">
+                    {!! QrCode::size(190)->generate($muzaki->login_code) !!}
+                </div>
+                <div class="fw-bold">{{ $muzaki->login_code }}</div>
+                <div class="muted small mt-2">
+                    Tunjukkan QR ini kepada petugas. Petugas akan memindai QR untuk membuka data muzaki saat input setoran.
+                </div>
+            </div>
+        </div>
+
+        <div class="card info-card mb-4">
             <div class="card-body p-3">
                 <h2 class="h5 fw-bold mb-3">Cara Melakukan Setoran</h2>
                 <div class="d-grid gap-3">
@@ -48,8 +62,8 @@
                     <div class="d-flex gap-3">
                         <span class="step">2</span>
                         <div>
-                            <div class="fw-bold">Tunjukkan kartu atau nomor muzaki</div>
-                            <div class="muted">Admin akan scan barcode kartu atau mencari data Anda.</div>
+                            <div class="fw-bold">Tunjukkan QR Code Muzaki</div>
+                            <div class="muted">Petugas akan scan QR di halaman ini untuk memilih data Anda.</div>
                         </div>
                     </div>
                     <div class="d-flex gap-3">

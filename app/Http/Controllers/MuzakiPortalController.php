@@ -85,12 +85,16 @@ class MuzakiPortalController extends Controller
             ->keyBy('jenis');
 
         $programSetorans = Setoran::query()
-            ->selectRaw('program.id, program.nama_program, program.target, program.terkumpul, program.banner_path, SUM(setoran.nominal) as total, COUNT(*) as jumlah')
+            ->selectRaw('program.id, program.nama_program, program.banner_path, target_setoran_program.target as target_anda, SUM(setoran.nominal) as total, COUNT(*) as jumlah')
             ->join('kode_setoran', 'kode_setoran.id', '=', 'setoran.idkode_setoran')
             ->join('program', 'program.id', '=', 'setoran.idprogram')
+            ->leftJoin('target_setoran_program', function ($join) use ($muzaki) {
+                $join->on('target_setoran_program.idprogram', '=', 'program.id')
+                    ->where('target_setoran_program.idmuzaki', $muzaki->id);
+            })
             ->where('setoran.idmuzaki', $muzaki->id)
             ->where('kode_setoran.jenis_setoran', 'program')
-            ->groupBy('program.id', 'program.nama_program', 'program.target', 'program.terkumpul', 'program.banner_path')
+            ->groupBy('program.id', 'program.nama_program', 'program.banner_path', 'target_setoran_program.target')
             ->orderBy('program.nama_program')
             ->get();
 
@@ -135,16 +139,17 @@ class MuzakiPortalController extends Controller
             ->where('kode_setoran.jenis_setoran', 'program')
             ->sum('setoran.nominal');
 
-        $rantingChart = $this->programGroupChart($program->id, 'ranting');
-        $aumChart = $this->programGroupChart($program->id, 'aum');
+        $targetMuzaki = (float) TargetSetoranProgram::query()
+            ->where('idmuzaki', $muzaki->id)
+            ->where('idprogram', $program->id)
+            ->value('target');
 
         return view('muzaki.program-detail', compact(
             'muzaki',
             'program',
             'setorans',
             'totalMuzaki',
-            'rantingChart',
-            'aumChart'
+            'targetMuzaki'
         ));
     }
 

@@ -27,7 +27,7 @@
                 <i class="bi bi-qr-code-scan"></i> Scan
             </button>
             </div>
-            <input type="text" class="form-control mt-2 js-scan-code" placeholder="Hasil scan / ID muzaki" autocomplete="off">
+            <input type="hidden" class="form-control mt-2 js-scan-code" placeholder="Hasil scan / ID muzaki" autocomplete="off">
             <div class="js-selected-muzaki mt-2 small text-muted">
                 Pilih muzaki untuk melihat detail identitas.
             </div>

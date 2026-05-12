@@ -67,9 +67,9 @@
 
             <?php foreach ($programSetorans as $programItem): ?>
                 <?php
-                    $target = (float) ($programItem->target ?? 0);
-                    $terkumpul = (float) ($programItem->terkumpul ?? 0);
-                    $progress = $target > 0 ? min(100, ($terkumpul / $target) * 100) : 0;
+                    $targetAnda = (float) ($programItem->target_anda ?? 0);
+                    $totalAnda = (float) ($programItem->total ?? 0);
+                    $progress = $targetAnda > 0 ? min(100, ($totalAnda / $targetAnda) * 100) : 0;
                 ?>
                 <a href="{{ route('muzaki.program.detail', $programItem->id) }}" class="card history-link">
                     <div class="d-flex">
@@ -89,8 +89,8 @@
                                 <div class="progress-bar" style="width: {{ $progress }}%; background: #fc8c04;"></div>
                             </div>
                             <div class="d-flex justify-content-between small muted mt-1">
-                                <span>Terkumpul Rp {{ number_format($terkumpul, 0, ',', '.') }}</span>
-                                <span>Target Rp {{ number_format($target, 0, ',', '.') }}</span>
+                                <span>Progress {{ number_format($progress, 1, ',', '.') }}%</span>
+                                <span>Target Anda Rp {{ number_format($targetAnda, 0, ',', '.') }}</span>
                             </div>
                         </div>
                     </div>

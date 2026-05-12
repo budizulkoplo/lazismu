@@ -37,7 +37,7 @@
                         <option value="kelompok" @selected(old('jenis_muzaki') === 'kelompok')>Kelompok</option>
                     </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 js-pribadi-field">
                     <label class="form-label">NIK</label>
                     <input type="text" name="nik" id="nikInput" class="form-control form-control-lg" maxlength="16" value="{{ old('nik') }}" placeholder="Wajib untuk pribadi">
                 </div>
@@ -49,22 +49,18 @@
                     <label class="form-label">No HP</label>
                     <input type="text" name="no_hp" class="form-control form-control-lg" value="{{ old('no_hp') }}">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 js-pribadi-field">
                     <label class="form-label">Tanggal Lahir</label>
-                    <input type="date" name="tgl_lahir" class="form-control form-control-lg" value="{{ old('tgl_lahir') }}">
+                    <input type="date" name="tgl_lahir" id="tglLahirInput" class="form-control form-control-lg" value="{{ old('tgl_lahir') }}">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 js-pribadi-field">
                     <label class="form-label">Jenis Kelamin</label>
-                    <select name="jenis_kelamin" class="form-select form-select-lg">
-                        <option value="L" @selected(old('jenis_kelamin', 'L') === 'L')>Laki-laki / Perwakilan</option>
-                        <option value="P" @selected(old('jenis_kelamin') === 'P')>Perempuan / Perwakilan</option>
+                    <select name="jenis_kelamin" id="jenisKelaminInput" class="form-select form-select-lg">
+                        <option value="L" @selected(old('jenis_kelamin', 'L') === 'L')>Laki-laki</option>
+                        <option value="P" @selected(old('jenis_kelamin') === 'P')>Perempuan</option>
                     </select>
                 </div>
-                <div class="col-12">
-                    <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control form-control-lg" value="{{ old('email') }}">
-                </div>
-                <div class="col-12">
+                <div class="col-12 js-pribadi-field">
                     <label class="form-label">Ranting</label>
                     <select name="ranting" id="rantingInput" class="form-select form-select-lg" required>
                         @php
@@ -93,14 +89,32 @@
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/select2.full.min.js') }}"></script>
     <script>
-        function syncNikRequirement() {
+        function syncRegistrationFields() {
             const isPribadi = document.getElementById('jenisMuzaki').value === 'pribadi';
             const nik = document.getElementById('nikInput');
+            const tglLahir = document.getElementById('tglLahirInput');
+            const ranting = document.getElementById('rantingInput');
+            const jenisKelamin = document.getElementById('jenisKelaminInput');
+
+            document.querySelectorAll('.js-pribadi-field').forEach((field) => {
+                field.classList.toggle('d-none', !isPribadi);
+            });
+
             nik.required = isPribadi;
             nik.placeholder = isPribadi ? 'Masukkan 16 digit NIK' : 'Boleh dikosongkan untuk kelompok';
+            nik.disabled = !isPribadi;
+            tglLahir.disabled = !isPribadi;
+            ranting.required = isPribadi;
+            ranting.disabled = !isPribadi;
+            jenisKelamin.required = isPribadi;
+            jenisKelamin.disabled = !isPribadi;
+
+            if (window.jQuery && $.fn.select2) {
+                $('#rantingInput').prop('disabled', !isPribadi).trigger('change.select2');
+            }
         }
-        document.getElementById('jenisMuzaki').addEventListener('change', syncNikRequirement);
-        syncNikRequirement();
+        document.getElementById('jenisMuzaki').addEventListener('change', syncRegistrationFields);
+        syncRegistrationFields();
 
         if (window.jQuery && $.fn.select2) {
             $('#rantingInput').select2({
