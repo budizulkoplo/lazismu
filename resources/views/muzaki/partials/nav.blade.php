@@ -1,5 +1,14 @@
 @php
+    use App\Models\Setting;
+
     $photoUrl = !empty(optional($muzaki)->foto) ? asset('storage/' . $muzaki->foto) : asset('assets/img/avatar1.jpg');
+    $setting = Setting::first();
+    $waNumber = preg_replace('/\D+/', '', $setting->telepon ?? '');
+    if (str_starts_with($waNumber, '0')) {
+        $waNumber = '62' . substr($waNumber, 1);
+    } elseif (str_starts_with($waNumber, '8')) {
+        $waNumber = '62' . $waNumber;
+    }
 @endphp
 
 <style>
@@ -19,7 +28,7 @@
         min-height: 72px;
         margin: 0 auto;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat({{ $waNumber ? 5 : 4 }}, 1fr);
         align-items: center;
         gap: 2px;
         padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
@@ -64,6 +73,12 @@
             <i class="bi bi-clock-history"></i>
             <span>Riwayat</span>
         </a>
+        @if($waNumber)
+            <a href="https://wa.me/{{ $waNumber }}" target="_blank" rel="noopener" class="muzaki-nav-item">
+                <i class="bi bi-whatsapp"></i>
+                <span>WhatsApp</span>
+            </a>
+        @endif
         <form action="{{ route('muzaki.logout') }}" method="POST" class="m-0">
             @csrf
             <button type="submit" class="muzaki-nav-item logout w-100">

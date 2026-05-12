@@ -55,7 +55,7 @@ class MuzakiAuthController extends Controller
 
         $setting = Setting::first();
         $rantings = Ranting::query()
-            ->orderBy('nama_ranting')
+            ->orderBy('id')
             ->pluck('nama_ranting');
 
         return view('muzaki.register', compact('setting', 'rantings'));
