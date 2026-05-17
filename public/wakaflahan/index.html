@@ -1,0 +1,3536 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wakaf Bersama MU — Muhammadiyah Center Kaliwungu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Kalam:wght@400;700&family=Amiri:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ───── Tokens ───── */
+    :root {
+      --blue: #317dc0;
+      --blue-deep: #235a8a;
+      --blue-soft: #e6f0fa;
+      --yellow: #f1b53c;
+      --yellow-deep: #c98a16;
+      --yellow-soft: #fdf3dc;
+      --teal: #1e9c9f;
+      --teal-deep: #147376;
+      --teal-soft: #e0f3f3;
+      --ink: #0f2235;
+      --ink-2: #3e4a59;
+      --line: #e7ebef;
+      --paper: #fbfaf6;
+      --paper-2: #f5f2e9;
+      --white: #ffffff;
+    }
+
+    /* ───── Base ───── */
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased
+    }
+
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.55;
+      font-size: 15.5px;
+      font-weight: 400;
+    }
+
+    img {
+      max-width: 100%;
+      display: block
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: 0;
+      cursor: pointer
+    }
+
+    .kalam {
+      font-family: 'Kalam', cursive;
+      font-weight: 400
+    }
+
+    .kalam-b {
+      font-family: 'Kalam', cursive;
+      font-weight: 700
+    }
+
+    .arabic {
+      font-family: 'Amiri', 'Scheherazade New', serif;
+      direction: rtl
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 32px
+    }
+
+    /* ───── Top Nav ───── */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(251, 250, 246, .92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topnav-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      color: var(--blue)
+    }
+
+    .nav-logo .nl-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--blue);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      flex: none;
+      box-shadow: 0 4px 14px rgba(35, 90, 138, .25);
+      position: relative;
+    }
+
+    .nav-logo .nl-mark::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255, 255, 255, .45);
+    }
+
+    .nav-logo .nl-title {
+      font-size: 14px;
+      letter-spacing: .04em;
+      line-height: 1.1;
+      color: var(--ink)
+    }
+
+    .nav-logo .nl-title b {
+      color: var(--yellow-deep)
+    }
+
+    .nav-logo .nl-sub {
+      font-size: 10px;
+      letter-spacing: .16em;
+      color: var(--ink-2);
+      font-weight: 500;
+      text-transform: uppercase;
+      display: block;
+      line-height: 1.4
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      flex: 1;
+      flex-wrap: wrap;
+      justify-content: center
+    }
+
+    .nav-links a {
+      color: var(--ink-2);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      background: var(--teal-soft);
+      color: var(--teal-deep)
+    }
+
+    .nav-links a.active {
+      background: var(--teal);
+      color: #fff
+    }
+
+    .nav-cta {
+      background: var(--yellow);
+      color: #3a2700;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 13px;
+      border: 1.5px solid var(--yellow-deep);
+      box-shadow: 0 2px 0 var(--yellow-deep);
+      white-space: nowrap;
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 0 var(--yellow-deep)
+    }
+
+    @media(max-width:980px) {
+      .nav-links {
+        display: none
+      }
+    }
+
+    /* ───── Buttons ───── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform .15s, box-shadow .15s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--yellow);
+      color: #3a2700;
+      border: 1.5px solid var(--yellow-deep);
+      box-shadow: 0 4px 0 var(--yellow-deep);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--yellow-deep)
+    }
+
+    .btn-ghost {
+      background: #fff;
+      color: var(--blue);
+      border: 1.5px solid var(--blue)
+    }
+
+    .btn-ghost:hover {
+      background: var(--blue-soft)
+    }
+
+    .btn-teal {
+      background: var(--teal);
+      color: #fff;
+      border: 1.5px solid var(--teal-deep);
+      box-shadow: 0 4px 0 var(--teal-deep);
+    }
+
+    .btn-teal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 var(--teal-deep)
+    }
+
+    /* ───── Section frame / Headings ───── */
+    section.s {
+      padding: 100px 32px;
+      position: relative
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--teal-deep);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 24px;
+      height: 2px;
+      background: var(--yellow);
+      vertical-align: middle;
+      margin-right: 10px;
+      border-radius: 2px;
+    }
+
+    h2.title {
+      font-size: 46px;
+      line-height: 1.05;
+      margin: 0 0 18px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+
+    .title .y {
+      color: var(--yellow-deep)
+    }
+
+    .title .b {
+      color: var(--blue)
+    }
+
+    .title .t {
+      color: var(--teal)
+    }
+
+    .lead {
+      font-size: 17px;
+      color: var(--ink-2);
+      max-width: 780px;
+      line-height: 1.7
+    }
+
+    .muted {
+      color: var(--ink-2)
+    }
+
+    /* ───── Hero ───── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(241, 181, 60, .18), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(30, 156, 159, .18), transparent 60%),
+        linear-gradient(180deg, #f6f9fc 0%, var(--paper) 100%);
+      padding: 80px 32px 100px;
+    }
+
+    .hero-grid {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    @media(max-width:980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px
+      }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: .18em;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--teal-deep);
+      border: 1px solid var(--teal-soft);
+      box-shadow: 0 4px 14px rgba(30, 156, 159, .08);
+    }
+
+    .hero-eyebrow .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--teal);
+      border-radius: 50%
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      line-height: 1.02;
+      margin: 24px 0 18px;
+      letter-spacing: -0.02em;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    @media(max-width:980px) {
+      .hero h1 {
+        font-size: 42px
+      }
+    }
+
+    .hero h1 .b {
+      color: var(--blue)
+    }
+
+    .hero h1 .y {
+      color: var(--yellow-deep)
+    }
+
+    .hero h1 .t {
+      color: var(--teal)
+    }
+
+    .hero-tagline {
+      font-size: 24px;
+      color: var(--blue);
+      margin: 0 0 28px;
+      line-height: 1.35
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--ink-2);
+      max-width: 520px;
+      margin: 0 0 36px
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap
+    }
+
+    .hero-card {
+      background: #fff;
+      border-radius: 32px;
+      padding: 36px;
+      border: 1px solid var(--line);
+      box-shadow: 0 30px 60px -20px rgba(35, 90, 138, .18);
+      position: relative;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--blue) 50%, var(--yellow) 100%);
+      z-index: -1;
+      filter: blur(20px);
+      opacity: .25;
+    }
+
+    .hero-emblem {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(180deg, #eaf3fa 0%, #fbf5e2 100%);
+      border-radius: 24px;
+      padding: 36px 28px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-emblem .sun {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 6px rgba(255, 255, 255, .4), 0 12px 30px rgba(35, 90, 138, .25);
+    }
+
+    .hero-emblem .em-rays {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: rgba(241, 181, 60, .25)
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px
+    }
+
+    .hero-stat {
+      text-align: center;
+      padding: 16px 8px;
+      background: var(--paper-2);
+      border-radius: 14px
+    }
+
+    .hero-stat .num {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1
+    }
+
+    .hero-stat .lbl {
+      font-size: 11px;
+      letter-spacing: .06em;
+      color: var(--ink-2);
+      margin-top: 6px;
+      text-transform: uppercase;
+      font-weight: 500
+    }
+
+    .hero-credit {
+      margin-top: 60px;
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      max-width: 1240px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--ink-2);
+      align-items: center;
+    }
+
+    .hero-credit .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      background: var(--teal-soft);
+      color: var(--teal-deep);
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .04em;
+    }
+
+    .hero-credit .badge .d {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    /* ───── Mukadimah ───── */
+    .mukadimah {
+      background: linear-gradient(180deg, var(--paper) 0%, #fff 100%);
+      text-align: center;
+    }
+
+    .mukadimah .arabic-line {
+      font-size: 34px;
+      color: var(--blue-deep);
+      font-family: 'Amiri', serif;
+      direction: rtl;
+      line-height: 1.6;
+      margin: 30px auto 18px;
+      max-width: 820px;
+      font-weight: 400;
+    }
+
+    .mukadimah .translit {
+      font-style: italic;
+      color: var(--ink-2);
+      font-size: 15px;
+      max-width: 680px;
+      margin: 0 auto 12px
+    }
+
+    .mukadimah .translation {
+      font-size: 18px;
+      color: var(--ink);
+      max-width: 680px;
+      margin: 0 auto 24px;
+      line-height: 1.6
+    }
+
+    .mukadimah .ayah {
+      font-size: 13px;
+      letter-spacing: .1em;
+      color: var(--teal-deep);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .mukadimah .salam {
+      font-family: 'Kalam', cursive;
+      font-size: 32px;
+      color: var(--blue);
+      margin: 60px 0 0;
+      font-weight: 700;
+    }
+
+    /* ───── Latar Belakang ───── */
+    .lb-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 50px;
+      align-items: start
+    }
+
+    @media(max-width:980px) {
+      .lb-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .lb-text p {
+      font-size: 16.5px;
+      color: var(--ink-2);
+      margin: 0 0 18px;
+      line-height: 1.8
+    }
+
+    .lb-text p:first-child::first-letter {
+      float: left;
+      font-size: 64px;
+      line-height: .85;
+      font-weight: 800;
+      color: var(--blue);
+      padding: 6px 12px 0 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .lb-image {
+      aspect-ratio: 4/5;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: #0f2235;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lb-image>img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block
+    }
+
+    .lb-image .ph-tag {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: #fff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 10px;
+      letter-spacing: .14em;
+      font-weight: 600;
+      color: var(--teal-deep);
+    }
+
+    .lb-image .ph-illust {
+      display: grid;
+      place-items: center;
+      gap: 8px;
+      color: var(--blue-deep);
+      text-align: center
+    }
+
+    .lb-image .ph-illust svg {
+      filter: drop-shadow(0 4px 8px rgba(35, 90, 138, .18))
+    }
+
+    .lb-image .ph-illust div {
+      font-family: 'Kalam', cursive;
+      font-size: 18px;
+      color: var(--blue-deep);
+      max-width: 260px;
+      line-height: 1.4
+    }
+
+    .lb-image .ph-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 14px 22px;
+      background: linear-gradient(180deg, transparent, rgba(15, 34, 53, .85));
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .lb-image .ph-caption b {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 2px
+    }
+
+    .quote-block {
+      margin-top: 32px;
+      padding: 24px 28px;
+      background: var(--yellow-soft);
+      border-radius: 18px;
+      border-left: 4px solid var(--yellow);
+      font-family: 'Kalam', cursive;
+      font-size: 22px;
+      line-height: 1.5;
+      color: #6e4f00;
+      font-weight: 400;
+    }
+
+    .quote-block::before {
+      content: "\201C";
+      font-size: 48px;
+      line-height: 0;
+      vertical-align: -12px;
+      margin-right: 6px;
+      color: var(--yellow)
+    }
+
+    .quote-block .src {
+      text-align: right;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #7a5400;
+      margin-top: 10px;
+    }
+
+    /* ───── Jejak Sholat Ied ───── */
+    .jejak {
+      background: var(--paper-2);
+      padding-top: 80px;
+      padding-bottom: 80px
+    }
+
+    .jejak-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px
+    }
+
+    .jejak-head .bar {
+      width: 32px;
+      height: 2px;
+      background: var(--yellow);
+      border-radius: 2px
+    }
+
+    .jejak-head span {
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--ink-2)
+    }
+
+    .jejak-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 28px
+    }
+
+    @media(max-width:880px) {
+      .jejak-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .jejak-card {
+      position: relative;
+      aspect-ratio: 4/3;
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--teal-deep), var(--blue-deep));
+      display: flex;
+      align-items: flex-end;
+      color: #fff;
+    }
+
+    .jejak-card.j1 {
+      background: linear-gradient(160deg, #3a6b4a 0%, #1a3a25 100%)
+    }
+
+    .jejak-card.j2 {
+      background: linear-gradient(160deg, #5a4b3a 0%, #3a2a1a 100%)
+    }
+
+    .jejak-card.j3 {
+      background: linear-gradient(160deg, #2a5878 0%, #162e44 100%)
+    }
+
+    .jejak-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, .08), transparent 40%),
+        radial-gradient(circle at 70% 70%, rgba(0, 0, 0, .18), transparent 50%);
+    }
+
+    .jejak-card svg.bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: .18
+    }
+
+    .jejak-card .cap {
+      position: relative;
+      z-index: 1;
+      padding: 18px 20px;
+      width: 100%
+    }
+
+    .jejak-card .cap .lbl {
+      font-size: 10px;
+      letter-spacing: .18em;
+      opacity: .85;
+      font-weight: 600
+    }
+
+    .jejak-card .cap b {
+      display: block;
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 6px
+    }
+
+    .jejak-card .cap span {
+      font-size: 12.5px;
+      opacity: .85;
+      display: block;
+      margin-top: 2px
+    }
+
+    /* ───── Three pillars ───── */
+    .pillars {
+      background: #fff
+    }
+
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 50px
+    }
+
+    @media(max-width:880px) {
+      .pillar-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .pillar {
+      background: var(--paper);
+      border-radius: 24px;
+      padding: 36px 30px;
+      border: 1px solid var(--line);
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pillar:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -20px rgba(0, 0, 0, .1)
+    }
+
+    .pillar.p1 {
+      background: linear-gradient(180deg, var(--teal-soft) 0%, #fff 70%)
+    }
+
+    .pillar.p2 {
+      background: linear-gradient(180deg, var(--yellow-soft) 0%, #fff 70%)
+    }
+
+    .pillar.p3 {
+      background: linear-gradient(180deg, var(--blue-soft) 0%, #fff 70%)
+    }
+
+    .pillar .ico {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 22px;
+      color: #fff;
+    }
+
+    .pillar.p1 .ico {
+      background: var(--teal)
+    }
+
+    .pillar.p2 .ico {
+      background: var(--yellow);
+      color: #5a3d00
+    }
+
+    .pillar.p3 .ico {
+      background: var(--blue)
+    }
+
+    .pillar h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink)
+    }
+
+    .pillar p {
+      margin: 0;
+      font-size: 14.5px;
+      color: var(--ink-2);
+      line-height: 1.65
+    }
+
+    .pillar .num {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(0, 0, 0, .06);
+    }
+
+    /* ───── Lokasi ───── */
+    .lokasi {
+      background: linear-gradient(180deg, #fff 0%, var(--paper) 100%)
+    }
+
+    .lokasi-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 50px;
+      align-items: start;
+      margin-top: 50px
+    }
+
+    @media(max-width:980px) {
+      .lokasi-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .map-card {
+      aspect-ratio: 16/11;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, #dbe8d3 0%, #c5dbb6 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 25%, rgba(30, 156, 159, .18), transparent 10%),
+        radial-gradient(circle at 70% 65%, rgba(30, 156, 159, .18), transparent 14%),
+        repeating-linear-gradient(38deg, transparent 0 22px, rgba(255, 255, 255, .25) 22px 23px),
+        repeating-linear-gradient(-52deg, transparent 0 28px, rgba(0, 0, 0, .04) 28px 29px);
+    }
+
+    .map-card .road1 {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 60%;
+      height: 14px;
+      background: rgba(255, 255, 255, .55);
+      transform: rotate(-3deg)
+    }
+
+    .map-card .road2 {
+      position: absolute;
+      left: 55%;
+      top: 0;
+      bottom: 0;
+      width: 14px;
+      background: rgba(255, 255, 255, .45)
+    }
+
+    .map-tag {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      background: #fff;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: .14em;
+      font-weight: 600;
+      color: var(--teal-deep);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, .06);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .map-pin {
+      position: absolute;
+      left: 54%;
+      top: 46%;
+      transform: translate(-50%, -100%);
+      background: var(--blue);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 14px 14px 14px 2px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(35, 90, 138, .35);
+      white-space: nowrap;
+    }
+
+    .map-pin::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 14px;
+      height: 14px;
+      background: var(--blue);
+      transform: rotate(45deg);
+      transform-origin: 0 0;
+      border-radius: 0 0 4px 0;
+    }
+
+    .map-cta {
+      position: absolute;
+      left: 24px;
+      bottom: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--blue);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 13px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .1);
+    }
+
+    .lokasi-info {
+      display: flex;
+      flex-direction: column;
+      gap: 14px
+    }
+
+    .info-row {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .info-row .ic {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--teal-soft);
+      color: var(--teal-deep);
+      flex: none;
+      display: grid;
+      place-items: center;
+    }
+
+    .info-row .lbl {
+      font-size: 11px;
+      letter-spacing: .14em;
+      color: var(--ink-2);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 2px
+    }
+
+    .info-row .val {
+      font-size: 15.5px;
+      font-weight: 600;
+      color: var(--ink)
+    }
+
+    .info-row .val small {
+      display: block;
+      font-weight: 400;
+      color: var(--ink-2);
+      font-size: 13px;
+      margin-top: 2px
+    }
+
+    .info-row.highlight {
+      background: var(--blue-soft);
+      border-color: #cdddee
+    }
+
+    .info-row.highlight .ic {
+      background: var(--blue);
+      color: #fff
+    }
+
+    /* ───── RAB ───── */
+    .rab {
+      background: #fff
+    }
+
+    .rab-summary {
+      margin-top: 36px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px
+    }
+
+    @media(max-width:880px) {
+      .rab-summary {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .rab-card {
+      padding: 24px;
+      border-radius: 18px;
+      background: var(--paper);
+      border: 1px solid var(--line)
+    }
+
+    .rab-card.a {
+      background: linear-gradient(135deg, #f8e9c8, var(--yellow-soft))
+    }
+
+    .rab-card.b {
+      background: linear-gradient(135deg, #cee9ea, var(--teal-soft))
+    }
+
+    .rab-card.c {
+      background: linear-gradient(135deg, #d4e6f5, var(--blue-soft))
+    }
+
+    .rab-card .lbl {
+      font-size: 11px;
+      letter-spacing: .14em;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--ink-2)
+    }
+
+    .rab-card .num {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-top: 8px;
+      line-height: 1
+    }
+
+    .rab-card .sub {
+      font-size: 13px;
+      color: var(--ink-2);
+      margin-top: 6px
+    }
+
+    .rab-table {
+      margin-top: 36px;
+      background: var(--paper);
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .rab-row {
+      display: grid;
+      grid-template-columns: .5fr 3fr 1fr 1fr 1.4fr 1.6fr;
+      padding: 14px 24px;
+      font-size: 14px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .rab-row:last-child {
+      border-bottom: none
+    }
+
+    .rab-row.head {
+      background: var(--blue);
+      color: #fff;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .rab-row.cat {
+      background: var(--teal-soft);
+      font-weight: 700;
+      color: var(--teal-deep)
+    }
+
+    .rab-row.cat .desc {
+      grid-column: span 4
+    }
+
+    .rab-row.total {
+      background: var(--yellow-soft);
+      font-weight: 700;
+      color: #5a3d00;
+      font-size: 16px;
+      border-top: 2px solid var(--yellow);
+    }
+
+    .rab-row .desc {
+      color: var(--ink)
+    }
+
+    .rab-row .desc small {
+      display: block;
+      color: var(--ink-2);
+      font-weight: 400;
+      font-size: 12.5px;
+      margin-top: 2px
+    }
+
+    .rab-row .num-c {
+      text-align: right;
+      font-variant-numeric: tabular-nums
+    }
+
+    @media(max-width:880px) {
+      .rab-row {
+        grid-template-columns: .5fr 2fr 1fr 1.4fr;
+        font-size: 12px;
+        padding: 10px 14px
+      }
+
+      .rab-row .satuan,
+      .rab-row .harga {
+        display: none
+      }
+    }
+
+    /* ───── Pemasukan ───── */
+    .pemasukan {
+      background: linear-gradient(180deg, var(--paper) 0%, #fff 100%)
+    }
+
+    .pem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 50px
+    }
+
+    @media(max-width:980px) {
+      .pem-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media(max-width:680px) {
+      .pem-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .pem-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .pem-head {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .pem-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex: none;
+    }
+
+    .pem-card.t1 .pem-num {
+      background: var(--blue)
+    }
+
+    .pem-card.t2 .pem-num {
+      background: var(--teal)
+    }
+
+    .pem-card.t3 .pem-num {
+      background: var(--yellow);
+      color: #5a3d00
+    }
+
+    .pem-card.t4 .pem-num {
+      background: var(--blue-deep)
+    }
+
+    .pem-card.t5 .pem-num {
+      background: var(--teal-deep)
+    }
+
+    .pem-card.t6 .pem-num {
+      background: var(--yellow-deep);
+      color: #fff
+    }
+
+    .pem-card h4 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      flex: 1
+    }
+
+    .pem-amount {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1
+    }
+
+    .pem-meta {
+      font-size: 12px;
+      color: var(--ink-2)
+    }
+
+    .pem-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .pem-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: var(--paper);
+      border-radius: 8px
+    }
+
+    .pem-list li span:last-child {
+      font-weight: 600;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums
+    }
+
+    .pem-list li.open {
+      background: var(--yellow-soft);
+      color: #5a3d00;
+      font-weight: 600
+    }
+
+    .pem-list li.csr {
+      background: var(--blue-soft);
+      color: var(--blue-deep);
+      font-weight: 600
+    }
+
+    /* Goal */
+    .goal {
+      background: var(--blue);
+      color: #fff;
+      border-radius: 32px;
+      padding: 48px;
+      margin-top: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .goal::before {
+      content: "";
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(241, 181, 60, .2)
+    }
+
+    .goal::after {
+      content: "";
+      position: absolute;
+      bottom: -80px;
+      left: -50px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(30, 156, 159, .3)
+    }
+
+    .goal-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      z-index: 1
+    }
+
+    @media(max-width:880px) {
+      .goal-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .goal h3 {
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0 0 12px;
+      letter-spacing: -.01em;
+      line-height: 1.2
+    }
+
+    .goal p {
+      margin: 0;
+      color: rgba(255, 255, 255, .88);
+      font-size: 15px;
+      max-width: 480px;
+      line-height: 1.7
+    }
+
+    .goal p b {
+      color: var(--yellow)
+    }
+
+    .progress-card {
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 20px;
+      padding: 24px;
+      backdrop-filter: blur(8px);
+    }
+
+    .pc-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: rgba(255, 255, 255, .85);
+      margin-bottom: 8px
+    }
+
+    .pc-row b {
+      color: #fff;
+      font-weight: 700
+    }
+
+    .pc-bar {
+      height: 14px;
+      background: rgba(255, 255, 255, .18);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative
+    }
+
+    .pc-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--yellow) 0%, #ffd57a 100%);
+      border-radius: 999px;
+      position: relative;
+      transition: width 1.4s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .pc-fill::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 6px;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, .7)
+    }
+
+    .pc-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
+      font-variant-numeric: tabular-nums
+    }
+
+    .pc-stats div .v {
+      font-size: 22px;
+      font-weight: 800
+    }
+
+    .pc-stats div .l {
+      font-size: 11px;
+      color: rgba(255, 255, 255, .7);
+      letter-spacing: .1em;
+      text-transform: uppercase
+    }
+
+    /* ───── Paket Wakaf ───── */
+    .paket {
+      background: #fff
+    }
+
+    .paket-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-top: 50px
+    }
+
+    @media(max-width:980px) {
+      .paket-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .paket-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .paket-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -20px rgba(0, 0, 0, .12)
+    }
+
+    .paket-card.featured {
+      background: linear-gradient(180deg, #fff 0%, var(--paper) 100%);
+      border: 2px solid var(--yellow);
+      box-shadow: 0 30px 60px -20px rgba(241, 181, 60, .35);
+      transform: translateY(-8px);
+    }
+
+    .paket-card.featured::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 24px;
+      z-index: -1;
+      background: linear-gradient(135deg, var(--yellow), var(--teal), var(--blue));
+      filter: blur(20px);
+      opacity: .18;
+    }
+
+    .pkt-tag {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      color: var(--teal-deep);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .paket-card.featured .pkt-tag {
+      background: var(--yellow);
+      color: #3a2700
+    }
+
+    .paket-card.p3 .pkt-tag {
+      background: var(--blue-soft);
+      color: var(--blue-deep)
+    }
+
+    .pkt-h3 {
+      font-size: 24px;
+      font-weight: 800;
+      margin: 0;
+      color: var(--ink);
+      letter-spacing: -0.01em
+    }
+
+    .pkt-price {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--blue);
+      line-height: 1;
+      letter-spacing: -0.015em;
+    }
+
+    .pkt-price small {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-2);
+      margin-left: 4px
+    }
+
+    .pkt-desc {
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.6
+    }
+
+    .pkt-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1
+    }
+
+    .pkt-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--ink);
+      align-items: flex-start;
+      line-height: 1.5;
+    }
+
+    .pkt-list li::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--teal);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='5,12 10,17 19,7'/></svg>");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 12px;
+      flex: none;
+      margin-top: 2px;
+    }
+
+    .paket-card.featured .pkt-list li::before {
+      background-color: var(--yellow-deep)
+    }
+
+    .paket-card.p3 .pkt-list li::before {
+      background-color: var(--blue)
+    }
+
+    /* Apresiasi physical */
+    .apresi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-top: 60px
+    }
+
+    @media(max-width:980px) {
+      .apresi-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .apresi {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .apresi .visual {
+      aspect-ratio: 4/3;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--teal-soft), var(--blue-soft));
+    }
+
+    .apresi .visual.gold {
+      background: linear-gradient(135deg, #f8e9c8, var(--yellow-soft))
+    }
+
+    .apresi .visual.crystal {
+      background: linear-gradient(135deg, #e9eff5, #cad9e8)
+    }
+
+    .apresi .visual.paper {
+      background: linear-gradient(135deg, var(--paper-2), #ede5d2)
+    }
+
+    .apresi .lbl {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--ink-2)
+    }
+
+    .apresi h4 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--ink)
+    }
+
+    .apresi p {
+      font-size: 13.5px;
+      color: var(--ink-2);
+      margin: 0;
+      line-height: 1.6
+    }
+
+    /* ───── Cara Berwakaf ───── */
+    .cara {
+      background: #fff
+    }
+
+    .cara-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 50px;
+      margin-top: 50px;
+      align-items: start
+    }
+
+    @media(max-width:980px) {
+      .cara-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .step:last-child {
+      border-bottom: none
+    }
+
+    .step .n {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      flex: none;
+      background: var(--teal-soft);
+      color: var(--teal-deep);
+      display: grid;
+      place-items: center;
+      font-family: 'Kalam', cursive;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .step h4 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink)
+    }
+
+    .step p {
+      margin: 0;
+      font-size: 14.5px;
+      color: var(--ink-2);
+      line-height: 1.7
+    }
+
+    .rek-card {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-deep) 100%);
+      color: #fff;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 20px 40px -20px rgba(35, 90, 138, .5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rek-card::before {
+      content: "";
+      position: absolute;
+      right: -50px;
+      top: -50px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(241, 181, 60, .2);
+    }
+
+    .rek-card::after {
+      content: "";
+      position: absolute;
+      left: -30px;
+      bottom: -30px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(30, 156, 159, .2);
+    }
+
+    .rek-label {
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .7);
+      font-weight: 600;
+      position: relative;
+      z-index: 1
+    }
+
+    .rek-bank {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 18px;
+      position: relative;
+      z-index: 1
+    }
+
+    .rek-bank-logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--blue);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .rek-bank-name {
+      font-size: 16px;
+      font-weight: 700
+    }
+
+    .rek-bank-name small {
+      display: block;
+      font-weight: 400;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .7);
+      margin-top: 2px
+    }
+
+    .rek-no {
+      margin-top: 22px;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, .12);
+      border-radius: 12px;
+      font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .rek-no .copy {
+      background: rgba(255, 255, 255, .2);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .rek-name {
+      margin-top: 14px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, .85);
+      position: relative;
+      z-index: 1
+    }
+
+    .rek-name b {
+      color: #fff;
+      font-weight: 600
+    }
+
+    .qr-card {
+      margin-top: 18px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .qr-box {
+      width: 96px;
+      height: 96px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px;
+      flex: none;
+      display: grid;
+      place-items: center;
+    }
+
+    .qr-card.wa {
+      background: var(--blue-soft);
+      border-color: #cdddee
+    }
+
+    .qr-card.wa .qr-box {
+      background: var(--blue)
+    }
+
+    .qr-card .lbl {
+      font-size: 11px;
+      letter-spacing: .14em;
+      color: var(--ink-2);
+      text-transform: uppercase;
+      font-weight: 600
+    }
+
+    .qr-card .ttl {
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 2px;
+      color: var(--ink)
+    }
+
+    .qr-card p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: var(--ink-2)
+    }
+
+    /* ───── Jaminan ───── */
+    .jaminan {
+      background: var(--paper-2);
+      padding: 80px 32px
+    }
+
+    .jam-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 30px
+    }
+
+    @media(max-width:880px) {
+      .jam-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .jam-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .jam-card .ic {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--teal-soft);
+      color: var(--teal-deep);
+      display: grid;
+      place-items: center;
+      flex: none;
+    }
+
+    .jam-card.b2 .ic {
+      background: var(--yellow-soft);
+      color: var(--yellow-deep)
+    }
+
+    .jam-card.b3 .ic {
+      background: var(--blue-soft);
+      color: var(--blue-deep)
+    }
+
+    .jam-card h4 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink)
+    }
+
+    .jam-card p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--ink-2);
+      line-height: 1.6
+    }
+
+    /* ───── Bank list ───── */
+    .banks {
+      background: #fff
+    }
+
+    .bank-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    @media(max-width:980px) {
+      .bank-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media(max-width:560px) {
+      .bank-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .bank {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .bank:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .18)
+    }
+
+    .bank .bn {
+      display: inline-flex;
+      align-self: flex-start;
+      background: var(--blue);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      letter-spacing: .1em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .bank .bnum {
+      font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: .04em;
+      line-height: 1.2;
+    }
+
+    .bank .baccount {
+      font-size: 12px;
+      color: var(--ink-2);
+      line-height: 1.45
+    }
+
+    .bank-foot {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px
+    }
+
+    @media(max-width:880px) {
+      .bank-foot {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .bank-foot .b {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .bank-foot .b .bi {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--teal-soft);
+      color: var(--teal-deep);
+      display: grid;
+      place-items: center;
+      flex: none;
+    }
+
+    .bank-foot .b.b2 .bi {
+      background: var(--yellow-soft);
+      color: var(--yellow-deep)
+    }
+
+    .bank-foot .b h4 {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink)
+    }
+
+    .bank-foot .b p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink-2);
+      line-height: 1.6
+    }
+
+    .bank-foot .b b {
+      color: var(--ink);
+      font-weight: 600
+    }
+
+    /* ───── Closing ───── */
+    .closing {
+      background: linear-gradient(180deg, #fff 0%, var(--paper) 100%);
+      text-align: center;
+      padding-bottom: 100px;
+    }
+
+    .closing .mosque {
+      margin: 40px auto 30px;
+      width: 120px;
+      height: 120px;
+      background: var(--teal);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      box-shadow: 0 20px 40px -10px rgba(30, 156, 159, .4);
+    }
+
+    .closing-quote {
+      font-family: 'Kalam', cursive;
+      font-size: 32px;
+      color: var(--blue);
+      max-width: 760px;
+      margin: 0 auto 18px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .closing-quote::before,
+    .closing-quote::after {
+      content: '"';
+      color: var(--yellow);
+      font-weight: 700;
+      margin: 0 6px
+    }
+
+    .closing-by {
+      font-size: 13px;
+      color: var(--ink-2);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 600
+    }
+
+    .closing-doa {
+      margin: 50px auto 0;
+      padding: 32px;
+      background: #fff;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      max-width: 680px;
+    }
+
+    .closing-doa .arabic {
+      font-size: 30px;
+      color: var(--blue-deep);
+      direction: rtl;
+      line-height: 1.7;
+      margin-bottom: 14px;
+      font-family: 'Amiri', serif;
+      font-weight: 400
+    }
+
+    .closing-doa .meaning {
+      font-style: italic;
+      color: var(--ink-2);
+      font-size: 14.5px;
+      line-height: 1.7
+    }
+
+    .panitia-card {
+      max-width: 980px;
+      margin: 60px auto 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 36px 40px;
+    }
+
+    .panitia-card .ph {
+      text-align: center;
+      margin-bottom: 28px
+    }
+
+    .panitia-card .ph .role {
+      font-size: 11px;
+      letter-spacing: .18em;
+      color: var(--ink-2);
+      text-transform: uppercase;
+      font-weight: 600
+    }
+
+    .panitia-card .ph h3 {
+      font-size: 24px;
+      margin: 8px 0 4px;
+      color: var(--ink);
+      font-weight: 800
+    }
+
+    .panitia-card .ph .org {
+      font-size: 13px;
+      color: var(--ink-2)
+    }
+
+    .panitia-card .pg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 36px;
+      text-align: left
+    }
+
+    @media(max-width:680px) {
+      .panitia-card .pg {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .panitia-card .pg .lbl {
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      font-weight: 600;
+      margin-bottom: 6px
+    }
+
+    .panitia-card .pg .v {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.7
+    }
+
+    .panitia-card .pg .v b {
+      font-weight: 600
+    }
+
+    .panitia-card .pg .anggota .v {
+      columns: 2;
+      column-gap: 36px;
+      line-height: 1.85;
+      font-size: 13.5px
+    }
+
+    @media(max-width:680px) {
+      .panitia-card .pg .anggota .v {
+        columns: 1
+      }
+    }
+
+    .signoff {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+
+    .signoff>div {
+      min-width: 220px
+    }
+
+    .signoff .role {
+      font-size: 11px;
+      letter-spacing: .18em;
+      color: var(--ink-2);
+      text-transform: uppercase;
+      font-weight: 600
+    }
+
+    .signoff .sig {
+      font-family: 'Kalam', cursive;
+      font-size: 28px;
+      color: var(--blue);
+      margin: 30px 0 6px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+    }
+
+    .signoff .name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink)
+    }
+
+    .signoff .pos {
+      font-size: 12px;
+      color: var(--ink-2);
+      margin-top: 2px
+    }
+
+    /* ───── Footer ───── */
+    footer {
+      background: var(--ink);
+      color: #fff;
+      padding: 60px 32px 40px
+    }
+
+    .ft-grid {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    @media(max-width:880px) {
+      .ft-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .ft-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px
+    }
+
+    .ft-logo .nl-mark {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: #fff;
+      color: var(--blue);
+      display: grid;
+      place-items: center;
+      flex: none;
+    }
+
+    .ft-logo b {
+      display: block;
+      font-size: 18px;
+      letter-spacing: .04em
+    }
+
+    .ft-logo small {
+      display: block;
+      font-size: 11px;
+      letter-spacing: .18em;
+      color: rgba(255, 255, 255, .6);
+      text-transform: uppercase;
+      margin-top: 2px
+    }
+
+    footer p {
+      font-size: 14px;
+      color: rgba(255, 255, 255, .7);
+      margin: 0 0 14px;
+      line-height: 1.7
+    }
+
+    footer h5 {
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .5);
+      font-weight: 600;
+      margin: 0 0 16px
+    }
+
+    footer ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    footer li {
+      font-size: 14px;
+      color: rgba(255, 255, 255, .85);
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    footer a {
+      border-bottom: 1px solid rgba(255, 255, 255, .18)
+    }
+
+    .copy-bar {
+      max-width: 1240px;
+      margin: 36px auto 0;
+      border-top: 1px solid rgba(255, 255, 255, .1);
+      padding-top: 20px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .5);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* ───── Reveal ───── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.2, .8, .2, 1)
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: none
+    }
+  </style>
+</head>
+
+<body>
+
+  <template id="__bundler_thumbnail" data-bg-color="#317dc0">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <rect width="200" height="200" fill="#317dc0" />
+      <circle cx="100" cy="86" r="38" fill="#f1b53c" />
+      <g stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity=".85">
+        <line x1="100" y1="34" x2="100" y2="42" />
+        <line x1="100" y1="130" x2="100" y2="138" />
+        <line x1="48" y1="86" x2="56" y2="86" />
+        <line x1="144" y1="86" x2="152" y2="86" />
+        <line x1="63" y1="49" x2="69" y2="55" />
+        <line x1="131" y1="117" x2="137" y2="123" />
+        <line x1="63" y1="123" x2="69" y2="117" />
+        <line x1="131" y1="55" x2="137" y2="49" />
+      </g>
+      <circle cx="100" cy="86" r="14" fill="#fff" />
+      <path d="M50 138 Q100 110 150 138 L150 152 L50 152 Z" fill="#1e9c9f" />
+      <text x="100" y="178" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="14" font-weight="700"
+        letter-spacing="3">WBM</text>
+    </svg>
+  </template>
+
+
+  <!-- ─── Top Nav ─── -->
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a href="#cover" class="nav-logo">
+        <span class="" aria-hidden="true">
+          <img src="assets/bersama-beribadah-1.png" alt="Logo Wakaf"
+            style="width:36px;height:36px;object-fit:contain;display:block;" />
+        </span>
+        <div>
+          <span class="nl-title">Wakaf <b>Pembebasan Lahan</b></span>
+          <span class="nl-sub">Muhammadiyah Center Kaliwungu</span>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="#mukadimah">Mukadimah</a>
+        <a href="#latar">Latar Belakang</a>
+        <a href="#tujuan">Tiga Pilar</a>
+        <a href="#lokasi">Lokasi</a>
+        <a href="#rab">Anggaran</a>
+        <a href="#pemasukan">Skema Wakaf</a>
+        <a href="#paket">Paket</a>
+        <a href="#cara">Cara Berwakaf</a>
+      </div>
+      <a href="#cara" class="nav-cta">Wakaf Sekarang →</a>
+    </div>
+  </nav>
+
+  <!-- ─── Hero / Cover ─── -->
+  <header id="cover" class="hero" data-screen-label="Cover">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow"><span class="dot"></span>Proposal Wakaf · 1447 H / 2026 M</div>
+        <h1>Satu Niat,<br />Satu <span class="t">Lahan</span>,<br />Seribu <span class="y">Pahala</span>.</h1>
+        <p class="hero-tagline kalam-b">Wakaf hari ini, pahala mengalir selamanya.</p>
+        <p class="hero-desc">Pimpinan Cabang Muhammadiyah Kaliwungu mengajak Bapak/Ibu/Saudara untuk bersama mewujudkan
+          <b>tanah wakaf seluas 6.115 m²</b> di Karangtengah — sebagai lahan permanen Sholat Ied, pusat dakwah, dan amal
+          jariyah lintas generasi.
+        </p>
+        <div class="hero-actions">
+          <a href="#cara" class="btn btn-primary">Saya Ingin Berwakaf →</a>
+          <a href="#rab" class="btn btn-ghost">Lihat Rincian Anggaran</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-emblem" style="display:flex;align-items:center;justify-content:center;">
+          <img src="assets/bersama-beribadah.png" alt="Jamaah bersama beribadah"
+            style="width:380px;height:380px;object-fit:cover;border-radius:0%;box-shadow:0 0px 40px rgba(0,0,0,.15); display:block;" />
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="num">6.115</div>
+            <div class="lbl">m² Lahan</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num">7,17 Miliar</div>
+            <div class="lbl">Total RAB</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num">3 Pilihan</div>
+            <div class="lbl">Nominal Wakaf</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </header>
+
+  <!-- ─── Muqoddimah ─── -->
+  <section id="mukadimah" class="s mukadimah" data-screen-label="Mukadimah">
+    <div class="wrap">
+      <span class="eyebrow">Muqoddimah</span>
+      <h2 class="title">Bismillāhirraḥmānirraḥīm</h2>
+      <div class="arabic-line">مَّثَلُ ٱلَّذِينَ يُنفِقُونَ أَمْوَٰلَهُمْ فِى سَبِيلِ ٱللَّهِ كَمَثَلِ حَبَّةٍ
+        أَنۢبَتَتْ سَبْعَ سَنَابِلَ فِى كُلِّ سُنۢبُلَةٍ مِّا۟ئَةُ حَبَّةٍ</div>
+      <div class="translit">"Matsalu-lladzīna yunfiqūna amwālahum fī sabīlillāhi kamatsali ḥabbatin ambatat sab'a
+        sanābila fī kulli sunbulatin mi'atu ḥabbah…"</div>
+      <p class="translation">"Perumpamaan orang yang menginfakkan hartanya di jalan Allah seperti sebutir biji yang
+        menumbuhkan tujuh tangkai, pada setiap tangkai ada seratus biji…"</p>
+      <div class="ayah">— QS. Al-Baqarah : 261</div>
+      <div class="salam">Assalāmu'alaikum warahmatullāhi wabarakātuh</div>
+    </div>
+  </section>
+
+  <!-- ─── Latar Belakang ─── -->
+  <section id="latar" class="s" data-screen-label="Latar Belakang">
+    <div class="wrap">
+      <span class="eyebrow">01 — Latar Belakang</span>
+      <h2 class="title">Setiap Sholat Ied, kami selalu pindah lapangan.</h2>
+      <p class="lead">Sudah puluhan tahun Muhammadiyah Cabang Kaliwungu menyelenggarakan Sholat Idul Fitri dan Idul Adha
+        berpindah-pindah — dari lapangan Brimob, halaman RM Salsabil, halaman kantor kecamatan, hingga ruas jalan yang
+        ditutup darurat. Setiap tahun panitia mengulang ritual yang sama: meminjam lokasi, mengurus izin, berdoa cuaca
+        cerah, lalu membongkar kembali keesokan harinya.</p>
+
+      <div class="lb-grid">
+        <div class="lb-text">
+          <p>Sebagai cabang dengan <b>8 ranting (PRM)</b>, 1 RS, 1 SMP, 1 SMA, 1 MI, 10 PAUD/TK ABA, dan ribuan jamaah
+            aktif, Muhammadiyah Kaliwungu telah lama membutuhkan satu titik berkumpul yang permanen — bukan sekadar
+            tempat sholat tahunan, melainkan <b>rumah pergerakan</b> bagi seluruh keluarga besar Muhammadiyah se-cabang.
+          </p>
+          <p>Tanah seluas <b>6.115 m²</b> di Karangtengah — tepat di depan Masjid Al Muhajirin — kami siapkan tidak
+            hanya sebagai lapangan Sholat Ied, namun sebagai cikal bakal <b style="color:var(--blue)">Muhammadiyah
+              Center Kaliwungu</b>: pusat dakwah, kajian, sosial-kemasyarakatan, dan kegiatan AUM lintas generasi.</p>
+          <p>Inilah ikhtiar bersama. Bukan milik satu orang, bukan beban satu pihak — melainkan <b class="kalam-b"
+              style="font-size:20px;color:var(--blue)">wakaf bersama</b> yang dihimpun dari ribuan tangan kebaikan.</p>
+
+          <div class="quote-block">
+            Apabila anak Adam meninggal dunia, terputuslah amalnya kecuali tiga: sedekah jariyah, ilmu yang bermanfaat,
+            dan anak shalih yang mendoakan.
+            <div class="src">— HR. Muslim</div>
+          </div>
+        </div>
+
+        <div class="lb-image">
+          <img src="assets/sholat-ied-5.jpg" alt="Ribuan jamaah Sholat Ied PCM Kaliwungu" loading="lazy" />
+          <span class="ph-tag">Sholat Ied · PCM Kaliwungu</span>
+          <div class="ph-caption">
+            <b>Ribuan jamaah, lokasi sholat ied</b>
+            Setiap tahun berpindah — kini saatnya tanah milik umat sendiri.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Jejak Sholat Ied ─── -->
+  <section class="s jejak" data-screen-label="Jejak Sholat Ied">
+    <div class="wrap">
+      <div class="jejak-head">
+        <div class="bar"></div>
+        <span>Jejak Sholat Ied PCM Kaliwungu</span>
+      </div>
+      <h2 class="title" style="font-size:38px;margin-bottom:14px">Dokumentasi tahun-tahun sebelumnya.</h2>
+      <p class="lead">Setiap tahun, jamaah Muhammadiyah Kaliwungu mengikhlaskan diri sholat di lokasi sholat ied —
+        berdesakan, panas, dan tak jarang terganggu hujan. Inilah alasan paling jujur mengapa lahan ini perlu kita
+        wakafkan bersama.</p>
+
+      <div class="jejak-grid">
+        <div class="jejak-card j1">
+          <img src="assets/sholat-ied-1.jpg" alt="Lapangan Brimob" loading="lazy"
+            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.85))">
+          </div>
+          <div class="cap">
+            <div class="lbl">LOKASI 01</div>
+            <b>Lapangan Brimob</b>
+            <span>Sholat Ied di lapangan rumput — bergantung izin tahunan</span>
+          </div>
+        </div>
+        <div class="jejak-card j2">
+          <svg class="bg" viewBox="0 0 200 150" fill="none" stroke="white" stroke-width=".6">
+            <img src="assets/sholat-ied-2.jpg" alt="Halaman RM Salsabil" loading="lazy"
+              style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.85))">
+            </div>
+          </svg>
+          <div class="cap">
+            <div class="lbl">LOKASI 02</div>
+            <b>Halaman RM Salsabil</b>
+            <span>Lahan parkir rumah makan — sudah didirikan bangunan baru</span>
+          </div>
+        </div>
+        <div class="jejak-card j3" style="background:#000">
+          <img src="assets/sholat-ied-3.jpg" alt="Sholat Ied di halaman kantor kecamatan" loading="lazy"
+            style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block" />
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.85))">
+          </div>
+          <div class="cap">
+            <div class="lbl">LOKASI 03</div>
+            <b>Halaman Kantor Kecamatan</b>
+            <span>Lapangan kecamatan Kaliwungu — kapasitas terbatas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Tiga Pilar ─── -->
+  <section id="tujuan" class="s pillars" data-screen-label="Tiga Pilar">
+    <div class="wrap">
+      <span class="eyebrow">02 — Tujuan &amp; Manfaat</span>
+      <h2 class="title">Tiga pilar di balik <span class="t">Wakaf Bersama MU.</span></h2>
+      <p class="lead">Setiap meter yang Anda wakafkan menggerakkan tiga gerbong kebaikan sekaligus — sekarang, esok, dan
+        jauh setelah kita tiada.</p>
+
+      <div class="pillar-grid">
+        <div class="pillar p1">
+          <div class="num">01</div>
+          <div class="ico">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="8" r="3" />
+              <circle cx="17" cy="9" r="2.5" />
+              <path d="M3 20c0-3 3-5 6-5s6 2 6 5" />
+              <path d="M14 20c0-2 2-4 5-4s5 2 5 4" />
+            </svg>
+          </div>
+          <h3>Bersama Berwakaf</h3>
+          <p>Patungan ribuan tangan — dari ranting, AUM, hingga simpatisan. <b>Bebas berapapun</b>, sesuai kelapangan
+            rezeki. Tidak ada nominal yang terlalu kecil di hadapan Allah.</p>
+        </div>
+        <div class="pillar p2">
+          <div class="num">02</div>
+          <div class="ico">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12s2-3 7-3 7 3 7 3" />
+              <path d="M12 9V5M10 5h4" />
+              <path d="M3 21h18M5 21v-7M19 21v-7M9 21v-5M15 21v-5" />
+            </svg>
+          </div>
+          <h3>Bersama Beribadah</h3>
+          <p>Muhammadiyah Center Kaliwungu — lapangan permanen Sholat Idul Fitri, Idul Adha, takbir keliling, kajian
+            akbar. Satu titik berkumpul ribuan jamaah lintas ranting.</p>
+        </div>
+        <div class="pillar p3">
+          <div class="num">03</div>
+          <div class="ico">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l8 4v6c0 5-4 8-8 9-4-1-8-4-8-9V7l8-4z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          </div>
+          <h3>Untuk Kebaikan Umat</h3>
+          <p>Cikal bakal pusat dakwah, kajian, kegiatan AUM, pusat ekonomi, dan ruang hijau publik. Amal jariyah yang
+            pahalanya mengalir lintas generasi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Lokasi ─── -->
+  <section id="lokasi" class="s lokasi" data-screen-label="Lokasi">
+    <div class="wrap">
+      <span class="eyebrow">03 — Lokasi &amp; Spesifikasi</span>
+      <h2 class="title">Karangtengah — <span class="b">depan Masjid Al Muhajirin.</span></h2>
+      <p class="lead">Strategis, dekat akses utama, dan berada di tengah-tengah sebaran 8 ranting Muhammadiyah
+        Kaliwungu. <a href="https://maps.app.goo.gl/dZE9Cy3cEt72MLGi6" target="_blank" rel="noopener"
+          style="color:var(--blue);font-weight:600;border-bottom:2px solid var(--yellow);padding-bottom:1px">Buka di
+          Google Maps →</a></p>
+
+      <div class="lokasi-grid">
+        <div class="map-card" style="background:none;padding:0;overflow:hidden;position:relative;border-radius:20px;">
+          <iframe src="https://www.google.com/maps?q=-6.953711,110.245688&z=18&output=embed" width="100%" height="100%"
+            style="position:absolute;inset:0;width:100%;height:100%;border:0;display:block;" allowfullscreen=""
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            title="Lokasi Lahan Wakaf Karangtengah Kaliwungu">
+          </iframe>
+          <span class="map-tag"
+            style="position:absolute;top:16px;left:16px;z-index:2;backdrop-filter:blur(8px);background:rgba(255,255,255,0.92);color:#111;border-radius:100px;padding:6px 12px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;box-shadow:0 2px 10px rgba(0,0,0,.15);">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="#e53935">
+              <path
+                d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+            </svg>
+            Karangtengah, Kaliwungu
+          </span>
+          <div
+            style="position:absolute;bottom:0;left:0;right:0;z-index:2;padding:16px;background:linear-gradient(transparent,rgba(0,0,0,.6));display:flex;align-items:flex-end;justify-content:space-between;gap:10px;">
+            <div style="color:#fff;font-size:13px;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.5);">📍 Lahan Wakaf
+              · 6.115 m²</div>
+            <a href="https://maps.app.goo.gl/dZE9Cy3cEt72MLGi6" target="_blank" rel="noopener" class="map-cta"
+              style="white-space:nowrap;flex-shrink:0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+              </svg>
+              Buka di Google Maps
+            </a>
+          </div>
+        </div>
+
+        <div class="lokasi-info">
+          <div class="info-row">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg></div>
+            <div>
+              <div class="lbl">Lokasi</div>
+              <div class="val">Karangtengah, Kaliwungu<small>Depan Masjid Al Muhajirin</small></div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M3 9h18M9 21V9" />
+              </svg></div>
+            <div>
+              <div class="lbl">Luas Tanah</div>
+              <div class="val">6.115 m²<small>≈ 0,61 hektar</small></div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M3 21h18M5 21V10l7-5 7 5v11" />
+                <path d="M9 21v-6h6v6" />
+              </svg></div>
+            <div>
+              <div class="lbl">Peruntukan</div>
+              <div class="val">Muhammadiyah Center<small>Lapangan Sholat Ied · pusat dakwah · kegiatan AUM</small></div>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 2" />
+              </svg></div>
+            <div>
+              <div class="lbl">Target Penyelesaian</div>
+              <div class="val">Sebelum Idul Fitri 1448 H<small>Maret 2027 — Sholat Ied perdana</small></div>
+            </div>
+          </div>
+          <div class="info-row highlight">
+            <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg></div>
+            <div>
+              <div class="lbl">Status Hukum</div>
+              <div class="val">Wakaf atas nama PCM Kaliwungu<small>Disertifikatkan resmi (BPN) — pajak BPHTB &amp; BBN
+                  dialokasikan</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RAB ─── -->
+  <section id="rab" class="s rab" data-screen-label="RAB">
+    <div class="wrap">
+      <span class="eyebrow">04 — Rencana Anggaran &amp; Biaya</span>
+      <h2 class="title">Total kebutuhan: <span class="y">Rp 7.175.010.000</span></h2>
+      <p class="lead">Anggaran disusun transparan oleh tim PCM Kaliwungu — mencakup pembelian tanah, pajak BPHTB, balik
+        nama, dan pematangan lahan agar siap menampung jamaah.</p>
+
+      <div class="rab-summary">
+        <div class="rab-card a">
+          <div class="lbl">Total Kebutuhan (A)</div>
+          <div class="num">Rp 7,175 M</div>
+          <div class="sub">Tanah + Pajak + BBN + Pematangan</div>
+        </div>
+        <div class="rab-card b">
+          <div class="lbl">Komitmen Internal (B)</div>
+          <div class="num">Rp 3,717 M</div>
+          <div class="sub">Lelang wakaf jamaah, AUM, masjid &amp; CSR</div>
+        </div>
+        <div class="rab-card c">
+          <div class="lbl">Kekurangan Dana</div>
+          <div class="num">Rp 3,458 M</div>
+          <div class="sub">Membutuhkan uluran simpatisan &amp; donatur</div>
+        </div>
+      </div>
+
+      <div class="rab-table">
+        <div class="rab-row head">
+          <div>No</div>
+          <div>Keterangan</div>
+          <div class="num-c satuan">Qty</div>
+          <div class="num-c satuan">Sat</div>
+          <div class="num-c harga">Harga (Rp)</div>
+          <div class="num-c">Jumlah (Rp)</div>
+        </div>
+        <div class="rab-row cat">
+          <div>A.</div>
+          <div class="desc">PENGELUARAN</div>
+        </div>
+        <div class="rab-row">
+          <div>1</div>
+          <div class="desc">Perolehan tanah</div>
+          <div class="num-c satuan">6.115</div>
+          <div class="num-c satuan">m²</div>
+          <div class="num-c harga">1.000.000</div>
+          <div class="num-c">6.115.000.000</div>
+        </div>
+        <div class="rab-row">
+          <div>2</div>
+          <div class="desc">Pajak pembelian (BPHTB)</div>
+          <div class="num-c satuan">1</div>
+          <div class="num-c satuan">paket</div>
+          <div class="num-c harga">301.750.000</div>
+          <div class="num-c">301.750.000</div>
+        </div>
+        <div class="rab-row">
+          <div>3</div>
+          <div class="desc">Biaya proses balik nama (BBN)</div>
+          <div class="num-c satuan">6.115</div>
+          <div class="num-c satuan">m²</div>
+          <div class="num-c harga">10.000</div>
+          <div class="num-c">61.150.000</div>
+        </div>
+        <div class="rab-row">
+          <div>4</div>
+          <div class="desc">Biaya pematangan lahan / urug</div>
+          <div class="num-c satuan">12.230</div>
+          <div class="num-c satuan">m³</div>
+          <div class="num-c harga">57.000</div>
+          <div class="num-c">697.110.000</div>
+        </div>
+        <div class="rab-row total">
+          <div></div>
+          <div class="desc">JUMLAH TOTAL PENGELUARAN</div>
+          <div class="num-c satuan"></div>
+          <div class="num-c satuan"></div>
+          <div class="num-c harga"></div>
+          <div class="num-c">Rp 7.175.010.000</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Skema Pemasukan ─── -->
+  <section id="pemasukan" class="s pemasukan" data-screen-label="Pemasukan">
+    <div class="wrap">
+      <span class="eyebrow">05 — Skema Pemasukan</span>
+      <h2 class="title">Komitmen wakaf <span class="t">dari enam pintu kebaikan.</span></h2>
+      <p class="lead">Penghimpunan disebar ke 6 kelompok agar beban tidak menumpuk pada satu pihak. <b>Setiap orang
+          bebas berwakaf berapapun</b> — angka di bawah ini adalah komitmen nominal yang sudah dicatat panitia.</p>
+
+      <div class="pem-grid">
+        <div class="pem-card t1">
+          <div class="pem-head">
+            <div class="pem-num">1</div>
+            <h4>Lelang Wakaf Jamaah</h4>
+          </div>
+          <div class="pem-amount">Rp 1.725.000.000</div>
+          <div class="pem-meta">Komitmen 8 ranting Muhammadiyah</div>
+          <ul class="pem-list">
+            <li><span>PRM Sarirejo</span><span>Rp 375.000.000</span></li>
+            <li><span>PRM Kumpulrejo</span><span>Rp 300.000.000</span></li>
+            <li><span>PRM Krajankulon</span><span>Rp 300.000.000</span></li>
+            <li><span>PRM Karangtengah</span><span>Rp 225.000.000</span></li>
+            <li><span>PRM Mororejo</span><span>Rp 225.000.000</span></li>
+            <li><span>PRM Kutoharjo</span><span>Rp 150.000.000</span></li>
+            <li><span>PRM Wonorejo</span><span>Rp 75.000.000</span></li>
+            <li><span>PRM Sumberejo</span><span>Rp 75.000.000</span></li>
+          </ul>
+        </div>
+
+        <div class="pem-card t2">
+          <div class="pem-head">
+            <div class="pem-num">2</div>
+            <h4>Pimpinan &amp; Tokoh Muhammadiyah</h4>
+          </div>
+          <div class="pem-amount">Rp 1.539.000.000</div>
+          <div class="pem-meta">PCM, PCA, dan tokoh Muhammadiyah</div>
+          <ul class="pem-list">
+            <li><span>Pleno PCM Kaliwungu</span><span>Rp 19.500.000</span></li>
+            <li><span>Pleno PCA Kaliwungu</span><span>Rp 19.500.000</span></li>
+            <li><span>Tokoh Muhammadiyah</span><span>Rp1.500.000.000</span></li>
+          </ul>
+        </div>
+
+        <div class="pem-card t3">
+          <div class="pem-head">
+            <div class="pem-num">3</div>
+            <h4>Lelang Wakaf AUM</h4>
+          </div>
+          <div class="pem-amount">Rp 43.500.000</div>
+          <div class="pem-meta">Amal Usaha Muhammadiyah Kaliwungu</div>
+          <ul class="pem-list">
+            <li><span>RS Darul Istiqomah</span><span>Rp 15.000.000</span></li>
+            <li><span>PAUD/TK ABA Se-Cabang</span><span>Rp 15.000.000</span></li>
+            <li><span>SMP, SMA, MI Kaliwungu</span><span>Rp 6.000.000</span></li>
+            <li><span>BTM, Balai Dakwah</span><span>Rp 6.000.000</span></li>
+            <li><span>Parkirmu, Kiosmu</span><span>Rp 3.000.000</span></li>
+          </ul>
+        </div>
+
+        <div class="pem-card t4">
+          <div class="pem-head">
+            <div class="pem-num">4</div>
+            <h4>Lelang Wakaf Masjid</h4>
+          </div>
+          <div class="pem-amount">Rp 18.000.000</div>
+          <div class="pem-meta">Komitmen masjid 8 PRM</div>
+          <ul class="pem-list">
+            <li><span>Masjid PRM Kumpulrejo</span><span>Rp 3.000.000</span></li>
+            <li><span>Masjid PRM Sarirejo</span><span>Rp 3.000.000</span></li>
+            <li><span>Masjid PRM Krajankulon</span><span>Rp 3.000.000</span></li>
+            <li><span>Masjid PRM Mororejo</span><span>Rp 3.000.000</span></li>
+            <li><span>Masjid PRM Karangtengah</span><span>Rp 1.500.000</span></li>
+            <li><span>Masjid PRM Kutoharjo</span><span>Rp 1.500.000</span></li>
+            <li><span>Masjid PRM Wonorejo</span><span>Rp 1.500.000</span></li>
+            <li><span>Masjid PRM Sumberejo</span><span>Rp 1.500.000</span></li>
+          </ul>
+        </div>
+
+        <div class="pem-card t5">
+          <div class="pem-head">
+            <div class="pem-num">5</div>
+            <h4>Donatur &amp; Simpatisan</h4>
+          </div>
+          <div class="pem-amount">Rp 150.000.000</div>
+          <div class="pem-meta">Wakaf umum — terbuka untuk siapa saja</div>
+          <ul class="pem-list">
+            <li><span>Simpatisan Muhammadiyah</span><span style="width: 90.0312px">Rp 75.000.000</span></li>
+            <li><span>Donatur muslim lainnya</span><span>Rp 75.000.000</span></li>
+            <li class="open"><span>Open untuk siapa saja</span><span>→ ikut</span></li>
+          </ul>
+        </div>
+
+        <div class="pem-card t6">
+          <div class="pem-head">
+            <div class="pem-num">6</div>
+            <h4>CSR Perusahaan</h4>
+          </div>
+          <div class="pem-amount">Rp 240.000.000</div>
+          <div class="pem-meta">Mitra korporat &amp; sponsor program</div>
+          <ul class="pem-list">
+            <li><span>PT. Mentari Multi Trada</span><span>Rp 45.000.000</span></li>
+            <li><span>PT. Hansa Berkah Propertindo</span><span>Rp 45.000.000</span></li>
+            <li><span>PT. Lainnya</span><span>Rp 150.000.000</span></li>
+            <li class="csr"><span>Slot CSR terbuka</span><span>→ ajukan</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="goal">
+        <div class="goal-grid">
+          <div>
+            <h3>Total komitmen tercatat: Rp 3.717.000.000</h3>
+            <p>Sekitar <b>51,8%</b> dari kebutuhan total. <b>Tersisa Rp 3,46 miliar</b> yang menanti uluran tangan Anda
+              — donatur, simpatisan, mitra perusahaan — agar tahun depan kita bisa Sholat Ied di tanah milik umat
+              sendiri.</p>
+          </div>
+          <div class="progress-card">
+            <div class="pc-row"><span>Progress Penghimpunan</span><span><b id="pct-label">0%</b></span></div>
+            <div class="pc-bar">
+              <div class="pc-fill" id="pc-fill"></div>
+            </div>
+            <div class="pc-stats">
+              <div>
+                <div class="v">Rp 3,72 M</div>
+                <div class="l">Komitmen</div>
+              </div>
+              <div>
+                <div class="v">Rp 3,46 M</div>
+                <div class="l">Kekurangan</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Paket Wakaf ─── -->
+  <section id="paket" class="s paket" data-screen-label="Paket Wakaf">
+    <div class="wrap">
+      <span class="eyebrow">06 — Paket Wakaf · Apresiasi</span>
+      <h2 class="title">Tiga apresiasi, <span class="y">satu niat tulus.</span></h2>
+      <p class="lead">Pahalanya satu, tanda kasih kami tiga. Pilih sesuai kelapangan rezeki — atau berwakaf bebas
+        berapapun.</p>
+
+      <div class="paket-grid">
+        <article class="paket-card p1">
+          <span class="pkt-tag">Paket I · Sahabat</span>
+          <h3 class="pkt-h3">Wakaf Sahabat</h3>
+          <div class="pkt-price">Bebas <small>berapapun nominalnya</small></div>
+          <p class="pkt-desc">Untuk semua sahabat yang ingin ikut menanam pahala — sekecil apa pun nilainya. Allah Maha
+            Tahu niat yang tulus.</p>
+          <ul class="pkt-list">
+            <li>Piagam Wakaf Digital (PDF) via WhatsApp</li>
+            <li>Nama tercatat di database wakif WPL</li>
+            <li>Doa khusus dari panitia</li>
+          </ul>
+          <a class="btn btn-ghost" href="#cara">Pilih Paket Sahabat →</a>
+        </article>
+
+        <article class="paket-card featured">
+          <span class="pkt-tag">Paket II · Disarankan</span>
+          <h3 class="pkt-h3">Wakaf Penggerak</h3>
+          <div class="pkt-price">Rp 1,5 Juta <small>ke atas</small></div>
+          <p class="pkt-desc">Bagi Anda yang menggerakkan langkah lebih besar. Piagam cetak elegan sebagai pengingat
+            kebaikan di rumah, kantor, atau tempat usaha.</p>
+          <ul class="pkt-list">
+            <li>Piagam Wakaf Cetak — frame eksklusif</li>
+            <li>Piagam Digital + data tercatat resmi</li>
+            <li>Doa khusus dari panitia</li>
+            <li>Apresiasi tertulis dari PCM Kaliwungu</li>
+          </ul>
+          <a class="btn btn-primary" href="#cara">Pilih Paket Penggerak →</a>
+        </article>
+
+        <article class="paket-card p3">
+          <span class="pkt-tag">Paket III · Pelopor</span>
+          <h3 class="pkt-h3">Wakaf Pelopor</h3>
+          <div class="pkt-price">Rp 50 Juta <small>ke atas</small></div>
+          <p class="pkt-desc">Bagi para pelopor yang membuka jalan kebaikan. Plakat premium yang menjadi kenang-kenangan
+            keluarga lintas generasi.</p>
+          <ul class="pkt-list">
+            <li>Plakat Premium akrilik / kristal atas nama wakif</li>
+            <li>Piagam Cetak + Digital</li>
+            <li>Apresiasi khusus dari Pimpinan Cabang Muhammadiyah Kaliwungu</li>
+            <li>Doa khusus &amp; laporan progress personal</li>
+          </ul>
+          <a class="btn btn-ghost" href="#cara">Pilih Paket Pelopor →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Cara Berwakaf ─── -->
+  <section id="cara" class="s cara" data-screen-label="Cara Berwakaf">
+    <div class="wrap">
+      <span class="eyebrow">07 — Cara Berwakaf</span>
+      <h2 class="title">Empat langkah, <span class="b">satu meter pahala.</span></h2>
+      <p class="lead">Sederhana. Aman. Tercatat. Berapapun nominal yang Anda wakafkan akan menjadi tanah atas nama umat.
+      </p>
+
+      <div class="cara-grid">
+        <div>
+          <div class="step">
+            <div class="n">1</div>
+            <div>
+              <h4>Tentukan nominal wakaf Anda</h4>
+              <p><b>Bebas berapapun</b> — Rp 50.000, Rp 500.000, jutaan, atau lebih, sesuai kelapangan rezeki. Tidak ada
+                nominal yang terlalu kecil di hadapan Allah.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">2</div>
+            <div>
+              <h4>Transfer ke rekening resmi</h4>
+              <p>Gunakan salah satu rekening LAZISMU Kendal yang tersedia di bawah. Cantumkan kode <b
+                  style="color:var(--blue)">WPL-[nama]</b> pada berita transfer agar mudah dicatat.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">3</div>
+            <div>
+              <h4>Konfirmasi ke panitia</h4>
+              <p>Kirim bukti transfer via WhatsApp <b>+62 821-3800-9711</b>. Panitia akan menerbitkan tanda terima resmi
+                &amp; piagam wakaf digital atas nama Anda.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">4</div>
+            <div>
+              <h4>Doa &amp; pahala mengalir</h4>
+              <p>Setiap rakaat sholat, setiap takbir Idul Fitri, setiap pengajian — pahalanya mengalir kepada Anda dan
+                keluarga, sepanjang lahan ini berdiri.</p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="qr-card">
+            <div class="qr-box">
+              <svg width="80" height="80" viewBox="0 0 0 0">
+                <rect width="80" height="80" fill="#fff" style="fill: rgb(255, 255, 255)" />
+                <g fill="var(--ink)">
+                  <rect x="4" y="4" width="20" height="20" />
+                  <rect x="8" y="8" width="12" height="12" fill="#fff" />
+                  <rect x="11" y="11" width="6" height="6" />
+                  <rect x="56" y="4" width="20" height="20" />
+                  <rect x="60" y="8" width="12" height="12" fill="#fff" />
+                  <rect x="63" y="11" width="6" height="6" />
+                  <rect x="4" y="56" width="20" height="20" />
+                  <rect x="8" y="60" width="12" height="12" fill="#fff" />
+                  <rect x="11" y="63" width="6" height="6" />
+                  <rect x="28" y="4" width="3" height="3" />
+                  <rect x="34" y="4" width="3" height="3" />
+                  <rect x="40" y="4" width="3" height="3" />
+                  <rect x="46" y="4" width="3" height="3" />
+                  <rect x="28" y="10" width="3" height="3" />
+                  <rect x="34" y="10" width="3" height="3" />
+                  <rect x="46" y="10" width="3" height="3" />
+                  <rect x="28" y="16" width="3" height="3" />
+                  <rect x="40" y="16" width="3" height="3" />
+                  <rect x="46" y="16" width="3" height="3" />
+                  <rect x="4" y="28" width="3" height="3" />
+                  <rect x="10" y="28" width="3" height="3" />
+                  <rect x="16" y="28" width="3" height="3" />
+                  <rect x="22" y="28" width="3" height="3" />
+                  <rect x="28" y="28" width="3" height="3" />
+                  <rect x="34" y="28" width="3" height="3" />
+                  <rect x="46" y="28" width="3" height="3" />
+                  <rect x="58" y="28" width="3" height="3" />
+                  <rect x="64" y="28" width="3" height="3" />
+                  <rect x="4" y="34" width="3" height="3" />
+                  <rect x="16" y="34" width="3" height="3" />
+                  <rect x="28" y="34" width="3" height="3" />
+                  <rect x="40" y="34" width="3" height="3" />
+                  <rect x="52" y="34" width="3" height="3" />
+                  <rect x="64" y="34" width="3" height="3" />
+                  <rect x="10" y="40" width="3" height="3" />
+                  <rect x="22" y="40" width="3" height="3" />
+                  <rect x="34" y="40" width="3" height="3" />
+                  <rect x="46" y="40" width="3" height="3" />
+                  <rect x="58" y="40" width="3" height="3" />
+                  <rect x="70" y="40" width="3" height="3" />
+                  <rect x="4" y="46" width="3" height="3" />
+                  <rect x="16" y="46" width="3" height="3" />
+                  <rect x="22" y="46" width="3" height="3" />
+                  <rect x="40" y="46" width="3" height="3" />
+                  <rect x="52" y="46" width="3" height="3" />
+                  <rect x="64" y="46" width="3" height="3" />
+                  <rect x="28" y="58" width="3" height="3" />
+                  <rect x="34" y="58" width="3" height="3" />
+                  <rect x="46" y="58" width="3" height="3" />
+                  <rect x="58" y="58" width="3" height="3" />
+                  <rect x="70" y="58" width="3" height="3" />
+                  <rect x="40" y="64" width="3" height="3" />
+                  <rect x="52" y="64" width="3" height="3" />
+                  <rect x="64" y="64" width="3" height="3" />
+                  <rect x="34" y="70" width="3" height="3" />
+                  <rect x="46" y="70" width="3" height="3" />
+                  <rect x="58" y="70" width="3" height="3" />
+                  <rect x="70" y="70" width="3" height="3" />
+                </g>
+              </svg>
+            </div>
+            <div>
+              <div class="lbl">QRIS Wakaf</div>
+              <div class="ttl">Scan &amp; Bayar Cepat</div>
+              <p>Mendukung semua e-wallet &amp; m-banking di Indonesia.</p>
+            </div>
+          </div>
+
+          <div class="qr-card wa">
+            <div class="qr-box">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"
+                stroke-linecap="round">
+                <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V5a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+              </svg>
+            </div>
+            <div>
+              <div class="lbl">Konfirmasi &amp; Konsultasi</div>
+              <div class="ttl">WhatsApp Panitia</div>
+              <p><b>+62 821-3800-9711</b> — Panitia Wakaf PCM Kaliwungu (24 jam respon)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Jaminan ─── -->
+  <section class="s jaminan" data-screen-label="Jaminan">
+    <div class="wrap">
+      <span class="eyebrow">Tiga jaminan</span>
+      <h2 class="title">Wakaf Anda <span class="t">terjaga.</span></h2>
+      <div class="jam-grid">
+        <div class="jam-card b1">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M9 12l2 2 4-4" />
+            </svg></span>
+          <div>
+            <h4>Tercatat</h4>
+            <p>Setiap wakif memiliki data lengkap dalam database panitia & laporan publik.</p>
+          </div>
+        </div>
+        <div class="jam-card b2">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+              <path d="M14 3v6h6" />
+              <path d="M8 14h8" />
+              <path d="M8 18h5" />
+            </svg></span>
+          <div>
+            <h4>Berkwitansi</h4>
+            <p>Setiap pembayaran disertai kwitansi resmi atas nama wakif.</p>
+          </div>
+        </div>
+        <div class="jam-card b3">
+          <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" />
+            </svg></span>
+          <div>
+            <h4>Dikelola Amil Resmi</h4>
+            <p>Dana disalurkan ke LAZISMU Kendal — bukan rekening pribadi, dengan kategori Bank Infak.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Bank list ─── -->
+  <section class="s banks" data-screen-label="Rekening Bank">
+    <div class="wrap">
+      <span class="eyebrow">08 — Transfer Bank · LAZISMU Kendal</span>
+      <h2 class="title">Delapan bank, <span class="b">satu niat tulus.</span></h2>
+      <p class="lead">Pilih kanal yang paling nyaman bagi Anda. Semua rekening atas nama LAZISMU Kendal — Lembaga Amil
+        Zakat Infaq Sedekah Muhammadiyah resmi.</p>
+
+      <div class="bank-grid">
+        <div class="bank"><span class="bn">BSI</span>
+          <div class="bnum">7447 7788 87</div>
+          <div class="baccount">a.n. LAZISMU Kendal — Infaq</div>
+        </div>
+        <div class="bank"><span class="bn">BPRS ASB</span>
+          <div class="bnum">1221 2000 65</div>
+          <div class="baccount">a.n. LAZISMU Kendal — Infaq</div>
+        </div>
+        <div class="bank"><span class="bn">Muamalat</span>
+          <div class="bnum">5040 0158 81</div>
+          <div class="baccount">a.n. LAZISMU Kendal — Infaq</div>
+        </div>
+        <div class="bank"><span class="bn">BTM Kaliwungu</span>
+          <div class="bnum">5.01.01297</div>
+          <div class="baccount">a.n. LAZISMU PCM Kaliwungu Insod</div>
+        </div>
+        <div class="bank"><span class="bn">Maybank</span>
+          <div class="bnum">2708 0004 76</div>
+          <div class="baccount">a.n. LAZISMU Kendal — Infaq</div>
+        </div>
+        <div class="bank"><span class="bn">Danamon</span>
+          <div class="bnum">3694 0814 35</div>
+          <div class="baccount">a.n. LAZISMU Kendal — Infaq</div>
+        </div>
+        <div class="bank"><span class="bn">Jateng Syariah</span>
+          <div class="bnum">5032 2871 74</div>
+          <div class="baccount">a.n. LAZISMU Kendal — Infaq</div>
+        </div>
+        <div class="bank"><span class="bn">Bukopin</span>
+          <div class="bnum">7708 0081 56</div>
+          <div class="baccount">a.n. LAZISMU Kendal — Infaq</div>
+        </div>
+      </div>
+
+      <div class="bank-foot">
+        <div class="b">
+          <span class="bi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round">
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" />
+            </svg></span>
+          <div>
+            <h4>Konfirmasi setelah transfer</h4>
+            <p>Kirim bukti transfer via WhatsApp <b>+62 821-3800-9711</b>. Cantumkan kode <b>WPL-[nama]</b> di berita
+              transfer agar mudah dicatat panitia.</p>
+          </div>
+        </div>
+        <div class="b b2">
+          <span class="bi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg></span>
+          <div>
+            <h4>Dikelola Amil Resmi</h4>
+            <p>Semua rekening atas nama <b>LAZISMU Kendal</b> — Lembaga Amil Zakat Infaq Sedekah Muhammadiyah resmi &
+              terpercaya, dengan kategori Bank Infak.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Closing ─── -->
+  <section class="s closing" data-screen-label="Penutup">
+    <div class="wrap">
+      <span class="eyebrow">Penutup</span>
+      <div class="mosque">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2c1.5 1.5 1.5 3 0 4" />
+          <path d="M3 22V11c0-3 4-5 9-5s9 2 9 5v11" />
+          <path d="M3 22h18" />
+          <path d="M9 22v-6h6v6" />
+          <path d="M7 11v11M17 11v11" />
+          <path d="M12 2v3" />
+          <circle cx="12" cy="14" r="1" />
+        </svg>
+      </div>
+      <div class="closing-quote">Wakaf hari ini, pahala mengalir selamanya.<br />Mari berjamaah dalam kebaikan.</div>
+      <div class="closing-by">— Panitia Wakaf Pembebasan Lahan · PCM Kaliwungu</div>
+
+      <div class="closing-doa">
+        <div class="arabic">جَزَاكُمُ اللَّهُ خَيْرًا كَثِيرًا</div>
+        <div class="meaning">Semoga Allah membalas kebaikan Bapak/Ibu dengan kebaikan yang berlipat ganda. Atas
+          perhatian, doa, dan dukungan yang diberikan — kami panitia menghaturkan terima kasih yang sebesar-besarnya.
+        </div>
+      </div>
+
+      <div class="panitia-card">
+        <div class="ph">
+          <div class="role">Berdasarkan SK No. 025/KEP/IV.0/D/2026</div>
+          <h3>Panitia Pengadaan Tanah</h3>
+          <div class="org">Pimpinan Cabang Muhammadiyah Kaliwungu</div>
+        </div>
+        <div class="pg">
+          <div>
+            <div class="lbl">Penanggungjawab</div>
+            <div class="v">Pimpinan Cabang Muhammadiyah Kaliwungu</div>
+          </div>
+          <div>
+            <div class="lbl">Ketua</div>
+            <div class="v">Edy Hansa, SE., MM
+            </div>
+          </div>
+          <div>
+            <div class="lbl">Sekretaris</div>
+            <div class="v">1. M. Arief Rahman Hakim, M.Pd<br />2. Aofi An Surya Madani</div>
+          </div>
+          <div>
+            <div class="lbl">Bendahara</div>
+            <div class="v">1. Mukhamad Saiful Hidayat, S.Kom<br />2. Ikhlasu Amal Ahyani</div>
+          </div>
+          <div class="anggota" style="grid-column:1/-1">
+            <div class="lbl">Anggota</div>
+            <div class="v">1. H. Achyak Kasbi, Dip Kmd.<br />2. H. Khaerul Anwar, S.HI, M.HI<br />3. H. Samsul
+              Qomar<br />4. Redho Wiyono<br />5. H. Ulul Azmi Al Mubarok<br />6. Ahmad Ghozali<br />7. Harun Nur Zaki,
+              S.Pd<br />8. Muhammad Shafril Hidayat<br />9. M. Yazit<br />10. Dra. Kisminiyati<br />11. Hj. Nur
+              Farudin<br />12. Hj. Siti Rokayah, S.Pd.<br />13. Nur Hidayatul Fitriyah, S.T</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="signoff">
+        <div>
+          <div class="role">Ketua PCM Kaliwungu</div>
+          <div class="sig">Asyiqien</div>
+          <div class="name">H. Asyiqien Humam, Dip Kmd.</div>
+          <div class="pos">NBM. 782 507</div>
+        </div>
+        <div>
+          <div class="role">SEKRETARIS</div>
+          <div class="sig">Arief</div>
+          <div class="name">M. Arief Rahman Hakim, M.Pd</div>
+          <div class="pos">NBM. 1032786
+          </div>
+        </div>
+        <div>
+          <div class="role">KETUA PANITIA</div>
+          <div class="sig">Edy H</div>
+          <div class="name">Edy Hansa, SE., MM</div>
+          <div class="pos">NBM. 1096755</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    <div class="ft-grid">
+      <div>
+        <div class="ft-logo">
+          <span class="nl-mark" aria-hidden="true">
+            <img src="assets/bersama-beribadah-1.png" alt="Logo Wakaf"
+              style="width:36px;height:36px;object-fit:contain;display:block;" />
+          </span>
+          <div><b>Wakaf Pembebasan Lahan</b><small>Muhammadiyah Center Kaliwungu</small></div>
+        </div>
+        <p>Program penghimpunan wakaf tanah seluas 6.115 m² di Karangtengah, Kaliwungu — untuk dijadikan lahan permanen
+          Sholat Idul Fitri & Idul Adha dan Muhammadiyah Center.</p>
+      </div>
+      <div>
+        <h5>Sekretariat</h5>
+        <ul>
+          <li>Jl. Sekopek No. 12 Kaliwungu</li>
+          <li>Kab. Kendal, Jawa Tengah</li>
+          <li>Instagram<a href="https://www.instagram.com/muhammadiyah.cabangkaliwungu/" target="_blank" rel="noopener"
+              style="color:rgba(255,255,255,.85)">@muhammadiyah.cabangkaliwungu</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Kanal Wakaf</h5>
+        <ul>
+          <li>QRIS — semua e-wallet</li>
+          <li>WA Panitia +62 821-3800-9711</li>
+          <li>SK No. 025/KEP/IV.0/D/2026</li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy-bar">
+      <span>© 1447 H / 2026 M · PCM Kaliwungu</span>
+      <span>Disusun untuk dakwah, bukan untuk dijual.</span>
+    </div>
+  </footer>
+
+  <!-- Tweaks mount -->
+  <div id="tweaks-root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+    integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+    integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+    integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+    crossorigin="anonymous"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="tweaks-app.jsx"></script>
+
+  <script>
+    // Active section highlight
+    const sections = document.querySelectorAll('section[id], header[id]');
+    const links = document.querySelectorAll('.nav-links a');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = e.target.id;
+          links.forEach(l => {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => obs.observe(s));
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); window.scrollTo({ top: t.offsetTop - 70, behavior: 'smooth' }); }
+      });
+    });
+
+    // Animated progress
+    const fill = document.getElementById('pc-fill');
+    const lbl = document.getElementById('pct-label');
+    const target = 51.8;
+    const io = new IntersectionObserver((ents) => {
+      ents.forEach(e => {
+        if (e.isIntersecting) {
+          fill.style.width = target + '%';
+          let t = 0;
+          const tick = () => {
+            t = Math.min(t + 1.4, target);
+            lbl.textContent = t.toFixed(1).replace('.', ',') + '%';
+            if (t < target) requestAnimationFrame(tick);
+            else lbl.textContent = '51,8%';
+          };
+          requestAnimationFrame(tick);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: .4 });
+    io.observe(fill);
+
+    // Reveal on scroll
+    const rio = new IntersectionObserver((ents) => {
+      ents.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } });
+    }, { threshold: .12 });
+    document.querySelectorAll('.lb-grid, .pillar, .jejak-card, .pem-card, .paket-card, .apresi, .step, .bank, .jam-card, .info-row, .rab-card, .rab-table, .goal, .closing-doa, .panitia-card').forEach(el => {
+      el.classList.add('reveal'); rio.observe(el);
+    });
+  </script>
+
+</body>
+
+</html>
