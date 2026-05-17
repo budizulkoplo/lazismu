@@ -208,14 +208,14 @@
                     <form method="GET" action="{{ route('lazismu.setoran.index') }}" class="row g-2 align-items-end mb-3 history-filter-form">
                         <div class="col-md-4 col-lg-3">
                             <label class="form-label small mb-1">Tipe Setoran</label>
-                            <select name="jenis_setoran" class="form-select form-select-sm">
+                            <select name="jenis_setoran" class="form-select form-select-sm js-history-jenis-filter">
                                 <option value="">Semua tipe</option>
                                 @foreach($kodeSetorans as $kode)
                                     <option value="{{ $kode->jenis_setoran }}" @selected(request('jenis_setoran') === $kode->jenis_setoran)>{{ ucfirst($kode->jenis_setoran) }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4 col-lg-3">
+                        <div class="col-md-4 col-lg-3 js-history-program-filter">
                             <label class="form-label small mb-1">Program</label>
                             <select name="program_id" class="form-select form-select-sm">
                                 <option value="">Semua program</option>
@@ -929,6 +929,19 @@
                 });
 
                 document.querySelector('.js-quick-scan')?.addEventListener('click', startQuickScan);
+
+                const historyJenisFilter = document.querySelector('.js-history-jenis-filter');
+                const historyProgramFilter = document.querySelector('.js-history-program-filter');
+                const historyProgramSelect = historyProgramFilter?.querySelector('select[name="program_id"]');
+                const toggleHistoryProgramFilter = function() {
+                    const isProgram = (historyJenisFilter?.value || '').toLowerCase() === 'program';
+                    historyProgramFilter?.classList.toggle('d-none', !isProgram);
+                    if (!isProgram && historyProgramSelect) {
+                        historyProgramSelect.value = '';
+                    }
+                };
+                historyJenisFilter?.addEventListener('change', toggleHistoryProgramFilter);
+                toggleHistoryProgramFilter();
 
                 document.querySelectorAll('.js-start-setoran').forEach(function(button) {
                     button.addEventListener('click', function() {

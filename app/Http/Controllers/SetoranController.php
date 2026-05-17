@@ -31,7 +31,7 @@ class SetoranController extends Controller
             });
         }
 
-        if ($request->filled('program_id')) {
+        if (strtolower($request->jenis_setoran ?? '') === 'program' && $request->filled('program_id')) {
             $query->where('idprogram', $request->program_id);
         }
 
@@ -54,7 +54,7 @@ class SetoranController extends Controller
             });
         }
 
-        if ($selectedSetoranQuery && $request->filled('program_id')) {
+        if ($selectedSetoranQuery && strtolower($request->jenis_setoran ?? '') === 'program' && $request->filled('program_id')) {
             $selectedSetoranQuery->where('idprogram', $request->program_id);
         }
 

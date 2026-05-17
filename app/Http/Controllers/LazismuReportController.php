@@ -69,7 +69,7 @@ class LazismuReportController extends Controller
 
     public function program(Request $request)
     {
-        [$month, $startDate, $endDate] = $this->monthRange($request);
+        [$startDate, $endDate] = $this->dateRange($request);
         $programs = Program::orderBy('nama_program')->get();
         $selectedProgram = $request->filled('program_id')
             ? Program::find($request->program_id)
@@ -103,7 +103,8 @@ class LazismuReportController extends Controller
             'rantingChart',
             'aumChart',
             'summary',
-            'month',
+            'startDate',
+            'endDate',
             'programTarget',
             'programProgress'
         ));

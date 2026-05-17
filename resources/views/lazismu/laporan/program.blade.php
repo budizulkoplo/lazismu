@@ -18,10 +18,14 @@
 
             <form method="GET" action="{{ route('lazismu.laporan.program') }}" class="row g-2 align-items-end mb-3">
                 <div class="col-md-3">
-                    <label class="form-label">Periode Bulan</label>
-                    <input type="month" name="bulan" class="form-control" value="{{ $month }}">
+                    <label class="form-label">Tanggal Awal</label>
+                    <input type="date" name="start_date" class="form-control" value="{{ $startDate->format('Y-m-d') }}">
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
+                    <label class="form-label">Tanggal Akhir</label>
+                    <input type="date" name="end_date" class="form-control" value="{{ $endDate->format('Y-m-d') }}">
+                </div>
+                <div class="col-md-4">
                     <label class="form-label">Program</label>
                     <select name="program_id" class="form-select js-select2">
                         @foreach($programs as $program)
@@ -29,7 +33,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button class="btn btn-warning"><i class="bi bi-funnel"></i> Filter</button>
                 </div>
             </form>
