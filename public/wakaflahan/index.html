@@ -3,8 +3,15 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5" />
   <title>Wakaf Bersama MU — Muhammadiyah Center Kaliwungu</title>
+  <meta name="description" content="Proposal Wakaf Pembebasan Lahan 6.115 m² — Muhammadiyah Center Kaliwungu. Satu Niat, Satu Lahan, Seribu Pahala." />
+  <meta name="theme-color" content="#317dc0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Wakaf Bersama MU" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192x192.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -2451,6 +2458,290 @@
       opacity: 1;
       transform: none
     }
+
+    /* ───── Mobile Hamburger Menu ───── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      cursor: pointer;
+      z-index: 60;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2.5px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(7.5px) rotate(45deg);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-7.5px) rotate(-45deg);
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 34, 53, .5);
+      z-index: 45;
+      opacity: 0;
+      transition: opacity .3s;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .mobile-overlay.show {
+      opacity: 1;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 280px;
+      max-width: 80vw;
+      height: 100vh;
+      background: #fff;
+      z-index: 55;
+      padding: 80px 24px 40px;
+      transition: right .35s cubic-bezier(.4, 0, .2, 1);
+      overflow-y: auto;
+      box-shadow: -8px 0 30px rgba(0,0,0,.15);
+    }
+    .mobile-nav.open {
+      right: 0;
+    }
+    .mobile-nav a {
+      display: block;
+      padding: 14px 16px;
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 12px;
+      transition: background .2s;
+      border-bottom: 1px solid var(--line);
+    }
+    .mobile-nav a:last-of-type {
+      border-bottom: none;
+    }
+    .mobile-nav a:hover,
+    .mobile-nav a:active {
+      background: var(--teal-soft);
+      color: var(--teal-deep);
+    }
+    .mobile-nav .mobile-cta {
+      display: block;
+      margin-top: 20px;
+      background: var(--yellow);
+      color: #3a2700;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 15px;
+      text-align: center;
+      border: 1.5px solid var(--yellow-deep);
+      box-shadow: 0 3px 0 var(--yellow-deep);
+    }
+
+    /* ───── Enhanced Mobile Responsive ───── */
+    @media(max-width:980px) {
+      .hamburger { display: flex; }
+      .mobile-overlay { display: block; }
+      .mobile-nav { display: block; }
+      .nav-cta { display: none; }
+      .topnav-inner { padding: 10px 16px; }
+    }
+
+    @media(max-width:680px) {
+      body { font-size: 14.5px; }
+      .wrap { padding: 0 16px; }
+
+      /* Hero mobile */
+      .hero { padding: 40px 16px 60px; }
+      .hero h1 { font-size: 32px !important; margin: 16px 0 12px; }
+      .hero-tagline { font-size: 18px; margin-bottom: 18px; }
+      .hero-desc { font-size: 14px; margin-bottom: 24px; }
+      .hero-eyebrow { font-size: 10px; padding: 5px 12px; }
+      .hero-actions { flex-direction: column; gap: 10px; }
+      .hero-actions .btn { width: 100%; justify-content: center; padding: 14px 20px; }
+      .hero-card { padding: 20px; border-radius: 20px; }
+      .hero-emblem { padding: 20px 16px; border-radius: 16px; }
+      .hero-emblem img { width: 260px !important; height: 260px !important; }
+      .hero-stats { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+      .hero-stat { padding: 12px 6px; border-radius: 10px; }
+      .hero-stat .num { font-size: 16px; }
+      .hero-stat .lbl { font-size: 9px; }
+      .hero-credit { flex-direction: column; gap: 12px; font-size: 12px; padding-top: 14px; margin-top: 36px; }
+
+      /* Sections mobile */
+      section.s { padding: 60px 16px; }
+      h2.title { font-size: 28px; }
+      .lead { font-size: 15px; }
+      .eyebrow { font-size: 11px; }
+
+      /* Mukadimah */
+      .mukadimah .arabic-line { font-size: 22px; }
+      .mukadimah .translation { font-size: 15px; }
+      .mukadimah .salam { font-size: 24px; }
+
+      /* Latar Belakang */
+      .lb-text p { font-size: 14.5px; }
+      .lb-text p:first-child::first-letter { font-size: 48px; }
+      .quote-block { font-size: 18px; padding: 18px 20px; }
+      .lb-image { aspect-ratio: 3/4; border-radius: 20px; }
+
+      /* Jejak */
+      .jejak { padding-top: 50px; padding-bottom: 50px; }
+      .jejak-card { aspect-ratio: 16/10; }
+      .jejak-card .cap b { font-size: 15px; }
+
+      /* Pillars */
+      .pillar { padding: 24px 20px; border-radius: 18px; }
+      .pillar h3 { font-size: 19px; }
+      .pillar .ico { width: 52px; height: 52px; border-radius: 14px; }
+
+      /* Lokasi */
+      .map-card { aspect-ratio: 4/3; }
+
+      /* RAB */
+      .rab-card .num { font-size: 24px; }
+      .rab-row { grid-template-columns: .5fr 2fr 1.4fr !important; font-size: 11px !important; padding: 10px 12px !important; }
+      .rab-row .satuan, .rab-row .harga { display: none !important; }
+      .rab-row.total { font-size: 13px !important; }
+
+      /* Pemasukan */
+      .pem-card { padding: 18px; border-radius: 16px; }
+      .pem-amount { font-size: 20px; }
+      .pem-list li { font-size: 12px; padding: 5px 8px; }
+
+      /* Goal */
+      .goal { padding: 28px 20px; border-radius: 20px; }
+      .goal h3 { font-size: 22px; }
+      .goal p { font-size: 13.5px; }
+      .pc-stats div .v { font-size: 18px; }
+
+      /* Paket */
+      .paket-card { padding: 22px; border-radius: 18px; }
+      .pkt-h3 { font-size: 20px; }
+      .pkt-price { font-size: 24px; }
+      .paket-card.featured { transform: none; }
+
+      /* Cara Berwakaf */
+      .step { gap: 14px; padding: 16px 0; }
+      .step .n { width: 40px; height: 40px; font-size: 20px; }
+      .step h4 { font-size: 16px; }
+      .step p { font-size: 13.5px; }
+      .rek-card { padding: 22px; border-radius: 18px; }
+      .rek-no { font-size: 16px; padding: 12px 14px; flex-wrap: wrap; gap: 8px; }
+      .qr-card { padding: 16px; flex-direction: column; text-align: center; border-radius: 16px; }
+      .qr-box { width: 80px; height: 80px; margin: 0 auto; }
+
+      /* Jaminan */
+      .jaminan { padding: 50px 16px; }
+      .jam-card { padding: 18px; border-radius: 14px; }
+
+      /* Bank */
+      .bank { padding: 16px; }
+      .bank .bnum { font-size: 15px; }
+      .bank-foot .b { padding: 16px; flex-direction: column; }
+
+      /* Closing */
+      .closing { padding-bottom: 60px; }
+      .closing .mosque { width: 90px; height: 90px; margin-top: 28px; }
+      .closing-quote { font-size: 22px; }
+      .closing-doa { padding: 22px; border-radius: 18px; }
+      .closing-doa .arabic { font-size: 22px; }
+      .panitia-card { padding: 22px 18px; border-radius: 18px; }
+      .panitia-card .ph h3 { font-size: 20px; }
+      .panitia-card .pg { gap: 16px 20px; }
+      .signoff { gap: 30px; }
+      .signoff .sig { font-size: 22px; margin: 20px 0 4px; }
+
+      /* Footer */
+      footer { padding: 40px 16px 30px; }
+      .ft-grid { gap: 28px; }
+      .copy-bar { flex-direction: column; text-align: center; gap: 6px; }
+
+      /* Apresiasi */
+      .apresi-grid { gap: 16px; margin-top: 40px; }
+      .apresi { padding: 20px; border-radius: 16px; }
+
+      /* Info rows */
+      .info-row { padding: 14px 16px; border-radius: 12px; }
+    }
+
+    @media(max-width:400px) {
+      .hero h1 { font-size: 26px !important; }
+      h2.title { font-size: 24px; }
+      .hero-stat .num { font-size: 14px; }
+      .pkt-price { font-size: 20px; }
+      .pem-amount { font-size: 18px; }
+      .rab-card .num { font-size: 20px; }
+      .goal h3 { font-size: 20px; }
+    }
+
+    /* PWA Install Banner */
+    .pwa-install-banner {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--blue);
+      color: #fff;
+      padding: 14px 20px;
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(0,0,0,.2);
+      animation: slideUp .4s ease;
+    }
+    .pwa-install-banner.show { display: block; }
+    .pwa-install-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .pwa-install-inner p {
+      margin: 0;
+      font-size: 14px;
+      flex: 1;
+    }
+    .pwa-install-btn {
+      background: var(--yellow);
+      color: #3a2700;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .pwa-install-close {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.7);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
   </style>
 </head>
 
@@ -2502,7 +2793,24 @@
         <a href="#cara">Cara Berwakaf</a>
       </div>
       <a href="#cara" class="nav-cta">Wakaf Sekarang →</a>
+      <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
+  </nav>
+
+  <!-- Mobile Nav Overlay & Drawer -->
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="#mukadimah">Mukadimah</a>
+    <a href="#latar">Latar Belakang</a>
+    <a href="#tujuan">Tiga Pilar</a>
+    <a href="#lokasi">Lokasi</a>
+    <a href="#rab">Anggaran</a>
+    <a href="#pemasukan">Skema Wakaf</a>
+    <a href="#paket">Paket</a>
+    <a href="#cara">Cara Berwakaf</a>
+    <a href="#cara" class="mobile-cta">Wakaf Sekarang →</a>
   </nav>
 
   <!-- ─── Hero / Cover ─── -->
@@ -3476,8 +3784,47 @@
   <script type="text/babel" src="tweaks-panel.jsx"></script>
   <script type="text/babel" src="tweaks-app.jsx"></script>
 
+  <!-- PWA Install Banner -->
+  <div class="pwa-install-banner" id="pwa-install-banner">
+    <div class="pwa-install-inner">
+      <p>📱 Pasang <b>Wakaf Bersama MU</b> di layar utama untuk akses cepat!</p>
+      <button class="pwa-install-btn" id="pwa-install-btn">Pasang Aplikasi</button>
+      <button class="pwa-install-close" id="pwa-install-close">✕</button>
+    </div>
+  </div>
+
   <script>
-    // Active section highlight
+    // ─── Mobile Hamburger Menu ───
+    const hamburger = document.getElementById('hamburger-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+
+    function toggleMobileMenu() {
+      const isOpen = mobileNav.classList.contains('open');
+      if (isOpen) {
+        mobileNav.classList.remove('open');
+        mobileOverlay.classList.remove('show');
+        hamburger.classList.remove('active');
+        document.body.style.overflow = '';
+      } else {
+        mobileNav.classList.add('open');
+        mobileOverlay.classList.add('show');
+        hamburger.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    hamburger.addEventListener('click', toggleMobileMenu);
+    mobileOverlay.addEventListener('click', toggleMobileMenu);
+
+    // Close mobile menu on link click
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        if (mobileNav.classList.contains('open')) toggleMobileMenu();
+      });
+    });
+
+    // ─── Active section highlight ───
     const sections = document.querySelectorAll('section[id], header[id]');
     const links = document.querySelectorAll('.nav-links a');
     const obs = new IntersectionObserver((entries) => {
@@ -3492,7 +3839,7 @@
     }, { rootMargin: '-40% 0px -55% 0px' });
     sections.forEach(s => obs.observe(s));
 
-    // Smooth scroll
+    // ─── Smooth scroll ───
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         const t = document.querySelector(a.getAttribute('href'));
@@ -3500,7 +3847,7 @@
       });
     });
 
-    // Animated progress
+    // ─── Animated progress ───
     const fill = document.getElementById('pc-fill');
     const lbl = document.getElementById('pct-label');
     const target = 51.8;
@@ -3522,12 +3869,59 @@
     }, { threshold: .4 });
     io.observe(fill);
 
-    // Reveal on scroll
+    // ─── Reveal on scroll ───
     const rio = new IntersectionObserver((ents) => {
       ents.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } });
     }, { threshold: .12 });
     document.querySelectorAll('.lb-grid, .pillar, .jejak-card, .pem-card, .paket-card, .apresi, .step, .bank, .jam-card, .info-row, .rab-card, .rab-table, .goal, .closing-doa, .panitia-card').forEach(el => {
       el.classList.add('reveal'); rio.observe(el);
+    });
+
+    // ─── PWA Service Worker Registration ───
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.log('SW registration failed:', err));
+      });
+    }
+
+    // ─── PWA Install Prompt ───
+    let deferredPrompt;
+    const installBanner = document.getElementById('pwa-install-banner');
+    const installBtn = document.getElementById('pwa-install-btn');
+    const installClose = document.getElementById('pwa-install-close');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      // Show install banner after 5 seconds
+      setTimeout(() => {
+        installBanner.classList.add('show');
+      }, 5000);
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log('Install outcome:', outcome);
+          deferredPrompt = null;
+        }
+        installBanner.classList.remove('show');
+      });
+    }
+
+    if (installClose) {
+      installClose.addEventListener('click', () => {
+        installBanner.classList.remove('show');
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      installBanner.classList.remove('show');
+      deferredPrompt = null;
     });
   </script>
 

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#317dc0"/>
+  <circle cx="100" cy="86" r="38" fill="#f1b53c"/>
+  <g stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity=".85">
+    <line x1="100" y1="34" x2="100" y2="42"/>
+    <line x1="100" y1="130" x2="100" y2="138"/>
+    <line x1="48" y1="86" x2="56" y2="86"/>
+    <line x1="144" y1="86" x2="152" y2="86"/>
+    <line x1="63" y1="49" x2="69" y2="55"/>
+    <line x1="131" y1="117" x2="137" y2="123"/>
+    <line x1="63" y1="123" x2="69" y2="117"/>
+    <line x1="131" y1="55" x2="137" y2="49"/>
+  </g>
+  <circle cx="100" cy="86" r="14" fill="#fff"/>
+  <path d="M50 138 Q100 110 150 138 L150 152 L50 152 Z" fill="#1e9c9f"/>
+  <text x="100" y="178" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="14" font-weight="700" letter-spacing="3">WBM</text>
+</svg>

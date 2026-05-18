@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head><title>Generate PWA Icons</title></head>
+<body>
+<h1>PWA Icon Generator</h1>
+<p>Right-click each image and "Save image as..." with the correct filename.</p>
+<div id="icons"></div>
+<script>
+const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+const container = document.getElementById('icons');
+
+sizes.forEach(size => {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  
+  // Background
+  ctx.fillStyle = '#317dc0';
+  ctx.fillRect(0, 0, size, size);
+  
+  // Sun circle
+  const cx = size / 2;
+  const cy = size * 0.43;
+  const r = size * 0.19;
+  
+  ctx.fillStyle = '#f1b53c';
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Inner white circle
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.5, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Mosque dome shape
+  ctx.fillStyle = '#1e9c9f';
+  ctx.beginPath();
+  ctx.moveTo(size * 0.25, size * 0.69);
+  ctx.quadraticCurveTo(cx, size * 0.55, size * 0.75, size * 0.69);
+  ctx.lineTo(size * 0.75, size * 0.76);
+  ctx.lineTo(size * 0.25, size * 0.76);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Text "WBM"
+  ctx.fillStyle = '#ffffff';
+  ctx.font = `bold ${size * 0.1}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('WBM', cx, size * 0.89);
+  
+  // Rays
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+  ctx.lineWidth = size * 0.015;
+  ctx.lineCap = 'round';
+  const rayLen = size * 0.04;
+  const rayDist = r + size * 0.04;
+  for (let i = 0; i < 8; i++) {
+    const angle = (i * Math.PI * 2) / 8 - Math.PI / 2;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(angle) * rayDist, cy + Math.sin(angle) * rayDist);
+    ctx.lineTo(cx + Math.cos(angle) * (rayDist + rayLen), cy + Math.sin(angle) * (rayDist + rayLen));
+    ctx.stroke();
+  }
+  
+  const div = document.createElement('div');
+  div.style.marginBottom = '20px';
+  div.innerHTML = `<h3>icon-${size}x${size}.png</h3>`;
+  div.appendChild(canvas);
+  
+  // Auto download link
+  const link = document.createElement('a');
+  link.download = `icon-${size}x${size}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.textContent = `Download icon-${size}x${size}.png`;
+  link.style.display = 'block';
+  link.style.marginTop = '8px';
+  div.appendChild(link);
+  
+  container.appendChild(div);
+});
+</script>
+</body>
+</html>
