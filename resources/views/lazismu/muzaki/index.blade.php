@@ -1,6 +1,13 @@
 <x-app-layout>
     <x-slot name="pagetitle">Data Muzaki</x-slot>
 
+    <x-slot name="csscustom">
+        <style>
+            .action-dropdown .dropdown-menu { min-width: 9rem; }
+            .action-dropdown .dropdown-item { font-size: .82rem; }
+        </style>
+    </x-slot>
+
     <div class="app-content">
         <div class="container-fluid py-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -28,7 +35,7 @@
                                     <th>Jenis Kelamin</th>
                                     <th>No HP</th>
                                     <th>Email</th>
-                                    <th width="280">Aksi</th>
+                                    <th width="90">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,15 +61,32 @@
                                         <td>{{ $muzaki->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                         <td>{{ $muzaki->no_hp ?: '-' }}</td>
                                         <td>{{ $muzaki->email ?: '-' }}</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editMuzakiModal{{ $muzaki->id }}">Edit</button>
-                                            <a class="btn btn-sm btn-outline-success" href="{{ route('lazismu.muzaki.barcode', $muzaki) }}" target="_blank">Barcode</a>
-                                            <a class="btn btn-sm btn-outline-warning" href="{{ route('lazismu.muzaki.card', $muzaki) }}" target="_blank">Kartu</a>
-                                            <form action="{{ route('lazismu.muzaki.destroy', $muzaki) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus data muzaki ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-sm btn-outline-danger">Hapus</button>
-                                            </form>
+                                        <td class="text-nowrap">
+                                            @php
+                                                $loginUrl = 'https://tinyurl.com/muzakikaliwungu';
+                                                $shareText = 'Kartu Muzaki ' . $muzaki->nama . '. Akses login: ' . $loginUrl . ' | ID: ' . $muzaki->login_code;
+                                            @endphp
+                                            <div class="dropdown action-dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    Aksi
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#editMuzakiModal{{ $muzaki->id }}">Edit</button></li>
+                                                    <li><a class="dropdown-item" href="{{ route('lazismu.muzaki.barcode', $muzaki) }}" target="_blank">Barcode</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><button class="dropdown-item js-hidden-page-action" type="button" data-url="{{ route('lazismu.muzaki.card', ['muzaki' => $muzaki, 'action' => 'print']) }}">Cetak kartu</button></li>
+                                                    <li><button class="dropdown-item js-hidden-page-action" type="button" data-url="{{ route('lazismu.muzaki.card', ['muzaki' => $muzaki, 'action' => 'download']) }}">Unduh kartu</button></li>
+                                                    <li><a class="dropdown-item" href="https://wa.me/?text={{ urlencode($shareText) }}" target="_blank">Share WA</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li>
+                                                        <form action="{{ route('lazismu.muzaki.destroy', $muzaki) }}" method="POST" onsubmit="return confirm('Hapus data muzaki ini?')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="dropdown-item text-danger">Hapus</button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -155,6 +179,20 @@
                 document.querySelectorAll('form').forEach(function (form) {
                     if (!form.querySelector('.js-jenis-muzaki')) return;
                     syncMuzakiNik(form);
+                });
+
+                document.querySelectorAll('.js-hidden-page-action').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        const iframe = document.createElement('iframe');
+                        iframe.style.position = 'fixed';
+                        iframe.style.width = '1px';
+                        iframe.style.height = '1px';
+                        iframe.style.opacity = '0';
+                        iframe.style.pointerEvents = 'none';
+                        iframe.src = this.dataset.url;
+                        document.body.appendChild(iframe);
+                        setTimeout(() => iframe.remove(), 15000);
+                    });
                 });
             });
         </script>

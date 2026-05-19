@@ -7,20 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Rekening extends Model
 {
     protected $table = 'rekening';
-    protected $primaryKey = 'idrek';
+    protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = [
-        'norek', 'namarek', 'saldo', 'saldoakhir', 'idproject', 'idcompany'
+        'namarek',
+        'saldo',
     ];
 
-    public function company()
-    {
-        return $this->belongsTo(CompanyUnit::class, 'idcompany');
-    }
+    protected $casts = [
+        'saldo' => 'decimal:2',
+    ];
 
-    public function project()
+    public function transaksis()
     {
-        return $this->belongsTo(Project::class, 'idproject');
+        return $this->hasMany(Transaksi::class, 'idrek', 'id');
     }
 }

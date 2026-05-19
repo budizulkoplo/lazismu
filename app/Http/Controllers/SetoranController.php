@@ -7,12 +7,17 @@ use App\Models\Muzaki;
 use App\Models\Program;
 use App\Models\Setoran;
 use App\Models\TargetSetoranProgram;
+use App\Services\RekeningTransactionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class SetoranController extends Controller
 {
+    public function __construct(private RekeningTransactionService $rekeningTransactions)
+    {
+    }
+
     public function index(Request $request)
     {
         $query = Setoran::with(['muzaki', 'kodeSetoran', 'program']);
@@ -124,9 +129,23 @@ class SetoranController extends Controller
         unset($validated['target_program']);
 
         $setoran = DB::transaction(function () use ($validated, $targetProgram) {
+            $kodeSetoran = KodeSetoran::findOrFail($validated['idkode_setoran']);
+            $program = !empty($validated['idprogram']) ? Program::find($validated['idprogram']) : null;
+            $rekening = $this->rekeningTransactions->rekeningForKelompok($kodeSetoran->jenis_setoran, $program);
+            $validated['idrekening'] = $rekening->getKey();
+
             $setoran = Setoran::create($validated);
             $this->syncTargetSetoranProgram($setoran->idmuzaki, $setoran->idprogram, $targetProgram);
             $this->syncProgramTerkumpul($setoran->idprogram);
+            $nominalMasuk = (float) ($setoran->nominal_digunakan ?? $setoran->nominal);
+            $this->rekeningTransactions->record(
+                $setoran,
+                $rekening->getKey(),
+                $setoran->created_at->format('Y-m-d'),
+                'in',
+                $nominalMasuk,
+                'Setoran ' . ucfirst($kodeSetoran->jenis_setoran) . ' - ' . ($setoran->muzaki->nama ?? '-') . ' (masuk rekening setelah PDM)'
+            );
 
             return $setoran;
         });
@@ -142,10 +161,25 @@ class SetoranController extends Controller
         $oldProgramId = $setoran->idprogram;
 
         DB::transaction(function () use ($setoran, $validated, $oldProgramId, $targetProgram) {
+            $this->rekeningTransactions->reverse($setoran);
+            $kodeSetoran = KodeSetoran::findOrFail($validated['idkode_setoran']);
+            $program = !empty($validated['idprogram']) ? Program::find($validated['idprogram']) : null;
+            $rekening = $this->rekeningTransactions->rekeningForKelompok($kodeSetoran->jenis_setoran, $program);
+            $validated['idrekening'] = $rekening->getKey();
+
             $setoran->update($validated);
             $this->syncTargetSetoranProgram($setoran->idmuzaki, $setoran->idprogram, $targetProgram);
             $this->syncProgramTerkumpul($oldProgramId);
             $this->syncProgramTerkumpul($setoran->idprogram);
+            $nominalMasuk = (float) ($setoran->nominal_digunakan ?? $setoran->nominal);
+            $this->rekeningTransactions->record(
+                $setoran,
+                $rekening->getKey(),
+                $setoran->created_at->format('Y-m-d'),
+                'in',
+                $nominalMasuk,
+                'Setoran ' . ucfirst($kodeSetoran->jenis_setoran) . ' - ' . ($setoran->muzaki->nama ?? '-') . ' (masuk rekening setelah PDM)'
+            );
         });
 
         return redirect()->route('lazismu.setoran.print', $setoran)->with('success', 'Setoran berhasil diperbarui.');
@@ -156,6 +190,7 @@ class SetoranController extends Controller
         $programId = $setoran->idprogram;
 
         DB::transaction(function () use ($setoran, $programId) {
+            $this->rekeningTransactions->reverse($setoran);
             $setoran->delete();
             $this->syncProgramTerkumpul($programId);
         });

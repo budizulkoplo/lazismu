@@ -65,12 +65,18 @@
     </style>
 </head>
 <body>
+    @php
+        $fileName = 'nota-setoran-' . $setoran->id . '.png';
+        $shareText = $judulNota . ' a.n. ' . ($setoran->muzaki->nama ?? '-') . ' sebesar Rp ' . number_format((float) $setoran->nominal, 0, ',', '.') . '.';
+    @endphp
     <div class="actions">
         <button onclick="window.print()">Cetak Nota</button>
+        <button type="button" id="downloadNota">Unduh PNG</button>
+        <button type="button" id="shareNota">Share WA</button>
         <a href="{{ route('lazismu.setoran.index') }}">Kembali</a>
     </div>
 
-    <div class="nota">
+    <div class="nota" id="setoranNota">
         <div class="center">
             <img src="{{ asset('logopt/1776842680_lazismu.png') }}" class="logo" alt="Lazismu">
             <h1>{{ $judulNota }}</h1>
@@ -100,13 +106,57 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
-        window.addEventListener('load', function() {
-            window.print();
+        const fileName = @json($fileName);
+        const shareText = @json($shareText);
+        const requestedAction = @json(request('action'));
+
+        async function notaBlob() {
+            const canvas = await html2canvas(document.getElementById('setoranNota'), {
+                backgroundColor: '#ffffff',
+                scale: 3,
+                useCORS: true
+            });
+
+            return new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        }
+
+        document.getElementById('downloadNota').addEventListener('click', async function() {
+            const blob = await notaBlob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+            URL.revokeObjectURL(link.href);
         });
 
-        window.addEventListener('afterprint', function() {
-            window.location.href = @json(route('lazismu.setoran.index'));
+        async function shareNota() {
+            const blob = await notaBlob();
+            const file = new File([blob], fileName, { type: 'image/png' });
+
+            try {
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ text: shareText, files: [file] });
+                    return;
+                }
+            } catch (error) {
+                // Browser can require a direct user gesture for file sharing.
+            }
+
+            window.open('https://wa.me/?text=' + encodeURIComponent(shareText), '_blank');
+        }
+
+        document.getElementById('shareNota').addEventListener('click', shareNota);
+
+        window.addEventListener('load', function() {
+            if (requestedAction === 'print') {
+                window.print();
+            } else if (requestedAction === 'download') {
+                document.getElementById('downloadNota').click();
+            } else if (requestedAction === 'share') {
+                shareNota();
+            }
         });
     </script>
 </body>

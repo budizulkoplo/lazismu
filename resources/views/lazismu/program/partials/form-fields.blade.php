@@ -27,6 +27,18 @@
             <option value="selesai" @selected(old('status', optional($program)->status) === 'selesai')>Selesai</option>
         </select>
     </div>
+    <div class="col-md-6">
+        <label class="form-label">Rekening Program</label>
+        <select name="idrek" class="form-select js-select2" data-placeholder="Otomatis sesuai nama program">
+            <option value="">Buat otomatis</option>
+            @foreach(($rekenings ?? collect()) as $rekening)
+                <option value="{{ $rekening->id }}" @selected((string) old('idrek', optional($program)->idrek) === (string) $rekening->id)>
+                    {{ $rekening->namarek }} - Rp {{ number_format((float) $rekening->saldo, 0, ',', '.') }}
+                </option>
+            @endforeach
+        </select>
+        <small class="text-muted">Kosongkan jika ingin dibuatkan rekening baru untuk program ini.</small>
+    </div>
     <div class="col-12">
         <label class="form-label">Banner Program</label>
         <input type="file" name="banner" class="form-control" accept="image/*">

@@ -19,6 +19,7 @@ class Program extends Model
         'target',
         'terkumpul',
         'banner_path',
+        'idrek',
         'status',
     ];
 
@@ -40,6 +41,11 @@ class Program extends Model
     public function targetSetoranPrograms()
     {
         return $this->hasMany(TargetSetoranProgram::class, 'idprogram');
+    }
+
+    public function rekening()
+    {
+        return $this->belongsTo(Rekening::class, 'idrek', 'id');
     }
 
     public function scopeActive($query)

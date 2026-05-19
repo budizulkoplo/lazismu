@@ -136,6 +136,9 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
         Route::put('/program/{program}', [ProgramController::class, 'update'])->name('program.update');
         Route::delete('/program/{program}', [ProgramController::class, 'destroy'])->name('program.destroy');
 
+        Route::get('/rekening', [RekeningController::class, 'index'])->name('rekening.index');
+        Route::put('/rekening/{rekening}', [RekeningController::class, 'update'])->name('rekening.update');
+
         Route::get('/kode-setoran', [KodeSetoranController::class, 'index'])->name('kode-setoran.index');
         Route::post('/kode-setoran', [KodeSetoranController::class, 'store'])->name('kode-setoran.store');
         Route::put('/kode-setoran/{kodeSetoran}', [KodeSetoranController::class, 'update'])->name('kode-setoran.update');
@@ -163,6 +166,7 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
 
         Route::prefix('laporan')->name('laporan.')->group(function () {
             Route::get('/cashflow', [LazismuReportController::class, 'cashflow'])->name('cashflow');
+            Route::get('/rekening', [LazismuReportController::class, 'rekening'])->name('rekening');
             Route::get('/program', [LazismuReportController::class, 'program'])->name('program');
             Route::get('/infaq', [LazismuReportController::class, 'infaq'])->name('infaq');
             Route::get('/zakat', [LazismuReportController::class, 'zakat'])->name('zakat');

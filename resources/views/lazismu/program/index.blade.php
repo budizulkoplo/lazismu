@@ -25,6 +25,7 @@
                                     <th>Lokasi</th>
                                     <th>Periode</th>
                                     <th>Status</th>
+                                    <th>Rekening</th>
                                     <th class="text-end">Target</th>
                                     <th class="text-end">Terkumpul</th>
                                     <th width="160">Aksi</th>
@@ -37,6 +38,7 @@
                                         <td>{{ $program->lokasi ?: '-' }}</td>
                                         <td>{{ optional($program->tgl_mulai)->format('d/m/Y') ?? '-' }} - {{ optional($program->tgl_selesai)->format('d/m/Y') ?? '-' }}</td>
                                         <td><span class="badge text-bg-{{ $program->status === 'active' ? 'success' : ($program->status === 'selesai' ? 'secondary' : 'warning') }}">{{ ucfirst($program->status) }}</span></td>
+                                        <td>{{ $program->rekening->namarek ?? '-' }}</td>
                                         <td class="text-end">Rp {{ number_format($program->target, 0, ',', '.') }}</td>
                                         <td class="text-end">Rp {{ number_format($program->terkumpul, 0, ',', '.') }}</td>
                                         <td>

@@ -45,6 +45,11 @@ class Nota extends Model
         return $this->belongsTo(Kodetransaksi::class, 'idkodetransaksi');
     }
 
+    public function transaksis()
+    {
+        return $this->morphMany(Transaksi::class, 'source');
+    }
+
     public function getKelompokAttribute(): string
     {
         if ($this->is_zakat === '1') {

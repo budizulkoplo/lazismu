@@ -48,7 +48,7 @@ class Setoran extends Model
 
     public function rekening()
     {
-        return $this->belongsTo(Rekening::class, 'idrekening', 'idrek');
+        return $this->belongsTo(Rekening::class, 'idrekening', 'id');
     }
 
     public function getNominalDigunakanCalculatedAttribute(): float

@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Kodetransaksi;
 use App\Models\Nota;
 use App\Models\Program;
+use App\Services\RekeningTransactionService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,6 +22,10 @@ class PengeluaranController extends Controller
     private const IMAGE_MAX_WIDTH = 1600;
     private const EDITOR_IMAGE_MAX_WIDTH = 1200;
     private const IMAGE_QUALITY = 82;
+
+    public function __construct(private RekeningTransactionService $rekeningTransactions)
+    {
+    }
 
     public function index()
     {
@@ -51,7 +57,22 @@ class PengeluaranController extends Controller
         $validated['namauser'] = Auth::user()->name ?? 'System';
         $validated['status'] = 'paid';
 
-        Nota::create($validated);
+        DB::transaction(function () use ($validated) {
+            $nota = Nota::create($validated);
+            $rekening = $this->rekeningTransactions->rekeningForKelompok(
+                $nota->kelompok,
+                $nota->program
+            );
+
+            $this->rekeningTransactions->record(
+                $nota,
+                $rekening->getKey(),
+                $nota->tanggal->format('Y-m-d'),
+                'out',
+                (float) $nota->total,
+                'Pengeluaran ' . $nota->kelompok_label . ' - ' . $nota->namatransaksi
+            );
+        });
 
         return redirect()->route('lazismu.pengeluaran.index')->with('success', 'Pengeluaran berhasil ditambahkan.');
     }
@@ -72,14 +93,35 @@ class PengeluaranController extends Controller
         unset($validated['kelompok']);
         $validated['status'] = 'paid';
 
-        $pengeluaran->update($validated);
+        DB::transaction(function () use ($pengeluaran, $validated) {
+            $this->rekeningTransactions->reverse($pengeluaran);
+            $pengeluaran->update($validated);
+            $pengeluaran->refresh();
+
+            $rekening = $this->rekeningTransactions->rekeningForKelompok(
+                $pengeluaran->kelompok,
+                $pengeluaran->program
+            );
+
+            $this->rekeningTransactions->record(
+                $pengeluaran,
+                $rekening->getKey(),
+                $pengeluaran->tanggal->format('Y-m-d'),
+                'out',
+                (float) $pengeluaran->total,
+                'Pengeluaran ' . $pengeluaran->kelompok_label . ' - ' . $pengeluaran->namatransaksi
+            );
+        });
 
         return redirect()->route('lazismu.pengeluaran.index')->with('success', 'Pengeluaran berhasil diperbarui.');
     }
 
     public function destroy(Nota $pengeluaran)
     {
-        $pengeluaran->delete();
+        DB::transaction(function () use ($pengeluaran) {
+            $this->rekeningTransactions->reverse($pengeluaran);
+            $pengeluaran->delete();
+        });
 
         return redirect()->route('lazismu.pengeluaran.index')->with('success', 'Pengeluaran berhasil dihapus.');
     }

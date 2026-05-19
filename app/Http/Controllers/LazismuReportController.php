@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Nota;
 use App\Models\Program;
+use App\Models\Rekening;
 use App\Models\Setoran;
 use App\Models\TargetSetoranProgram;
+use App\Models\Transaksi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -65,6 +67,31 @@ class LazismuReportController extends Controller
         $summary = $this->summary($rows);
 
         return view('lazismu.laporan.cashflow', compact('rows', 'summary', 'startDate', 'endDate'));
+    }
+
+    public function rekening(Request $request)
+    {
+        [$startDate, $endDate] = $this->dateRange($request);
+        $rekenings = Rekening::orderBy('namarek')->get();
+
+        $rows = Transaksi::with('rekening')
+            ->whereBetween('tanggal', [$startDate->toDateString(), $endDate->toDateString()])
+            ->when($request->filled('rekening_id'), fn ($query) => $query->where('idrek', $request->rekening_id))
+            ->orderBy('tanggal')
+            ->orderBy('id')
+            ->get();
+
+        $lastRow = $rows->last();
+        $summary = [
+            'in' => (float) $rows->where('jenis', 'in')->sum('nominal'),
+            'out' => (float) $rows->where('jenis', 'out')->sum('nominal'),
+            'net' => (float) $rows->where('jenis', 'in')->sum('nominal') - (float) $rows->where('jenis', 'out')->sum('nominal'),
+            'saldo_akhir' => $request->filled('rekening_id')
+                ? (float) (Rekening::find($request->rekening_id)?->saldo ?? 0)
+                : (float) $rekenings->sum('saldo'),
+        ];
+
+        return view('lazismu.laporan.rekening', compact('rows', 'summary', 'startDate', 'endDate', 'rekenings'));
     }
 
     public function program(Request $request)

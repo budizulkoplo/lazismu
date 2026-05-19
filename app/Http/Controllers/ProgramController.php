@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Program;
+use App\Models\Rekening;
+use App\Services\RekeningTransactionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
@@ -14,6 +16,10 @@ class ProgramController extends Controller
     private const BANNER_DIRECTORY = 'lazismu/program';
     private const BANNER_MAX_WIDTH = 1600;
     private const BANNER_QUALITY = 82;
+
+    public function __construct(private RekeningTransactionService $rekeningTransactions)
+    {
+    }
 
     public function index(Request $request)
     {
@@ -31,9 +37,10 @@ class ProgramController extends Controller
             $query->where('status', $request->status);
         }
 
-        $programs = $query->latest()->get();
+        $programs = $query->with('rekening')->latest()->get();
+        $rekenings = Rekening::orderBy('namarek')->get();
 
-        return view('lazismu.program.index', compact('programs'));
+        return view('lazismu.program.index', compact('programs', 'rekenings'));
     }
 
     public function store(Request $request)
@@ -44,6 +51,7 @@ class ProgramController extends Controller
             'tgl_mulai' => 'nullable|date',
             'tgl_selesai' => 'nullable|date|after_or_equal:tgl_mulai',
             'target' => 'nullable|numeric|min:0',
+            'idrek' => 'nullable|exists:rekening,id',
             'banner' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'status' => 'required|in:active,nonactive,selesai',
         ]);
@@ -56,7 +64,8 @@ class ProgramController extends Controller
         $validated['target'] = $validated['target'] ?? 0;
         $validated['terkumpul'] = 0;
 
-        Program::create($validated);
+        $program = Program::create($validated);
+        $this->rekeningTransactions->ensureProgramRekening($program);
 
         return redirect()->route('lazismu.program.index')->with('success', 'Program berhasil ditambahkan.');
     }
@@ -69,6 +78,7 @@ class ProgramController extends Controller
             'tgl_mulai' => 'nullable|date',
             'tgl_selesai' => 'nullable|date|after_or_equal:tgl_mulai',
             'target' => 'nullable|numeric|min:0',
+            'idrek' => 'nullable|exists:rekening,id',
             'banner' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'status' => 'required|in:active,nonactive,selesai',
         ]);
@@ -84,6 +94,7 @@ class ProgramController extends Controller
         unset($validated['banner']);
         $validated['target'] = $validated['target'] ?? 0;
         $program->update($validated);
+        $this->rekeningTransactions->ensureProgramRekening($program);
 
         return redirect()->route('lazismu.program.index')->with('success', 'Program berhasil diperbarui.');
     }
