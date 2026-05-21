@@ -78,7 +78,7 @@
 
     <div class="nota" id="setoranNota">
         <div class="center">
-            <img src="{{ asset('logopt/1776842680_lazismu.png') }}" class="logo" alt="Lazismu">
+            <img src="{{ asset('logopt/1778648633_lajismu%20(1).png') }}" class="logo" alt="Lazismu">
             <h1>{{ $judulNota }}</h1>
             <div>{{ optional($setoran->created_at)->format('d/m/Y') }}</div>
         </div>
