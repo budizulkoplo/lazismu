@@ -102,7 +102,7 @@
 
         <div class="center">
             <div>Terima kasih.</div>
-            <div class="muted">Semoga Allah membalas kebaikan Anda.</div>
+            <div class="muted">Jazaakumullaahu Khairan Katsiiraa. Semoga Allah SWT membalas dengan pahala yang berlipat serta memberkahi rezeki bapak/ibu.</div>
         </div>
     </div>
 
