@@ -111,6 +111,7 @@
         const fileName = @json($fileName);
         const shareText = @json($shareText);
         const requestedAction = @json(request('action'));
+        const whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(shareText);
 
         async function notaBlob() {
             const canvas = await html2canvas(document.getElementById('setoranNota'), {
@@ -144,7 +145,7 @@
                 // Browser can require a direct user gesture for file sharing.
             }
 
-            window.open('https://wa.me/?text=' + encodeURIComponent(shareText), '_blank');
+            window.open(whatsappUrl, '_blank');
         }
 
         document.getElementById('shareNota').addEventListener('click', shareNota);
@@ -155,7 +156,7 @@
             } else if (requestedAction === 'download') {
                 document.getElementById('downloadNota').click();
             } else if (requestedAction === 'share') {
-                shareNota();
+                window.location.href = whatsappUrl;
             }
         });
     </script>

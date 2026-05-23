@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Nota;
+use App\Models\Muzaki;
 use App\Models\Program;
 use App\Models\Rekening;
 use App\Models\Setoran;
@@ -134,6 +135,62 @@ class LazismuReportController extends Controller
             'endDate',
             'programTarget',
             'programProgress'
+        ));
+    }
+
+    public function muzaki(Request $request)
+    {
+        [$startDate, $endDate] = $this->dateRange($request);
+        $muzakis = Muzaki::orderBy('nama')->get();
+        $selectedMuzaki = $request->filled('muzaki_id')
+            ? $muzakis->firstWhere('id', (int) $request->muzaki_id)
+            : null;
+
+        $setorans = collect();
+        $summary = [
+            'zakat' => 0,
+            'infaq' => 0,
+            'program' => 0,
+            'nominal' => 0,
+            'count' => 0,
+        ];
+        $programRows = collect();
+
+        if ($selectedMuzaki) {
+            $setorans = Setoran::with(['muzaki', 'kodeSetoran', 'program'])
+                ->where('idmuzaki', $selectedMuzaki->id)
+                ->whereBetween('created_at', [$startDate->copy()->startOfDay(), $endDate->copy()->endOfDay()])
+                ->orderByDesc('created_at')
+                ->get();
+
+            $summary = [
+                'zakat' => (float) $setorans->filter(fn ($setoran) => strtolower($setoran->kodeSetoran->jenis_setoran ?? '') === 'zakat')->sum('nominal'),
+                'infaq' => (float) $setorans->filter(fn ($setoran) => strtolower($setoran->kodeSetoran->jenis_setoran ?? '') === 'infaq')->sum('nominal'),
+                'program' => (float) $setorans->filter(fn ($setoran) => strtolower($setoran->kodeSetoran->jenis_setoran ?? '') === 'program')->sum('nominal'),
+                'nominal' => (float) $setorans->sum('nominal'),
+                'count' => $setorans->count(),
+            ];
+
+            $programRows = $setorans
+                ->filter(fn ($setoran) => strtolower($setoran->kodeSetoran->jenis_setoran ?? '') === 'program')
+                ->groupBy(fn ($setoran) => $setoran->program?->nama_program ?? 'Program tanpa nama')
+                ->map(fn ($items, $programName) => [
+                    'program' => $programName,
+                    'total' => (float) $items->sum('nominal'),
+                    'count' => $items->count(),
+                ])
+                ->sortBy('program')
+                ->values();
+        }
+
+        return view('lazismu.laporan.muzaki', compact(
+            'muzakis',
+            'selectedMuzaki',
+            'setorans',
+            'summary',
+            'programRows',
+            'startDate',
+            'endDate'
         ));
     }
 

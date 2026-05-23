@@ -168,6 +168,7 @@ Route::middleware(['auth', 'verified', 'global.app'])->group(function () {
             Route::get('/cashflow', [LazismuReportController::class, 'cashflow'])->name('cashflow');
             Route::get('/rekening', [LazismuReportController::class, 'rekening'])->name('rekening');
             Route::get('/program', [LazismuReportController::class, 'program'])->name('program');
+            Route::get('/muzaki', [LazismuReportController::class, 'muzaki'])->name('muzaki');
             Route::get('/infaq', [LazismuReportController::class, 'infaq'])->name('infaq');
             Route::get('/zakat', [LazismuReportController::class, 'zakat'])->name('zakat');
         });

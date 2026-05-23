@@ -74,7 +74,6 @@ class MuzakiController extends Controller
         $validated = $request->validate([
             'jenis_muzaki' => ['required', Rule::in(['pribadi', 'kelompok', 'aum'])],
             'nik' => [
-                Rule::requiredIf(fn () => $request->jenis_muzaki === 'pribadi'),
                 Rule::excludeIf(fn () => $request->jenis_muzaki !== 'pribadi'),
                 'nullable',
                 'string',
@@ -114,7 +113,7 @@ class MuzakiController extends Controller
         }
 
         $validated['jenis_kelamin'] = $validated['jenis_kelamin'] ?? 'L';
-        if ($validated['jenis_muzaki'] !== 'pribadi') {
+        if (blank($validated['nik'] ?? null) || $validated['jenis_muzaki'] !== 'pribadi') {
             $validated['nik'] = null;
         }
         if ($validated['jenis_muzaki'] === 'aum') {

@@ -121,9 +121,9 @@
                 if (nikField) {
                     nikField.classList.toggle('d-none', !isPribadi);
                 }
-                nik.required = isPribadi;
+                nik.required = false;
                 nik.disabled = !isPribadi;
-                nik.placeholder = isPribadi ? 'Wajib 16 digit untuk pribadi' : 'Boleh kosong untuk kelompok/AUM';
+                nik.placeholder = isPribadi ? 'Opsional, isi 16 digit jika tersedia' : 'Boleh kosong untuk kelompok/AUM';
                 if (!isPribadi) {
                     nik.value = '';
                 }

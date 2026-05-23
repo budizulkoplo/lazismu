@@ -8,7 +8,7 @@
         </select>
     </div>
     <div class="col-md-6 js-nik-field">
-        <label class="form-label">NIK</label>
+        <label class="form-label">NIK <span class="text-muted fw-normal">(opsional)</span></label>
         <input type="text" name="nik" class="form-control js-nik-input" maxlength="16" value="{{ old('nik', optional($muzaki)->nik) }}">
     </div>
     <div class="col-md-6">

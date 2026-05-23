@@ -260,9 +260,6 @@
                                         <td>{{ $setoran->program->nama_program ?? '-' }}</td>
                                         <td class="text-end">Rp {{ number_format($setoran->nominal, 0, ',', '.') }}</td>
                                         <td class="text-nowrap">
-                                            @php
-                                                $shareText = 'Nota ' . ucfirst($setoran->kodeSetoran->jenis_setoran ?? 'setoran') . ' a.n. ' . ($setoran->muzaki->nama ?? '-') . ' sebesar Rp ' . number_format((float) $setoran->nominal, 0, ',', '.') . '.';
-                                            @endphp
                                             <div class="dropdown action-dropdown">
                                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                                     Aksi
@@ -270,9 +267,9 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#editSetoranModal{{ $setoran->id }}">Edit</button></li>
                                                     <li><hr class="dropdown-divider"></li>
-                                                    <li><button class="dropdown-item js-hidden-page-action" type="button" data-url="{{ route('lazismu.setoran.print', ['setoran' => $setoran, 'action' => 'print']) }}">Cetak nota</button></li>
-                                                    <li><button class="dropdown-item js-hidden-page-action" type="button" data-url="{{ route('lazismu.setoran.print', ['setoran' => $setoran, 'action' => 'download']) }}">Unduh nota</button></li>
-                                                    <li><a class="dropdown-item" href="https://wa.me/?text={{ urlencode($shareText) }}" target="_blank">Share WA</a></li>
+                                                    <li><a class="dropdown-item js-nota-action" href="{{ route('lazismu.setoran.print', ['setoran' => $setoran, 'action' => 'print']) }}" target="_blank" rel="noopener">Cetak nota</a></li>
+                                                    <li><a class="dropdown-item js-nota-action" href="{{ route('lazismu.setoran.print', ['setoran' => $setoran, 'action' => 'download']) }}" target="_blank" rel="noopener">Unduh nota</a></li>
+                                                    <li><a class="dropdown-item js-nota-action" href="{{ route('lazismu.setoran.print', ['setoran' => $setoran, 'action' => 'share']) }}" target="_blank" rel="noopener">Share WA</a></li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     <li>
                                                         <form action="{{ route('lazismu.setoran.destroy', $setoran) }}" method="POST" onsubmit="return confirm('Hapus transaksi setoran ini?')">
@@ -973,20 +970,6 @@
                             this.dataset.kode,
                             this.dataset.program || null
                         );
-                    });
-                });
-
-                document.querySelectorAll('.js-hidden-page-action').forEach(function(button) {
-                    button.addEventListener('click', function() {
-                        const iframe = document.createElement('iframe');
-                        iframe.style.position = 'fixed';
-                        iframe.style.width = '1px';
-                        iframe.style.height = '1px';
-                        iframe.style.opacity = '0';
-                        iframe.style.pointerEvents = 'none';
-                        iframe.src = this.dataset.url;
-                        document.body.appendChild(iframe);
-                        setTimeout(() => iframe.remove(), 15000);
                     });
                 });
 
