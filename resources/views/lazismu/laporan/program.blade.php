@@ -6,6 +6,8 @@
             .chart-row + .chart-row { border-top: 1px solid #edf0f3; padding-top: .85rem; margin-top: .85rem; }
             .chart-track { height: 12px; border-radius: 999px; background: #ffe4c7; overflow: hidden; }
             .chart-fill { height: 100%; border-radius: inherit; background: #fc8c04; }
+            .chart-track-entity { background: #dbeafe; }
+            .chart-fill-entity { background: #38bdf8; }
             .chart-label { min-width: 0; }
             .chart-label strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         </style>
@@ -111,8 +113,8 @@
                                         </div>
                                         <div class="fw-bold small">{{ number_format($row['percent'], 1, ',', '.') }}%</div>
                                     </div>
-                                    <div class="chart-track">
-                                        <div class="chart-fill" style="width: {{ $row['percent'] }}%;"></div>
+                                    <div class="chart-track chart-track-entity">
+                                        <div class="chart-fill chart-fill-entity" style="width: {{ $row['percent'] }}%;"></div>
                                     </div>
                                 </div>
                             @empty
