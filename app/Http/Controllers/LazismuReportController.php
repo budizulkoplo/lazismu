@@ -302,26 +302,24 @@ class LazismuReportController extends Controller
 
     private function programEntityChart(int $programId, Carbon $startDate, Carbon $endDate): array
     {
-        $labelColumn = "COALESCE(NULLIF(muzaki.jenis_muzaki, ''), 'pribadi')";
-
         $targets = TargetSetoranProgram::query()
-            ->selectRaw($labelColumn . ' as label, SUM(target_setoran_program.target) as target')
+            ->selectRaw('muzaki.jenis_muzaki as label, target_setoran_program.target')
             ->join('muzaki', 'muzaki.id', '=', 'target_setoran_program.idmuzaki')
             ->where('target_setoran_program.idprogram', $programId)
-            ->groupByRaw($labelColumn)
             ->get()
-            ->keyBy('label');
+            ->groupBy(fn ($row) => $this->normalizeEntityLabel($row->label))
+            ->map(fn ($rows) => (object) ['target' => (float) $rows->sum('target')]);
 
         $setorans = Setoran::query()
-            ->selectRaw($labelColumn . ' as label, SUM(setoran.nominal) as total')
+            ->selectRaw('muzaki.jenis_muzaki as label, setoran.nominal')
             ->join('kode_setoran', 'kode_setoran.id', '=', 'setoran.idkode_setoran')
             ->join('muzaki', 'muzaki.id', '=', 'setoran.idmuzaki')
             ->where('setoran.idprogram', $programId)
             ->where('kode_setoran.jenis_setoran', 'program')
             ->whereBetween('setoran.created_at', [$startDate->copy()->startOfDay(), $endDate->copy()->endOfDay()])
-            ->groupByRaw($labelColumn)
             ->get()
-            ->keyBy('label');
+            ->groupBy(fn ($row) => $this->normalizeEntityLabel($row->label))
+            ->map(fn ($rows) => (object) ['total' => (float) $rows->sum('nominal')]);
 
         $labels = collect(['pribadi', 'aum', 'kelompok'])
             ->merge($targets->keys())
@@ -348,6 +346,13 @@ class LazismuReportController extends Controller
                 ];
             })
             ->all();
+    }
+
+    private function normalizeEntityLabel(?string $label): string
+    {
+        $label = strtolower(trim((string) $label));
+
+        return $label !== '' ? $label : 'pribadi';
     }
 
     private function setoranSummary($setorans): array
