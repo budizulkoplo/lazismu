@@ -303,56 +303,60 @@ class LazismuReportController extends Controller
     private function programEntityChart(int $programId, Carbon $startDate, Carbon $endDate): array
     {
         $targets = TargetSetoranProgram::query()
-            ->selectRaw('muzaki.jenis_muzaki as label, target_setoran_program.target')
+            ->selectRaw('muzaki.id as muzaki_id, muzaki.nama as label, muzaki.jenis_muzaki, target_setoran_program.target')
             ->join('muzaki', 'muzaki.id', '=', 'target_setoran_program.idmuzaki')
             ->where('target_setoran_program.idprogram', $programId)
+            ->whereIn('muzaki.jenis_muzaki', ['kelompok', 'aum'])
             ->get()
-            ->groupBy(fn ($row) => $this->normalizeEntityLabel($row->label))
-            ->map(fn ($rows) => (object) ['target' => (float) $rows->sum('target')]);
+            ->groupBy('muzaki_id')
+            ->map(fn ($rows) => (object) [
+                'label' => $this->entityMuzakiLabel($rows->first()->label, $rows->first()->jenis_muzaki),
+                'target' => (float) $rows->sum('target'),
+            ]);
 
         $setorans = Setoran::query()
-            ->selectRaw('muzaki.jenis_muzaki as label, setoran.nominal')
+            ->selectRaw('muzaki.id as muzaki_id, muzaki.nama as label, muzaki.jenis_muzaki, setoran.nominal')
             ->join('kode_setoran', 'kode_setoran.id', '=', 'setoran.idkode_setoran')
             ->join('muzaki', 'muzaki.id', '=', 'setoran.idmuzaki')
             ->where('setoran.idprogram', $programId)
             ->where('kode_setoran.jenis_setoran', 'program')
             ->whereBetween('setoran.created_at', [$startDate->copy()->startOfDay(), $endDate->copy()->endOfDay()])
+            ->whereIn('muzaki.jenis_muzaki', ['kelompok', 'aum'])
             ->get()
-            ->groupBy(fn ($row) => $this->normalizeEntityLabel($row->label))
-            ->map(fn ($rows) => (object) ['total' => (float) $rows->sum('nominal')]);
+            ->groupBy('muzaki_id')
+            ->map(fn ($rows) => (object) [
+                'label' => $this->entityMuzakiLabel($rows->first()->label, $rows->first()->jenis_muzaki),
+                'total' => (float) $rows->sum('nominal'),
+            ]);
 
-        $labels = collect(['pribadi', 'aum', 'kelompok'])
-            ->merge($targets->keys())
+        return $targets->keys()
             ->merge($setorans->keys())
             ->unique()
-            ->values();
-
-        $labelNames = [
-            'pribadi' => 'Pribadi',
-            'aum' => 'AUM',
-            'kelompok' => 'Kelompok',
-        ];
-
-        return $labels
-            ->map(function ($label) use ($targets, $setorans, $labelNames) {
-                $target = (float) optional($targets->get($label))->target;
-                $total = (float) optional($setorans->get($label))->total;
+            ->map(function ($muzakiId) use ($targets, $setorans) {
+                $targetRow = $targets->get($muzakiId);
+                $setoranRow = $setorans->get($muzakiId);
+                $target = (float) optional($targetRow)->target;
+                $total = (float) optional($setoranRow)->total;
 
                 return [
-                    'label' => $labelNames[$label] ?? ucfirst($label ?: '-'),
+                    'label' => $targetRow->label ?? $setoranRow->label ?? '-',
                     'target' => $target,
                     'total' => $total,
                     'percent' => $target > 0 ? min(100, round(($total / $target) * 100, 1)) : 0,
                 ];
             })
+            ->sortBy('label')
+            ->values()
             ->all();
     }
 
-    private function normalizeEntityLabel(?string $label): string
+    private function entityMuzakiLabel(?string $name, ?string $type): string
     {
-        $label = strtolower(trim((string) $label));
+        $name = trim((string) $name);
+        $type = strtolower(trim((string) $type));
+        $typeLabel = $type === 'aum' ? 'AUM' : 'Kelompok';
 
-        return $label !== '' ? $label : 'pribadi';
+        return ($name !== '' ? $name : '-') . ' (' . $typeLabel . ')';
     }
 
     private function setoranSummary($setorans): array
