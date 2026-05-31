@@ -98,8 +98,8 @@
                 <div class="col-lg-6">
                     <div class="card border-0 shadow-sm h-100">
                         <div class="card-body">
-                            <h5 class="mb-3">Grafik Setoran per AUM</h5>
-                            @forelse($aumChart as $row)
+                            <h5 class="mb-3">Grafik Setoran per Entitas</h5>
+                            @forelse($entityChart as $row)
                                 <div class="chart-row">
                                     <div class="d-flex justify-content-between gap-2 mb-1">
                                         <div class="chart-label">
@@ -116,7 +116,7 @@
                                     </div>
                                 </div>
                             @empty
-                                <div class="alert alert-info mb-0">Belum ada data target atau setoran per AUM.</div>
+                                <div class="alert alert-info mb-0">Belum ada data target atau setoran per entitas.</div>
                             @endforelse
                         </div>
                     </div>

@@ -115,8 +115,8 @@ class LazismuReportController extends Controller
         $rantingChart = $selectedProgram
             ? $this->programGroupChart($selectedProgram->id, 'ranting', $startDate, $endDate)
             : [];
-        $aumChart = $selectedProgram
-            ? $this->programGroupChart($selectedProgram->id, 'aum', $startDate, $endDate)
+        $entityChart = $selectedProgram
+            ? $this->programEntityChart($selectedProgram->id, $startDate, $endDate)
             : [];
         $summary = $this->setoranSummary($setorans);
         $programTarget = (float) ($selectedProgram?->target ?? 0);
@@ -129,7 +129,7 @@ class LazismuReportController extends Controller
             'selectedProgram',
             'setorans',
             'rantingChart',
-            'aumChart',
+            'entityChart',
             'summary',
             'startDate',
             'endDate',
@@ -292,6 +292,56 @@ class LazismuReportController extends Controller
 
                 return [
                     'label' => $label ?: '-',
+                    'target' => $target,
+                    'total' => $total,
+                    'percent' => $target > 0 ? min(100, round(($total / $target) * 100, 1)) : 0,
+                ];
+            })
+            ->all();
+    }
+
+    private function programEntityChart(int $programId, Carbon $startDate, Carbon $endDate): array
+    {
+        $labelColumn = "COALESCE(NULLIF(muzaki.jenis_muzaki, ''), 'pribadi')";
+
+        $targets = TargetSetoranProgram::query()
+            ->selectRaw($labelColumn . ' as label, SUM(target_setoran_program.target) as target')
+            ->join('muzaki', 'muzaki.id', '=', 'target_setoran_program.idmuzaki')
+            ->where('target_setoran_program.idprogram', $programId)
+            ->groupByRaw($labelColumn)
+            ->get()
+            ->keyBy('label');
+
+        $setorans = Setoran::query()
+            ->selectRaw($labelColumn . ' as label, SUM(setoran.nominal) as total')
+            ->join('kode_setoran', 'kode_setoran.id', '=', 'setoran.idkode_setoran')
+            ->join('muzaki', 'muzaki.id', '=', 'setoran.idmuzaki')
+            ->where('setoran.idprogram', $programId)
+            ->where('kode_setoran.jenis_setoran', 'program')
+            ->whereBetween('setoran.created_at', [$startDate->copy()->startOfDay(), $endDate->copy()->endOfDay()])
+            ->groupByRaw($labelColumn)
+            ->get()
+            ->keyBy('label');
+
+        $labels = collect(['pribadi', 'aum', 'kelompok'])
+            ->merge($targets->keys())
+            ->merge($setorans->keys())
+            ->unique()
+            ->values();
+
+        $labelNames = [
+            'pribadi' => 'Pribadi',
+            'aum' => 'AUM',
+            'kelompok' => 'Kelompok',
+        ];
+
+        return $labels
+            ->map(function ($label) use ($targets, $setorans, $labelNames) {
+                $target = (float) optional($targets->get($label))->target;
+                $total = (float) optional($setorans->get($label))->total;
+
+                return [
+                    'label' => $labelNames[$label] ?? ucfirst($label ?: '-'),
                     'target' => $target,
                     'total' => $total,
                     'percent' => $target > 0 ? min(100, round(($total / $target) * 100, 1)) : 0,
