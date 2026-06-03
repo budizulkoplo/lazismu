@@ -178,6 +178,7 @@
                                         <tr>
                                             <th>Tanggal</th>
                                             <th>Jenis</th>
+                                            <th>Ranting</th>
                                             <th>Program</th>
                                             <th class="text-end">Nominal</th>
                                         </tr>
@@ -187,12 +188,13 @@
                                             <tr>
                                                 <td>{{ optional($item->created_at)->format('d/m/Y') }}</td>
                                                 <td>{{ ucfirst($item->kodeSetoran->jenis_setoran ?? '-') }}</td>
+                                                <td>{{ $item->muzaki?->ranting ?: '-' }}</td>
                                                 <td>{{ $item->program->nama_program ?? '-' }}</td>
                                                 <td class="text-end">Rp {{ number_format($item->nominal, 0, ',', '.') }}</td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="4" class="text-center text-muted py-4">Belum ada riwayat setoran.</td>
+                                                <td colspan="5" class="text-center text-muted py-4">Belum ada riwayat setoran.</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -242,6 +244,7 @@
                                 <tr>
                                     <th>Tanggal</th>
                                     <th>Muzaki</th>
+                                    <th>Ranting</th>
                                     <th>Jenis</th>
                                     <th>Program</th>
                                     <th class="text-end">Nominal</th>
@@ -256,6 +259,7 @@
                                             <div>{{ $setoran->muzaki->nama ?? '-' }}</div>
                                             <small class="text-muted">{{ $setoran->muzaki->nik ?? '-' }}</small>
                                         </td>
+                                        <td>{{ $setoran->muzaki?->ranting ?: '-' }}</td>
                                         <td>{{ ucfirst($setoran->kodeSetoran->jenis_setoran ?? '-') }}</td>
                                         <td>{{ $setoran->program->nama_program ?? '-' }}</td>
                                         <td class="text-end">Rp {{ number_format($setoran->nominal, 0, ',', '.') }}</td>

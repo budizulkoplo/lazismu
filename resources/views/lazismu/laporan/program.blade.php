@@ -136,6 +136,7 @@
                                 <tr>
                                     <th>Tanggal</th>
                                     <th>Muzaki</th>
+                                    <th>Ranting</th>
                                     <th>Program</th>
                                     <th class="text-end">Nominal</th>
                                 </tr>
@@ -145,6 +146,7 @@
                                     <tr>
                                         <td>{{ optional($setoran->created_at)->format('d/m/Y H:i') }}</td>
                                         <td>{{ $setoran->muzaki?->nama ?? '-' }}</td>
+                                        <td>{{ $setoran->muzaki?->ranting ?: '-' }}</td>
                                         <td>{{ $setoran->program?->nama_program ?? '-' }}</td>
                                         <td class="text-end">@include('lazismu.laporan.partials.money', ['value' => $setoran->nominal])</td>
                                     </tr>

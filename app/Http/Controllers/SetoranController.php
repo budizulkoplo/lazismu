@@ -49,7 +49,7 @@ class SetoranController extends Controller
             ? Muzaki::find($request->muzaki_id)
             : null;
         $selectedSetoranQuery = $selectedMuzaki
-            ? Setoran::with(['kodeSetoran', 'program'])
+            ? Setoran::with(['muzaki', 'kodeSetoran', 'program'])
                 ->where('idmuzaki', $selectedMuzaki->id)
             : null;
 
