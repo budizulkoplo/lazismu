@@ -290,6 +290,11 @@
                             </tbody>
                         </table>
                     </div>
+                    @if(method_exists($setorans, 'links'))
+                        <div class="mt-3">
+                            {{ $setorans->links() }}
+                        </div>
+                    @endif
                 </div>
             </div>
             @endunless

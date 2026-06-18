@@ -21,6 +21,9 @@ class SetoranController extends Controller
     public function index(Request $request)
     {
         $query = Setoran::with(['muzaki', 'kodeSetoran', 'program']);
+        $selectedMuzaki = $request->filled('muzaki_id')
+            ? Muzaki::find($request->muzaki_id)
+            : null;
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -40,14 +43,16 @@ class SetoranController extends Controller
             $query->where('idprogram', $request->program_id);
         }
 
-        $setorans = $query->latest('created_at')->get();
-        $muzakis = Muzaki::orderBy('nama')->get();
+        $setorans = $selectedMuzaki
+            ? collect()
+            : $query->latest('created_at')->paginate(25)->withQueryString();
+        $muzakis = Muzaki::query()
+            ->select('id', 'nama', 'login_code', 'nik', 'alamat', 'no_hp', 'email', 'ranting')
+            ->orderBy('nama')
+            ->get();
         $kodeSetorans = KodeSetoran::orderBy('jenis_setoran')->get();
         $programs = Program::active()->orderBy('nama_program')->get();
         $filterPrograms = Program::orderBy('nama_program')->get();
-        $selectedMuzaki = $request->filled('muzaki_id')
-            ? Muzaki::find($request->muzaki_id)
-            : null;
         $selectedSetoranQuery = $selectedMuzaki
             ? Setoran::with(['muzaki', 'kodeSetoran', 'program'])
                 ->where('idmuzaki', $selectedMuzaki->id)
@@ -67,7 +72,9 @@ class SetoranController extends Controller
             ? $selectedSetoranQuery->latest('created_at')->take(25)->get()
             : collect();
         $kodeByJenis = $kodeSetorans->keyBy(fn ($item) => strtolower(trim($item->jenis_setoran)));
-        $programTargets = TargetSetoranProgram::all()
+        $programTargets = TargetSetoranProgram::query()
+            ->select('idmuzaki', 'idprogram', 'target')
+            ->get()
             ->groupBy('idmuzaki')
             ->map(fn ($items) => $items->keyBy('idprogram'));
         $programTotals = Setoran::query()
@@ -94,14 +101,22 @@ class SetoranController extends Controller
         }
         $programStatsForJs = [];
 
-        foreach ($muzakis as $muzaki) {
-            foreach ($programs as $program) {
-                $total = (float) optional(optional($programTotals->get($muzaki->id))->get($program->id))->total;
-                $target = (float) optional(optional($programTargets->get($muzaki->id))->get($program->id))->target;
-                $programStatsForJs[$muzaki->id][$program->id] = [
-                    'total' => $total,
-                    'target' => $target,
-                    'is_first' => $total <= 0,
+        foreach ($programTargets as $muzakiId => $targets) {
+            foreach ($targets as $programId => $targetItem) {
+                $programStatsForJs[$muzakiId][$programId] = [
+                    'total' => 0,
+                    'target' => (float) $targetItem->target,
+                    'is_first' => true,
+                ];
+            }
+        }
+
+        foreach ($programTotals as $muzakiId => $totals) {
+            foreach ($totals as $programId => $totalItem) {
+                $programStatsForJs[$muzakiId][$programId] = [
+                    'total' => (float) $totalItem->total,
+                    'target' => (float) ($programStatsForJs[$muzakiId][$programId]['target'] ?? 0),
+                    'is_first' => (float) $totalItem->total <= 0,
                 ];
             }
         }
