@@ -47,7 +47,7 @@ class SetoranController extends Controller
             ? collect()
             : $query->latest('created_at')->paginate(25)->withQueryString();
         $muzakis = Muzaki::query()
-            ->select('id', 'nama', 'login_code', 'nik', 'alamat', 'no_hp', 'email', 'ranting')
+            ->select('id', 'nama', 'nomor_induk_muzaki', 'nik', 'alamat', 'no_hp', 'email', 'ranting')
             ->orderBy('nama')
             ->get();
         $kodeSetorans = KodeSetoran::orderBy('jenis_setoran')->get();
