@@ -239,7 +239,7 @@
                         </div>
                     </form>
                     <div class="table-responsive">
-                        <table class="table table-sm table-striped align-middle js-lazismu-table w-100">
+                        <table class="table table-sm table-striped align-middle w-100">
                             <thead class="table-light">
                                 <tr>
                                     <th>Tanggal</th>
