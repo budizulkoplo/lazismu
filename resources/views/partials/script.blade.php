@@ -10,10 +10,15 @@
 <script src="{{ asset('plugins/DataTables/js/responsive.bootstrap5.js') }}"></script>
 <script src="{{ asset('plugins/DataTables/js/dataTables.buttons.js') }}"></script>
 <script src="{{ asset('plugins/DataTables/js/buttons.bootstrap5.js') }}"></script>
+<script src="{{ asset('plugins/DataTables/lib/jszip.min.js') }}"></script>
 <script src="{{ asset('plugins/DataTables/button/buttons.html5.min.js') }}"></script>
+<script>
+    if (window.jQuery && $.fn.dataTable && $.fn.dataTable.Buttons && window.JSZip) {
+        $.fn.dataTable.Buttons.jszip(window.JSZip);
+    }
+</script>
 <script src="{{ asset('plugins/DataTables/button/buttons.print.min.js') }}"></script>
 <script src="{{ asset('plugins/DataTables/button/buttons.colVis.min.js') }}"></script>
-<script src="{{ asset('plugins/DataTables/lib/jszip.min.js') }}"></script>
 <script src="{{ asset('plugins/DataTables/lib/pdfmake.min.js') }}"></script>
 <script src="{{ asset('plugins/DataTables/lib/vfs_fonts.js') }}"></script>
 <script src="{{ asset('plugins/fontawesome6.7.2/js/all.min.js') }}"></script>
