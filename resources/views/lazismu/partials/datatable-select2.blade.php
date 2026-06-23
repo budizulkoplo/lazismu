@@ -191,6 +191,52 @@
             const modal = this.closest('.modal');
             if (modal && !modal.classList.contains('show')) return;
 
+            const isMuzakiTable = this.classList.contains('js-muzaki-table');
+            const buttons = [
+                { extend: 'copyHtml5', text: '<i class="bi bi-copy me-1"></i> Copy', className: 'btn btn-outline-secondary' },
+                isMuzakiTable ? {
+                    text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel',
+                    className: 'btn btn-outline-success',
+                    action: function(e, dt) {
+                        if (!window.XLSX) return;
+
+                        const rows = dt.rows({ search: 'applied', order: 'applied' }).nodes().toArray().map(function(row) {
+                            return {
+                                'Nomor Induk Muzaki': row.dataset.nomorInduk || '-',
+                                'NIK': row.dataset.nik || '-',
+                                'Nama': row.dataset.nama || '-',
+                                'Jenis Muzaki': row.dataset.jenis || '-',
+                                'Tanggal Lahir': row.dataset.tglLahir || '-',
+                                'Jenis Kelamin': row.dataset.jenisKelamin || '-',
+                                'Ranting': row.dataset.ranting || '-',
+                                'Alamat': row.dataset.alamat || '-',
+                                'No HP': row.dataset.noHp || '-',
+                                'Email': row.dataset.email || '-'
+                            };
+                        });
+
+                        const workbook = XLSX.utils.book_new();
+                        const worksheet = XLSX.utils.json_to_sheet(rows);
+                        worksheet['!cols'] = [
+                            { wch: 22 },
+                            { wch: 20 },
+                            { wch: 28 },
+                            { wch: 16 },
+                            { wch: 16 },
+                            { wch: 16 },
+                            { wch: 24 },
+                            { wch: 36 },
+                            { wch: 18 },
+                            { wch: 28 }
+                        ];
+                        XLSX.utils.book_append_sheet(workbook, worksheet, 'Muzaki');
+                        XLSX.writeFile(workbook, 'data-muzaki.xlsx');
+                    }
+                } : { extend: 'excelHtml5', text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel', className: 'btn btn-outline-success' },
+                { extend: 'print', text: '<i class="bi bi-printer me-1"></i> Print', className: 'btn btn-outline-primary' },
+                { extend: 'colvis', text: '<i class="bi bi-layout-three-columns me-1"></i> Kolom', className: 'btn btn-outline-warning' }
+            ];
+
             $(this).DataTable({
                 responsive: true,
                 pageLength: 10,
@@ -200,12 +246,7 @@
                     "<'row mb-3'<'col-12 d-flex justify-content-start'B>>" +
                     "<'row'<'col-12'tr>>" +
                     "<'row align-items-center gy-2 mt-3'<'col-md-5'i><'col-md-7 d-flex justify-content-md-end justify-content-start'p>>",
-                buttons: [
-                    { extend: 'copyHtml5', text: '<i class="bi bi-copy me-1"></i> Copy', className: 'btn btn-outline-secondary' },
-                    { extend: 'excelHtml5', text: '<i class="bi bi-file-earmark-excel me-1"></i> Excel', className: 'btn btn-outline-success' },
-                    { extend: 'print', text: '<i class="bi bi-printer me-1"></i> Print', className: 'btn btn-outline-primary' },
-                    { extend: 'colvis', text: '<i class="bi bi-layout-three-columns me-1"></i> Kolom', className: 'btn btn-outline-warning' }
-                ],
+                buttons: buttons,
                 language: {
                     search: 'Cari:',
                     lengthMenu: 'Tampilkan _MENU_ data',

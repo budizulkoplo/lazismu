@@ -25,7 +25,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-sm table-striped align-middle js-lazismu-table w-100">
+                        <table class="table table-sm table-striped align-middle js-lazismu-table js-muzaki-table w-100">
                             <thead class="table-light">
                                 <tr>
                                     <th>ID/NIK</th>
@@ -40,7 +40,18 @@
                             </thead>
                             <tbody>
                                 @foreach($muzakis as $muzaki)
-                                    <tr>
+                                    <tr
+                                        data-nomor-induk="{{ $muzaki->nomor_induk_muzaki ?: '-' }}"
+                                        data-nik="{{ $muzaki->nik ?: '-' }}"
+                                        data-nama="{{ $muzaki->nama }}"
+                                        data-jenis="{{ ($muzaki->jenis_muzaki ?? 'pribadi') === 'aum' ? 'AUM' : ucfirst($muzaki->jenis_muzaki ?? 'pribadi') }}"
+                                        data-tgl-lahir="{{ optional($muzaki->tgl_lahir)->format('d/m/Y') ?? '-' }}"
+                                        data-jenis-kelamin="{{ $muzaki->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}"
+                                        data-ranting="{{ $muzaki->ranting ?: '-' }}"
+                                        data-alamat="{{ $muzaki->alamat ?: '-' }}"
+                                        data-no-hp="{{ $muzaki->no_hp ?: '-' }}"
+                                        data-email="{{ $muzaki->email ?: '-' }}"
+                                    >
                                         <td>
                                             <div class="fw-semibold">{{ $muzaki->nomor_induk_muzaki ?: '-' }}</div>
                                             @if(($muzaki->jenis_muzaki ?? 'pribadi') === 'pribadi')
