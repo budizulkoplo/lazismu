@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Muzaki;
 use App\Models\Program;
 use App\Models\Setoran;
@@ -24,16 +25,19 @@ class LazismuDashboardController extends Controller
                 END) as total
             ")
             ->value('total') ?? 0;
-        $totalPdm = Setoran::query()
+        $hakKelolaDaerah = Setoran::query()
             ->join('kode_setoran', 'kode_setoran.id', '=', 'setoran.idkode_setoran')
             ->selectRaw("
+                LOWER(kode_setoran.jenis_setoran) as jenis,
                 SUM(CASE
                     WHEN LOWER(kode_setoran.jenis_setoran) = 'zakat' THEN setoran.nominal * 0.30
                     WHEN LOWER(kode_setoran.jenis_setoran) = 'infaq' THEN setoran.nominal * 0.20
                     ELSE 0
                 END) as total
             ")
-            ->value('total') ?? 0;
+            ->whereIn(DB::raw('LOWER(kode_setoran.jenis_setoran)'), ['zakat', 'infaq'])
+            ->groupByRaw('LOWER(kode_setoran.jenis_setoran)')
+            ->pluck('total', 'jenis');
 
         $ringkasanJenis = Setoran::query()
             ->selectRaw('LOWER(kode_setoran.jenis_setoran) as jenis, SUM(setoran.nominal) as total')
@@ -62,7 +66,7 @@ class LazismuDashboardController extends Controller
             'totalSetoran',
             'totalDana',
             'totalDigunakan',
-            'totalPdm',
+            'hakKelolaDaerah',
             'ringkasanJenis',
             'setoranTerbaru',
             'muzakiScanOptions'

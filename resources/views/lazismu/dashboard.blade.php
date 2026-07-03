@@ -66,9 +66,18 @@
                 <div class="col-md-6">
                     <div class="card border-0 shadow-sm h-100 bg-info-subtle">
                         <div class="card-body">
-                            <small class="text-muted">Bagian PDM</small>
-                            <h2 class="mb-0">Rp {{ number_format($totalPdm, 0, ',', '.') }}</h2>
-                            <p class="mb-0 text-muted">Zakat 30% dan infaq 20%.</p>
+                            <small class="text-muted">Hak Kelola Daerah</small>
+                            <h2 class="mb-0">Rp {{ number_format(($hakKelolaDaerah['zakat'] ?? 0) + ($hakKelolaDaerah['infaq'] ?? 0), 0, ',', '.') }}</h2>
+                            <div class="mt-2 d-flex flex-column gap-1 text-muted">
+                                <div class="d-flex justify-content-between">
+                                    <span>Zakat</span>
+                                    <strong class="text-dark">Rp {{ number_format($hakKelolaDaerah['zakat'] ?? 0, 0, ',', '.') }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Infaq</span>
+                                    <strong class="text-dark">Rp {{ number_format($hakKelolaDaerah['infaq'] ?? 0, 0, ',', '.') }}</strong>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
