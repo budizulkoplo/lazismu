@@ -44,6 +44,8 @@
                 ['label' => 'Target Program', 'value' => $programTarget],
                 ['label' => 'Total Setoran', 'value' => $summary['nominal']],
                 ['label' => 'Pemasukan Program', 'value' => $summary['pemasukan']],
+                ['label' => 'Pengeluaran Program', 'value' => $summary['pengeluaran']],
+                ['label' => 'Saldo Program', 'value' => $summary['saldo']],
                 ['label' => 'Jumlah Transaksi', 'value' => $summary['count'], 'money' => false],
             ]])
 
@@ -152,6 +154,53 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm mt-3">
+                <div class="card-header bg-white border-0 pb-0">
+                    <h5 class="mb-0">Rincian Pengeluaran Program</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped align-middle js-lazismu-table w-100">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>No Nota</th>
+                                    <th>Nama Transaksi</th>
+                                    <th>Kode Transaksi</th>
+                                    <th>User</th>
+                                    <th class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pengeluarans as $nota)
+                                    @php
+                                        $kodeTransaksi = trim(
+                                            ($nota->kodeTransaksi?->header?->keterangan ? $nota->kodeTransaksi->header->keterangan . ' / ' : '') .
+                                            ($nota->kodeTransaksi?->kodetransaksi ? $nota->kodeTransaksi->kodetransaksi . ' - ' : '') .
+                                            ($nota->kodeTransaksi?->transaksi ?? '')
+                                        );
+                                    @endphp
+                                    <tr>
+                                        <td>{{ optional($nota->tanggal)->format('d/m/Y') }}</td>
+                                        <td>{{ $nota->nota_no ?: '-' }}</td>
+                                        <td>{{ $nota->namatransaksi }}</td>
+                                        <td>{{ $kodeTransaksi ?: '-' }}</td>
+                                        <td>{{ $nota->namauser ?: '-' }}</td>
+                                        <td class="text-end">@include('lazismu.laporan.partials.money', ['value' => $nota->total])</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <th colspan="5" class="text-end">Total Pengeluaran</th>
+                                    <th class="text-end">@include('lazismu.laporan.partials.money', ['value' => $summary['pengeluaran']])</th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

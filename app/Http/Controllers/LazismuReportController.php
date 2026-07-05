@@ -112,6 +112,14 @@ class LazismuReportController extends Controller
         }
 
         $setorans = $query->latest('created_at')->get();
+        $pengeluarans = $selectedProgram
+            ? Nota::with(['kodeTransaksi.header'])
+                ->where('idprogram', $selectedProgram->id)
+                ->whereBetween('tanggal', [$startDate->toDateString(), $endDate->toDateString()])
+                ->latest('tanggal')
+                ->latest('id')
+                ->get()
+            : collect();
         $rantingChart = $selectedProgram
             ? $this->programGroupChart($selectedProgram->id, 'ranting', $startDate, $endDate)
             : [];
@@ -119,6 +127,8 @@ class LazismuReportController extends Controller
             ? $this->programEntityChart($selectedProgram->id, $startDate, $endDate)
             : [];
         $summary = $this->setoranSummary($setorans);
+        $summary['pengeluaran'] = (float) $pengeluarans->sum('total');
+        $summary['saldo'] = $summary['pemasukan'] - $summary['pengeluaran'];
         $programTarget = (float) ($selectedProgram?->target ?? 0);
         $programProgress = $programTarget > 0
             ? min(100, round(($summary['nominal'] / $programTarget) * 100, 1))
@@ -128,6 +138,7 @@ class LazismuReportController extends Controller
             'programs',
             'selectedProgram',
             'setorans',
+            'pengeluarans',
             'rantingChart',
             'entityChart',
             'summary',
